@@ -3,17 +3,23 @@
   <div>
     app
   </div>
-  <router-link to="/">
+  <el-button v-on:click="navigate()">
     go home
-  </router-link>
+  </el-button>
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
 export default {
   components: {
   },
   // 组件逻辑
+}
+
+function navigate(){
+  router.push('/')
 }
 </script>
 

@@ -4,11 +4,11 @@
     <div class="profile">
       <h2>个人资料</h2>
       <div>
-        <p>用户名: <input v-model="userProfile.username" type="text"></p>
-        <p>邮箱: <input v-model="userProfile.email" type="email"></p>
+        <p>用户名: <el-input v-model="userProfile.username" type="text"></el-input></p>
+        <p>邮箱: <el-input v-model="userProfile.email" type="email"></el-input></p>
         <p>手机号码: {{ userProfile.phone }}</p>
         <!-- 其他个人资料信息 -->
-        <button @click="updateProfile">保存修改</button>
+        <el-button @click="updateProfile">保存修改</el-button>
       </div>
     </div>
 
@@ -16,8 +16,8 @@
     <div class="account-management">
       <h2>账户管理</h2>
       <div>
-        <button @click="changePassword">修改密码</button>
-        <button @click="manageSecurity">安全设置</button>
+        <el-button @click="changePassword">修改密码</el-button>
+        <el-button @click="manageSecurity">安全设置</el-button>
         <!-- 其他账户管理选项 -->
       </div>
     </div>
@@ -26,8 +26,8 @@
     <div class="feedback-help">
       <h2>用户反馈与帮助</h2>
       <div>
-        <button @click="submitFeedback">意见反馈</button>
-        <button @click="openHelpCenter">帮助中心</button>
+        <el-button @click="submitFeedback">意见反馈</el-button>
+        <el-button @click="openHelpCenter">帮助中心</el-button>
         <!-- 其他用户反馈与帮助选项 -->
       </div>
     </div>

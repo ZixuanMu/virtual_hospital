@@ -1,7 +1,10 @@
 <template>
     <div>
       <h2>Layout.vue</h2>
-      <router-link to="/layout/3dviews">Page 1</router-link>
+      <router-link to="/3dviews">3dviews </router-link>
+      <router-link to="/functionalLearning">functionalLearning </router-link>
+      <router-link to="/mineInformation">mineInformation </router-link>
+      <router-link to="/testUser">testUser </router-link>
       <router-view></router-view>
     </div>
   </template>

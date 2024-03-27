@@ -2,6 +2,9 @@ import {createRouter,createWebHistory} from 'vue-router';
 import Layout from '@/Layout/myLayout.vue'
 import Views from '@/components/3dViews.vue'
 import App from '@/App.vue'
+import functionalLearning from '@/components/functionalLearning.vue'
+import mineInformation from '@/components/mineInformation.vue'
+import testUser from '@/components/testUser.vue'
 
 const routes = [
   {
@@ -18,6 +21,21 @@ const routes = [
         path:"/3dviews",
         name:"3dview",
         component: Views,
+      },
+      {
+        path:"/functionalLearning",
+        name:"functionalLearning",
+        component: functionalLearning,
+      },
+      {
+        path:"/mineInformation",
+        name:"mineInformation",
+        component: mineInformation,
+      },
+      {
+        path:"/testUser",
+        name:"testUser",
+        component: testUser,
       }
     ]
   },

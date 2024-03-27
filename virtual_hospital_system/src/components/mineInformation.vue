@@ -1,10 +1,17 @@
 <template>
+<div class = "suffix">
+  <img  style="width:30px;height:30px;">
+  <p>用户名: {{ userProfile.username }}</p>
+</div>
+
   <div class="personal-center">
-    <!-- 个人资料 -->
-    <div class="profile">
-      <h2>个人资料</h2>
+    <!-- 基本信息 -->
+    <div class="section profile">
+      <h2 >基本信息</h2>
       <div>
         <p>用户名: <el-input v-model="userProfile.username" type="text"></el-input></p>
+        <p>用户id: <el-input v-model="userProfile.userid" type="text"></el-input></p>
+        <p>性别: <el-input v-model="userProfile.sex" type="text"></el-input></p>
         <p>邮箱: <el-input v-model="userProfile.email" type="email"></el-input></p>
         <p>手机号码: {{ userProfile.phone }}</p>
         <!-- 其他个人资料信息 -->
@@ -13,21 +20,19 @@
     </div>
 
     <!-- 账户管理 -->
-    <div class="account-management">
+    <div class="section account-management">
       <h2>账户管理</h2>
       <div>
         <el-button @click="changePassword">修改密码</el-button>
-        <el-button @click="manageSecurity">安全设置</el-button>
         <!-- 其他账户管理选项 -->
       </div>
     </div>
 
     <!-- 用户反馈与帮助 -->
-    <div class="feedback-help">
-      <h2>用户反馈与帮助</h2>
+    <div class="section feedback-help">
+      <h2>用户反馈</h2>
       <div>
         <el-button @click="submitFeedback">意见反馈</el-button>
-        <el-button @click="openHelpCenter">帮助中心</el-button>
         <!-- 其他用户反馈与帮助选项 -->
       </div>
     </div>
@@ -42,8 +47,12 @@ export default {
         username: 'JohnDoe',
         email: 'johndoe@example.com',
         phone: '+1234567890',
+        sex: '男',
+        suffix: 'sda',
+        userid: 'ssssss',
+  
         // 其他个人资料信息
-      }
+      },
     };
   },
   methods: {
@@ -74,13 +83,15 @@ export default {
   margin: 0 auto;
 }
 
-.profile,
-.account-management,
-.feedback-help {
+.section {
   margin-bottom: 20px;
 }
 
 h2 {
   margin-bottom: 10px;
+  text-align: left;
+}
+p{
+  text-align:left;
 }
 </style>

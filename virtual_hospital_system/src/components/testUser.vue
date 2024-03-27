@@ -2,7 +2,7 @@
     <div>
       <h1>{{ examTitle }}</h1>
       <div v-if="!examStarted">
-        <button @click="startExam">开始考试</button>
+        <el-button @click="startExam">开始考试</el-button>
       </div>
       <div v-else>
         <div v-for="(question, index) in questions" :key="index">

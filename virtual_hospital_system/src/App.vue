@@ -1,26 +1,35 @@
 <template>
-  111
   <div>
     app
   </div>
-  <el-button v-on:click="navigate()">
+  <el-button type="primary" @click="somethingHappen()">
     go home
   </el-button>
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
-const router = useRouter()
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router'
 
 export default {
-  components: {
-  },
   // 组件逻辑
+  setup(){
+    const router = useRouter();
+    const somethingHappen = () => {
+      console.log("触发");
+      router.push('/3dviews')
+    };
+    onMounted(()=>{
+      console.log("已挂载");
+    });
+    return {
+      somethingHappen
+    };
+  }
 }
+  
 
-function navigate(){
-  router.push('/')
-}
+
 </script>
 
 <style>

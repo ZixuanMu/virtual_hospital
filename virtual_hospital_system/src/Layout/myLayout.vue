@@ -1,18 +1,15 @@
 <template>
-<div class="common-layout">
-    <el-container class="container">
-    <el-aside class="aside">
-    </el-aside>
-    <el-container>
-        <el-header class="header">Header</el-header>
-        <el-main class="main"><router-view/></el-main>
-    </el-container>
-    </el-container>
-</div>
-</template>
-
-<script lang="ts" setup >
-</script>
+    <div>
+      <h2>Layout.vue</h2>
+      <router-link to="/layout/3dviews">Page 1</router-link>
+      <router-view></router-view>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+  }
+  </script>
 
 <style scoped lang="scss">
 .container{

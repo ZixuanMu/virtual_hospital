@@ -5,6 +5,7 @@
   <el-button type="primary" @click="somethingHappen()">
     go home
   </el-button>
+  <router-link to="/layout">go to layout</router-link>
 </template>
 
 <script>
@@ -17,7 +18,7 @@ export default {
     const router = useRouter();
     const somethingHappen = () => {
       console.log("触发");
-      router.push('/3dviews')
+      router.push('/layout');
     };
     onMounted(()=>{
       console.log("已挂载");

@@ -1,5 +1,15 @@
 <template>
-    <div>
+
+
+
+<div class="common-layout">
+    <el-container>
+      <el-header>Header</el-header>
+      <el-container>
+        <el-aside width="200px">
+          
+
+          <div>
       <el-menu :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
         <el-menu-item index="/3dviews" @click="navigateTo('/3dviews')">
           3D导览
@@ -15,8 +25,16 @@
         </el-menu-item>
         <!-- 更多导航栏项 -->
       </el-menu>
-      <router-view></router-view>
+ 
     </div>
+
+
+        </el-aside>
+        <el-main> <router-view></router-view></el-main>
+      </el-container>
+    </el-container>
+  </div>
+
   </template>
   
   <script>

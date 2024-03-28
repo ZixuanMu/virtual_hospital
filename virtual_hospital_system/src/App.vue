@@ -1,6 +1,6 @@
 <template>
   <el-button type="primary" @click="somethingHappen()">
-    go home
+
   </el-button>
   <!-- <router-link to="/layout">go to layout</router-link> -->
   <router-view></router-view>

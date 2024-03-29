@@ -1,40 +1,57 @@
 <template>
+
+
+
+
+
+
 <div class = "suffix">
   <img  style="width:30px;height:30px;">
   <p>用户名: {{ userProfile.username }}</p>
 </div>
 
   <div class="personal-center">
+
+    
     <!-- 基本信息 -->
     <div class="section profile">
-      <h2 >基本信息</h2>
-      <div>
-        <p>用户名: <el-input v-model="userProfile.username" type="text"></el-input></p>
-        <p>用户id: <el-input v-model="userProfile.userid" type="text"></el-input></p>
-        <p>性别: <el-input v-model="userProfile.sex" type="text"></el-input></p>
-        <p>邮箱: <el-input v-model="userProfile.email" type="email"></el-input></p>
-        <p>手机号码: {{ userProfile.phone }}</p>
-        <!-- 其他个人资料信息 -->
-        <el-button @click="updateProfile">保存修改</el-button>
-      </div>
+      <el-card style="max-width:2000px" vertical-align="middle">
+          <template #header>
+       <div class="card-header">
+         <h3>个人信息</h3>
+       </div>
+      </template>
+           <p>用户名: <el-input v-model="userProfile.username" type="text"></el-input></p>
+          <p>用户id: <el-input v-model="userProfile.userid" type="text"></el-input></p>
+          <p>性别: <el-input v-model="userProfile.sex" type="text"></el-input></p>
+          <p>邮箱: <el-input v-model="userProfile.email" type="email"></el-input></p>
+          <p>手机号码: {{ userProfile.phone }}</p>
+          <el-button @click="updateProfile">保存修改</el-button>
+     </el-card>
     </div>
 
     <!-- 账户管理 -->
     <div class="section account-management">
-      <h2>账户管理</h2>
-      <div>
-        <el-button @click="changePassword">修改密码</el-button>
-        <!-- 其他账户管理选项 -->
-      </div>
+      <el-card style="max-width:2000px" vertical-align="middle">
+          <template #header>
+       <div class="card-header">
+         <h3>账户管理</h3>
+       </div>
+      </template>
+      <el-button @click="changePassword">修改密码</el-button>
+     </el-card>
     </div>
 
     <!-- 用户反馈与帮助 -->
     <div class="section feedback-help">
-      <h2>用户反馈</h2>
-      <div>
-        <el-button @click="submitFeedback">意见反馈</el-button>
-        <!-- 其他用户反馈与帮助选项 -->
-      </div>
+      <el-card style="max-width:2000px" vertical-align="middle">
+          <template #header>
+       <div class="card-header">
+         <h3>用户反馈</h3>
+       </div>
+      </template>
+      <el-button @click="submitFeedback">意见反馈</el-button>
+     </el-card>
     </div>
   </div>
 </template>
@@ -79,7 +96,7 @@ export default {
 <style scoped>
 /* 样式可以根据需求进行调整 */
 .personal-center {
-  max-width: 600px;
+  max-width: 2000px;
   margin: 0 auto;
 }
 
@@ -87,11 +104,12 @@ export default {
   margin-bottom: 20px;
 }
 
-h2 {
-  margin-bottom: 10px;
+h3 {
+  margin: 0px;
   text-align: left;
 }
 p{
   text-align:left;
 }
+
 </style>

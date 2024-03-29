@@ -5,12 +5,19 @@ import App from '@/App.vue'
 import functionalLearning from '@/components/functionalLearning.vue'
 import mineInformation from '@/components/mineInformation.vue'
 import testUser from '@/components/testUser.vue'
+import testPage from '@/components/testComponents/testPage.vue'
 
 const routes = [
+
   {
     path: '/',
     name: 'App',
     component: App,
+  },
+  {
+    path:'/testPage',
+    name:"testPage",
+    component:testPage,
   },
   {
     path:"/layout",
@@ -36,7 +43,7 @@ const routes = [
         path:"/testUser",
         name:"testUser",
         component: testUser,
-      }
+      },
     ]
   },
 ];

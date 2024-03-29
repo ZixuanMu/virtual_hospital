@@ -11,11 +11,11 @@
     methods: {
       openNewWindow1() {
         // 使用 Vue Router 的编程式导航打开新路由
-        this.$router.push({ name: 'role' });
+        this.$router.push({ name: 'roleplaying' });
       },
       openNewWindow2() {
         // 使用 Vue Router 的编程式导航打开新路由
-        this.$router.push({ name: 'case' });
+        this.$router.push({ name: 'casestudying' });
       }
       
     }

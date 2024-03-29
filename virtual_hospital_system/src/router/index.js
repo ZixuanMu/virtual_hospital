@@ -15,6 +15,11 @@ const routes = [
     component: App,
   },
   {
+    path:'/testPage',
+    name:"testPage",
+    component:testPage,
+  },
+  {
     path:"/layout",
     name:"Layout",
     component: Layout,
@@ -38,11 +43,6 @@ const routes = [
         path:"/testUser",
         name:"testUser",
         component: testUser,
-      },
-      {
-        path:'testPage',
-        name:"testPage",
-        component:testPage,
       },
     ]
   },

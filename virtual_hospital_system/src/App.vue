@@ -1,9 +1,16 @@
 <template>
-  <el-button type="primary" @click="somethingHappen()">
+   <router-view v-if="$route.path === '/'">
 
-  </el-button>
-  <!-- <router-link to="/layout">go to layout</router-link> -->
-  <router-view></router-view>
+      <el-button type="primary" @click="somethingHappen()">
+
+      </el-button>
+      <button @click="openNewWindow">打开新窗口</button>
+  </router-view>
+    <div v-else>
+      <router-view></router-view>
+    </div>
+
+
 </template>
 
 <script>
@@ -25,7 +32,13 @@ export default {
     return {
       somethingHappen
     };
-  }
+  },
+  methods: {
+      openNewWindow() {
+        // 使用 Vue Router 的编程式导航打开新路由
+        this.$router.push({ name: 'testPage' });
+      }
+    }
 }
   
 

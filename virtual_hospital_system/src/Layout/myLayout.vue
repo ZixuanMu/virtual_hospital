@@ -1,10 +1,8 @@
 <template>
 
-
-
 <div class="common-layout">
     <el-container>
-      <el-header >虚拟宠物医院学习系统</el-header>
+      <el-header>虚拟宠物医院学习系统</el-header>
       <el-container>
         <el-aside width="200px">
           
@@ -29,7 +27,7 @@
     </div>
 
 
-        </el-aside>
+        </el-aside> 
         <el-main> <router-view></router-view></el-main>
       </el-container>
     </el-container>

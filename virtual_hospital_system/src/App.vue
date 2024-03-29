@@ -1,10 +1,17 @@
 <template>
    <router-view v-if="$route.path === '/'">
-
-      <el-button type="primary" @click="somethingHappen()">
-
-      </el-button>
-      <button @click="openNewWindow">打开新窗口</button>
+    <h1>登录页</h1>
+    <form @submit.prevent="login">
+       <div>
+          <label for="">用户名：</label>
+          <input type="text" v-model="username">
+       </div>
+       <div>
+          <label for="">密码：</label>
+          <input type="password" v-model="password">
+       </div>
+       <el-button type="primary" @click="somethingHappen()">登录</el-button>
+    </form>
   </router-view>
     <div v-else>
       <router-view></router-view>
@@ -36,9 +43,25 @@ export default {
   methods: {
       openNewWindow() {
         // 使用 Vue Router 的编程式导航打开新路由
-        this.$router.push({ name: 'testPage' });
+        this.$router.push({ name: 'layout' });
       }
     }
+  /*data(){
+    return {
+      username:"",
+      password:""
+    }
+  },
+  methods:{
+    login(){
+      if(this.username === "admin" && this.password === "123456"){
+        this.$router.push("/layout") 
+      }else{
+        alert("用户名或密码错误")
+      }
+    }
+  }*/
+  
 }
   
 

@@ -104,7 +104,7 @@ export default {
   margin-bottom: 20px;
 }
 
-h2 {
+h3 {
   margin: 0px;
   text-align: left;
 }

@@ -18,7 +18,7 @@
       <el-card style="max-width:2000px" vertical-align="middle">
           <template #header>
        <div class="card-header">
-         <h2>个人信息</h2>
+         <h3>个人信息</h3>
        </div>
       </template>
            <p>用户名: <el-input v-model="userProfile.username" type="text"></el-input></p>
@@ -35,7 +35,7 @@
       <el-card style="max-width:2000px" vertical-align="middle">
           <template #header>
        <div class="card-header">
-         <h2>账户管理</h2>
+         <h3>账户管理</h3>
        </div>
       </template>
       <el-button @click="changePassword">修改密码</el-button>
@@ -47,7 +47,7 @@
       <el-card style="max-width:2000px" vertical-align="middle">
           <template #header>
        <div class="card-header">
-         <h2>用户反馈</h2>
+         <h3>用户反馈</h3>
        </div>
       </template>
       <el-button @click="submitFeedback">意见反馈</el-button>

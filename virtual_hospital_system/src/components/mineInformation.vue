@@ -4,10 +4,11 @@
 
 
 
-
 <div class = "suffix">
-  <img  style="width:30px;height:30px;">
+  <el-card>
+  <img  style="width:50px;height:50px;">
   <p>用户名: {{ userProfile.username }}</p>
+  </el-card>
 </div>
 
   <div class="personal-center">
@@ -54,6 +55,7 @@
      </el-card>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -91,6 +93,7 @@ export default {
     }
   }
 };
+
 </script>
 
 <style scoped>

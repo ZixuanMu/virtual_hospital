@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                   <td class="text">用户id:</td>
-                  <el-input v-model="userProfile.userid">{{userProfile.userid}}</el-input>
+                  <td>{{userProfile.userid}}</td>
                 </tr>
                 <tr>
                   <td class="text">性别:</td>

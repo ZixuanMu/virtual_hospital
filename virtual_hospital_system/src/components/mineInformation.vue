@@ -6,7 +6,9 @@
 
 <div class = "suffix">
   <el-card>
-  <img  style="width:50px;height:50px;">
+    <el-avatar class ="avatar"
+        src="src\assets\logo.png"
+      />
   <p>用户名: {{ userProfile.username }}</p>
   </el-card>
 </div>
@@ -22,12 +24,42 @@
          <h3>个人信息</h3>
        </div>
       </template>
-           <p>用户名: <el-input v-model="userProfile.username" type="text"></el-input></p>
-          <p>用户id: <el-input v-model="userProfile.userid" type="text"></el-input></p>
-          <p>性别: <el-input v-model="userProfile.sex" type="text"></el-input></p>
-          <p>邮箱: <el-input v-model="userProfile.email" type="email"></el-input></p>
+           <p>用户名: {{userProfile.username}}</p>
+          <p>用户id: {{userProfile.userid}}</p>
+          <p>性别: {{userProfile.sex}}</p>
+          <p>邮箱: {{ userProfile.email }} </p>
           <p>手机号码: {{ userProfile.phone }}</p>
-          <el-button @click="updateProfile">保存修改</el-button>
+          <el-button @click="ChangeInfomation">修改信息</el-button>
+
+
+            <el-dialog v-model="InformationVisible" title="Shipping address" width="500">
+             <el-form :model="form">
+                <el-form-item label="Promotion name" :label-width="formLabelWidth">
+                <el-input v-model="form.name" autocomplete="off" />
+               </el-form-item>
+             <el-form-item label="Zones" :label-width="formLabelWidth">
+                <el-select v-model="form.region" placeholder="Please select a zone">
+                <el-option label="Zone No.1" value="shanghai" />
+                <el-option label="Zone No.2" value="beijing" />
+                 </el-select>
+             </el-form-item>
+              </el-form>
+          <template #footer>
+             <div class="dialog-footer">
+              <el-button @click="InformationClose">Cancel</el-button>
+             <el-button type="primary" @click="InformationClose">
+              Confirm
+          
+            </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+
+
+
+
+
      </el-card>
     </div>
 
@@ -40,6 +72,10 @@
        </div>
       </template>
       <el-button @click="changePassword">修改密码</el-button>
+
+
+
+      
      </el-card>
     </div>
 
@@ -59,9 +95,11 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
+      InformationVisible:false,
       userProfile: {
         username: 'JohnDoe',
         email: 'johndoe@example.com',
@@ -72,12 +110,25 @@ export default {
   
         // 其他个人资料信息
       },
-    };
-  },
+      form:{
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+      }
+};
+},
   methods: {
-    updateProfile() {
-      // 在这里发送更新个人资料的请求，示例中只是简单地展示了修改后的信息
-      alert('个人资料已更新');
+
+    ChangeInfomation(){
+      this.InformationVisible = true
+    },
+    InformationClose(){
+      this.InformationClose = false
     },
     changePassword() {
       // 跳转到修改密码页面或者触发修改密码功能

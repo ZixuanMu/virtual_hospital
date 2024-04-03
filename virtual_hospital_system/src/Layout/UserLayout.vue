@@ -2,9 +2,9 @@
 
 <div class="common-layout">
 
-    <el-container>
+    <el-container hight="50px">
 
-      <el-header>虚拟宠物医院学习系统</el-header>
+      <el-header hight="50px">虚拟宠物医院学习系统</el-header>
 
       <el-container>
 
@@ -71,7 +71,5 @@
 
     }
 }
-.el-main{
-      
-    }
+
 </style>

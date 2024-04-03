@@ -32,7 +32,7 @@
     </div>
         </el-aside> 
         <el-main>
-          <el-scrollbar ref="scrollbarRef" height="500px" always @scroll="scroll">
+          <el-scrollbar ref="scrollbarRef" height="600px" always @scroll="scroll">
 
           <div>
           <router-view></router-view>
@@ -68,12 +68,10 @@
     }
     .el-header{
     height:80px;
-    position: relative;
 
     }
-
-   
-
 }
-
+.el-main{
+      
+    }
 </style>

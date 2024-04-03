@@ -1,6 +1,6 @@
 <template>
 3dviews 11111
-<div id="viewer"></div>
+<div id="viewer" style="width: 80%;height: 80%;"></div>
 </template>
 
 <script>
@@ -25,11 +25,11 @@ export default {
         container: document.querySelector('#viewer'),
         panorama: imgurl[imgIndex], // 全景图片地址
         navbar: [
-        'autorotate',
-        'zoom',
-        'move',
-        'caption',
-        'fullscreen'
+        // 'autorotate',
+        // 'zoom',
+        // 'move',
+        // 'caption',
+        // 'fullscreen'
         ],
         // 标记点
         plugins: [

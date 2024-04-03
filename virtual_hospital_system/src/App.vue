@@ -32,11 +32,11 @@ export default {
     const router = useRouter();
     const Userlogin = () => {
       console.log("触发");
-      router.push('/Userlayout');
+      router.push('/UserLayout');
     };
     const Adminlogin = () => {
       console.log("触发");
-      router.push('/Userlayout');
+      router.push('/AdminLayout');
     };
     return {
       Userlogin,

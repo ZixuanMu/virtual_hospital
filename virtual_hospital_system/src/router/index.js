@@ -1,5 +1,5 @@
 import {createRouter,createWebHistory} from 'vue-router';
-import Layout from '@/Layout/myLayout.vue'
+import UserLayout from '@/Layout/UserLayout.vue'
 import Views from '@/components/3dViews.vue'
 import App from '@/App.vue'
 import functionalLearning from '@/components/functionalLearning.vue'
@@ -25,9 +25,9 @@ const routes = [
     component:testPage,
   },
   {
-    path:"/layout",
-    name:"Layout",
-    component: Layout,
+    path:"/Userlayout",
+    name:"UserLayout",
+    component: UserLayout,
     children: [
       {
         path:"/3dviews",

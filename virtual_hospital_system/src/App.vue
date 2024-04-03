@@ -8,7 +8,8 @@
         <label for="password"><i class="el-icon-right" style="color:#c1c1c1"></i></label>
         <input type="password" placeholder="密码" name="password" id="password" autocapitalize="off" v-model.trim="password">
        <div>
-         <el-button type="primary" @click="somethingHappen()">登录</el-button>
+         <el-button type="primary" @click="Userlogin()">用户登录</el-button>
+         <el-button type="primary" @click="Adminlogin()">管理员登录</el-button>
        </div>
       </div>
     </div> 
@@ -29,21 +30,23 @@ export default {
   // 组件逻辑
   setup(){
     const router = useRouter();
-    const somethingHappen = () => {
+    const Userlogin = () => {
       console.log("触发");
-      router.push('/layout');
+      router.push('/Userlayout');
     };
-    onMounted(()=>{
-      console.log("已挂载");
-    });
+    const Adminlogin = () => {
+      console.log("触发");
+      router.push('/Userlayout');
+    };
     return {
-      somethingHappen
+      Userlogin,
+      Adminlogin
     };
   },
   methods: {
       openNewWindow() {
         // 使用 Vue Router 的编程式导航打开新路由
-        this.$router.push({ name: 'layout' });
+        this.$router.push({ name: 'Userlayout' });
       }
     }
   /*data(){

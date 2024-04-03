@@ -6,10 +6,10 @@
 
 <div class = "suffix">
   <el-card>
-    <el-avatar class ="avatar"
-        src="src\assets\logo.png"
+    <el-avatar class ="avatar" :size ="100"
+    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
       />
-  <p>用户名: {{ userProfile.username }}</p>
+  <p> {{ userProfile.username }}</p>
   </el-card>
 </div>
 
@@ -24,26 +24,61 @@
          <h3>个人信息</h3>
        </div>
       </template>
-           <p>用户名: {{userProfile.username}}</p>
-          <p>用户id: {{userProfile.userid}}</p>
-          <p>性别: {{userProfile.sex}}</p>
-          <p>邮箱: {{ userProfile.email }} </p>
-          <p>手机号码: {{ userProfile.phone }}</p>
+
+                <table class="information_text">
+                <tr>
+                  <td class="text">用户名:</td>
+                  <td class="text">{{userProfile.username}}</td>
+                </tr>
+                <tr>
+                  <td class="text">用户id:</td>
+                  <td class="text">{{userProfile.userid}}</td>
+                </tr>
+                <tr>
+                  <td class="text">性别:</td>
+                  <td class="text" v-if="userProfile.sex === 1">男</td>
+                  
+                  <td class="text" v-if="userProfile.sex === 0">女</td>
+
+                </tr>
+                <tr>
+                  <td class="text">邮箱:</td>
+                  <td class="text">{{ userProfile.email }}</td>
+                </tr>
+                <tr>
+                  <td class="text">手机号码: </td>
+                  <td class="text">{{ userProfile.phone }}</td>
+                </tr>
+            </table>
           <el-button @click="ChangeInfomation">修改信息</el-button>
 
 
             <el-dialog v-model="InformationVisible" title="Shipping address" width="500">
-             <el-form :model="form">
-                <el-form-item label="Promotion name" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off" />
-               </el-form-item>
-             <el-form-item label="Zones" :label-width="formLabelWidth">
-                <el-select v-model="form.region" placeholder="Please select a zone">
-                <el-option label="Zone No.1" value="shanghai" />
-                <el-option label="Zone No.2" value="beijing" />
-                 </el-select>
-             </el-form-item>
-              </el-form>
+              <table class="information_change">
+                <tr>
+                  <td class="text">用户名:</td>
+                  <el-input v-model="userProfile.username">{{userProfile.username}}</el-input>
+                </tr>
+                <tr>
+                  <td class="text">用户id:</td>
+                  <el-input v-model="userProfile.userid">{{userProfile.userid}}</el-input>
+                </tr>
+                <tr>
+                  <td class="text">性别:</td>
+                  <el-select v-model="userProfile.sex" placeholder="男">
+                      <el-option  :value =1 label="男">男</el-option>
+                        <el-option  :value =0 label="女">女</el-option>
+                  </el-select>
+                </tr>
+                <tr>
+                  <td class="text">邮箱:</td>
+                  <el-input v-model="userProfile.email">{{userProfile.email}}</el-input>
+                </tr>
+                <tr>
+                  <td class="text">手机号码: </td>
+                  <el-input v-model="userProfile.phone">{{userProfile.phone}}</el-input>
+                </tr>
+            </table>
           <template #footer>
              <div class="dialog-footer">
               <el-button @click="InformationClose">Cancel</el-button>
@@ -101,25 +136,15 @@ export default {
     return {
       InformationVisible:false,
       userProfile: {
-        username: 'JohnDoe',
-        email: 'johndoe@example.com',
+        username: '尹茂椿萱',
+        email: 'yinmao@example.com',
         phone: '+1234567890',
-        sex: '男',
-        suffix: 'sda',
+        sex:1,
+        suffix: 'bg',
         userid: 'ssssss',
   
         // 其他个人资料信息
       },
-      form:{
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
-      }
 };
 },
   methods: {
@@ -164,6 +189,13 @@ h3 {
 }
 p{
   text-align:left;
+}
+.information_text {
+  border-spacing: 15px; /* 设置表格的间距 */
+}
+
+.text {
+  padding: 10px; /* 设置单元格内边距 */
 }
 
 </style>

@@ -6,10 +6,10 @@
 
 <div class = "suffix">
   <el-card>
-    <el-avatar class ="avatar" :size ="100"
-    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-      />
-  <p> {{ userProfile.username }}</p>
+    <div class="putOut">
+        <el-avatar class="avatar" :size="100" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+        <p class="username">{{ userProfile.username }}</p>
+    </div>
   </el-card>
 </div>
 
@@ -173,7 +173,16 @@ export default {
 </script>
 
 <style scoped>
-/* 样式可以根据需求进行调整 */
+
+.putOut {
+  display: flex;
+  align-items: flex-start; 
+  justify-content: flex-start; /* 整体内容居左 */
+}
+
+.avatar {
+  margin-right: 10px; /* 可以调整 avatar 和用户名之间的间距 */
+}
 .personal-center {
   max-width: 2000px;
   margin: 0 auto;
@@ -197,5 +206,8 @@ p{
 .text {
   padding: 10px; /* 设置单元格内边距 */
 }
-
+.username {
+  font-weight: bold; /* 加粗 */
+  font-size: 24px; /* 加大 */
+}
 </style>

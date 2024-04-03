@@ -17,7 +17,10 @@
               病例管理
             </el-menu-item>
             <el-menu-item index="/testManage" @click="navigateTo('/testManage')">
-              职能学习
+              考试管理
+            </el-menu-item>
+            <el-menu-item index="/userManage" @click="navigateTo('/userManage')">
+              用户管理
             </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>
@@ -57,13 +60,11 @@
     <style scoped lang="scss">
     .el-container{
         .el-aside{
-    
         width:230px;
         }
         .el-header{
         height:80px;
         position: relative;
-    
         }
     
        

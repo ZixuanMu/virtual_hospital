@@ -11,7 +11,7 @@ import Roleplaying from '@/components/funlearn/rolePlaying.vue'
 import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
-
+import userManage from '@/components_admin/userManage.vue'
 
 
 const routes = [
@@ -67,6 +67,11 @@ const routes = [
         path:"/testManage",
         name:"testManage",
         component:testManage,
+      },
+      {
+        path:"/userManage",
+        name:"userManage",
+        component:userManage,
       },
     ]
   },

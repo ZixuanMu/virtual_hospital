@@ -13,17 +13,11 @@
         
           <el-menu :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
             <el-scrollbar>
-            <el-menu-item index="/3dviews" @click="navigateTo('/3dviews')">
-              3 D 导览
+            <el-menu-item index="/caseManage" @click="navigateTo('/caseManage')">
+              病例管理
             </el-menu-item>
-            <el-menu-item index="/functionalLearning" @click="navigateTo('/functionalLearning')">
+            <el-menu-item index="/testManage" @click="navigateTo('/testManage')">
               职能学习
-            </el-menu-item>
-            <el-menu-item index="/testUser" @click="navigateTo('/testUser')">
-              测试模块
-            </el-menu-item>
-            <el-menu-item index="/mineInformation" @click="navigateTo('/mineInformation')">
-              个人信息
             </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>

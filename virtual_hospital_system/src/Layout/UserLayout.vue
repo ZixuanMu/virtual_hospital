@@ -2,9 +2,9 @@
 
 <div class="common-layout">
 
-    <el-container>
+    <el-container hight="50px">
 
-      <el-header>虚拟宠物医院学习系统</el-header>
+      <el-header class= "title" hight="50px">虚拟宠物医院学习系统</el-header>
 
       <el-container>
 
@@ -61,17 +61,10 @@
   </script>
 
 <style scoped lang="scss">
-.el-container{
-    .el-aside{
 
-    width:230px;
-    }
-    .el-header{
-    height:80px;
-
-    }
+.title{
+  font-weight: bold; /* 加粗 */
+  font-size: 24px; /* 加大 */
 }
-.el-main{
-      
-    }
+
 </style>

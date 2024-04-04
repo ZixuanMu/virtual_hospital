@@ -7,9 +7,11 @@ import mineInformation from '@/components/mineInformation.vue'
 import testUser from '@/components/testUser.vue'
 import testPage from '@/components/testComponents/testPage.vue'
 import Casestudying from '@/components/funlearn/caseStudying.vue'
-import Roleplaying from '@/components/funlearn/rolePlaying.vue';
-
-
+import Roleplaying from '@/components/funlearn/rolePlaying.vue'
+import AdminLayout from '@/Layout/AdminLayout.vue'
+import caseManage from '@/components_admin/caseManage.vue'
+import testManage from '@/components_admin/testManage.vue'
+import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 
 
 const routes = [
@@ -25,7 +27,7 @@ const routes = [
     component:testPage,
   },
   {
-    path:"/Userlayout",
+    path:"/UserLayout",
     name:"UserLayout",
     component: UserLayout,
     children: [
@@ -52,15 +54,38 @@ const routes = [
     ]
   },
   {
-    path:'/funlearn/caseStudying.vue',
-    name:"casestudying",
-    component: Casestudying,
+    path:"/AdminLayout",
+    name:"AdminLayout",
+    component: AdminLayout,
+    children: [
+      {
+        path:"/caseManage",
+        name:"caseManage",
+        component:caseManage,
+      },
+      {
+        path:"/testManage",
+        name:"testManage",
+        component:testManage,
+      },
+    ]
   },
-  {
-    path:'/funlearn/rolePlaying.vue',
-    name:"roleplaying",
-    component: Roleplaying,
-  }
+      {
+        path:"/mineInformationCo/suggestPage",
+        name:"suggestPage",
+        component: suggestPage,
+      },
+      {
+        path:'/funlearn/caseStudying',
+        name:"casestudying",
+        component: Casestudying,
+      },
+      {
+        path:'/funlearn/rolePlaying',
+        name:"roleplaying",
+        component: Roleplaying,
+      }
+
 ];
 
 const router = createRouter({

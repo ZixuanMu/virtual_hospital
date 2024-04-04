@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                   <td class="text">用户id:</td>
-                  <td class="text">{{userProfile.userid}}</td>
+                  <td class="text">{{userProfile.uid}}</td>
                 </tr>
                 <tr>
                   <td class="text">性别:</td>
@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                   <td class="text">用户id:</td>
-                  <td>{{userProfile.userid}}</td>
+                  <td>{{userProfile.uid}}</td>
                 </tr>
                 <tr>
                   <td class="text">性别:</td>
@@ -109,6 +109,29 @@
       <el-button @click="changePassword">修改密码</el-button>
 
 
+        
+      <el-dialog v-model="passwordChangeVisible" title="Shipping address" width="500">
+              <table class="password_change">
+                <tr>
+                  <td class="text">原密码：</td>
+                  <el-input v-model="userProfile.password"></el-input>
+                </tr>
+                <tr>
+                  <td class="text">修改密码:</td>
+                  <el-input v-model="userProfile.passwordCh"></el-input>
+                </tr>
+            </table>
+          <template #footer>
+             <div class="dialog-footer">
+              <el-button @click="InformationClose">Cancel</el-button>
+             <el-button type="primary" @click="InformationClose">
+              Confirm
+          
+            </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
 
       
      </el-card>
@@ -135,14 +158,16 @@ export default {
   data() {
     return {
       InformationVisible:false,
+      passwordChangeVisible:false,
       userProfile: {
         username: '尹茂椿萱',
         email: 'yinmao@example.com',
         phone: '+1234567890',
         sex:1,
         suffix: 'bg',
-        userid: 'ssssss',
-  
+        uid: 'ssssss',
+        password:'',
+        passwordCh:'',
         // 其他个人资料信息
       },
 };
@@ -156,16 +181,16 @@ export default {
       this.InformationClose = false
     },
     changePassword() {
-      // 跳转到修改密码页面或者触发修改密码功能
+      this.passwordChangeVisible = true
     },
     manageSecurity() {
       // 跳转到安全设置页面或者触发安全设置功能
     },
     submitFeedback() {
-      // 跳转到意见反馈页面或者触发提交反馈功能
+      this.$router.push({ name: 'suggestPage' });
     },
     openHelpCenter() {
-      // 跳转到帮助中心页面
+
     }
   }
 };

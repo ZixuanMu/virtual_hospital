@@ -162,13 +162,14 @@ export default {
       InformationVisible:false,
       passwordChangeVisible:false,
       userProfile: {
-        username: userData.data.username,
-        email: userData.data.email,
-        phone: userData.data.phone,
-        sex: userData.data.sex,
-        uid: userData.data.uid,
-        password: userData.data.password,
-        passwordCh: '' // 初始化为空，可以根据需要赋值
+        username: '尹茂椿萱',
+        email: 'yinmao@example.com',
+        phone: '+1234567890',
+        sex:1,
+        suffix: 'bg',
+        uid: 'ssssss',
+        password:'',
+        passwordCh:'',
         // 其他个人资料信息
       },
 };

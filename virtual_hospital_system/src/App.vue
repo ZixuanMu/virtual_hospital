@@ -29,7 +29,7 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue'; // 引入 Vue 3 中的 ref 函数
 
 export default {
-<<<<<<< HEAD
+
   setup() {
     // 定义登录表单数据
     const loginForm = ref({
@@ -90,19 +90,7 @@ export default {
 
 
     // 返回给组件的数据和方法
-=======
-  // 组件逻辑
-  setup(){
-    const router = useRouter();
-    const Userlogin = () => {
-      console.log("触发");
-      router.push('/UserLayout');
-    };
-    const Adminlogin = () => {
-      console.log("触发");
-      router.push('/AdminLayout');
-    };
->>>>>>> 1fd298e6311e454195d3f074395f12094402cea8
+
     return {
       loginForm,
       Userlogin,

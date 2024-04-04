@@ -4,9 +4,9 @@
       <div id="login-form">
         <h1>登录页面</h1>
         <label for="username"><i class="el-icon-user-solid" style="color: #c1c1c1"></i></label>
-        <input type="text" placeholder="用户名" name="username"  id="username" autocapitalize="off" v-model.trim=username aria-autocomplete="off">
+        <input type="text" placeholder="用户名" name="username"  id="username" autocapitalize="off" v-model.trim=loginForm.username aria-autocomplete="off">
         <label for="password"><i class="el-icon-right" style="color:#c1c1c1"></i></label>
-        <input type="password" placeholder="密码" name="password" id="password" autocapitalize="off" v-model.trim="password">
+        <input type="password" placeholder="密码" name="password" id="password" autocapitalize="off" v-model.trim="loginForm.password">
        <div>
          <el-button type="primary" @click="Userlogin()">用户登录</el-button>
          <el-button type="primary" @click="Adminlogin()">管理员登录</el-button>
@@ -25,47 +25,78 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router'
 import { router } from '@/router/index.js'
+import { ElMessage } from 'element-plus';
+import { ref } from 'vue'; // 引入 Vue 3 中的 ref 函数
 
 export default {
-  // 组件逻辑
-  setup(){
-    const router = useRouter();
-    const Userlogin = () => {
-      console.log("触发");
-      router.push('/Userlayout');
-    };
-    const Adminlogin = () => {
-      console.log("触发");
-      router.push('/Userlayout');
-    };
+  setup() {
+    // 定义登录表单数据
+    const loginForm = ref({
+      username: '',
+      password: ''
+    });
+
+    // 定义用户登录函数
+    const Userlogin = async () => {
+  try {
+    const username = encodeURIComponent(loginForm.value.username); // 编码用户名
+    const password = encodeURIComponent(loginForm.value.password); // 编码密码
+
+    const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('登录失败');
+    }
+
+    const data = await response.json();
+    console.log('用户登录成功', data);
+    router.push('/Layout/UserLayout');
+  } catch (error) {
+    console.error('用户登录失败', error.message);
+    ElMessage.error('密码或用户名错误');
+  }
+};
+
+    // 定义管理员登录函数（如果需要的话）
+    const Adminlogin = async () => {
+  try {
+    const username = encodeURIComponent(loginForm.value.username); // 编码用户名
+    const password = encodeURIComponent(loginForm.value.password); // 编码密码
+
+    const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      throw new Error('登录失败');
+    }
+
+    const data = await response.json();
+    console.log('用户登录成功', data);
+    router.push('/Layout/AdminLayout');
+  } catch (error) {
+    console.error('用户登录失败', error.message);
+    ElMessage.error('密码或用户名错误');
+  }
+};
+
+
+    // 返回给组件的数据和方法
     return {
+      loginForm,
       Userlogin,
       Adminlogin
     };
-  },
-  methods: {
-      openNewWindow() {
-        // 使用 Vue Router 的编程式导航打开新路由
-        this.$router.push({ name: 'Userlayout' });
-      }
-    }
-  /*data(){
-    return {
-      username:"",
-      password:""
-    }
-  },
-  methods:{
-    login(){
-      if(this.username === "admin" && this.password === "123456"){
-        this.$router.push("/layout") 
-      }else{
-        alert("用户名或密码错误")
-      }
-    }
-  }*/
-  
-}
+  }
+};
+
   
 </script>
 

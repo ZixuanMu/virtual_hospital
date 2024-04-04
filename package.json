@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ZixuanMu/virtual_hospital/issues"
   },
-  "homepage": "https://github.com/ZixuanMu/virtual_hospital#readme"
+  "homepage": "https://github.com/ZixuanMu/virtual_hospital#readme",
+  "dependencies": {
+    "pinia": "^2.1.7"
+  }
 }

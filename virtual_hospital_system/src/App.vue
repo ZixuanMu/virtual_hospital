@@ -22,74 +22,91 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router'
-import { router } from '@/router/index.js'
-import { ElMessage } from 'element-plus';
-import { ref } from 'vue'; // 引入 Vue 3 中的 ref 函数
+import { ref } from 'vue';
+import { ElMessage, ElPopperArrow } from 'element-plus';
+import { useRouter } from 'vue-router';
+
 
 export default {
 
+ 
+
+
   setup() {
-    // 定义登录表单数据
     const loginForm = ref({
       username: '',
       password: ''
     });
 
-    // 定义用户登录函数
+    const router = useRouter();
+
     const Userlogin = async () => {
-  try {
-    const username = encodeURIComponent(loginForm.value.username); // 编码用户名
-    const password = encodeURIComponent(loginForm.value.password); // 编码密码
+      try {
+        const username = encodeURIComponent(loginForm.value.username);
+        const password = encodeURIComponent(loginForm.value.password);
 
-    const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
+        const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('未授权：请提供有效凭据');
+          } else if (response.status === 403) {
+            throw new Error('禁止：您没有权限访问');
+          } else {
+            throw new Error('错误：' + response.status);
+          }
+        }
+
+        const jsonData = await response.json();
+        console.log('用户登录成功', jsonData);
+        if(jsonData.data.ismanager === 1){
+          throw new Error('您是管理员，请至管理员登录');
+        }
+        router.push({ name: 'UserLayout' }); // 登录成功后跳转到测试页面
+      } catch (error) {
+        console.error('用户登录失败', error.message);
+        ElMessage.error('登录失败：' + error.message);
       }
-    });
-
-    if (!response.ok) {
-      throw new Error('登录失败');
-    }
-
-    const data = await response.json();
-    console.log('用户登录成功', data);
-    router.push('/Layout/UserLayout');
-  } catch (error) {
-    console.error('用户登录失败', error.message);
-    ElMessage.error('密码或用户名错误');
-  }
-};
-
-    // 定义管理员登录函数（如果需要的话）
+    };
+    
     const Adminlogin = async () => {
-  try {
-    const username = encodeURIComponent(loginForm.value.username); // 编码用户名
-    const password = encodeURIComponent(loginForm.value.password); // 编码密码
+      try {
+        const username = encodeURIComponent(loginForm.value.username);
+        const password = encodeURIComponent(loginForm.value.password);
 
-    const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
+        const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('未授权：请提供有效凭据');
+          } else if (response.status === 403) {
+            throw new Error('禁止：您没有权限访问');
+          } else {
+            throw new Error('错误：' + response.status);
+          }
+        }
+
+        const jsonData = await response.json();
+        console.log('用户登录成功', jsonData);
+        if(jsonData.data.ismanager === 0){
+          throw new Error("非管理员，无法访问！")
+        }
+        router.push({ name: 'AdminLayout' }); // 登录成功后跳转到测试页面
+      } catch (error) {
+        console.error('用户登录失败', error.message);
+        ElMessage.error('登录失败：' + error.message);
       }
-    });
-    if (!response.ok) {
-      throw new Error('登录失败');
-    }
-
-    const data = await response.json();
-    console.log('用户登录成功', data);
-    router.push('/Layout/AdminLayout');
-  } catch (error) {
-    console.error('用户登录失败', error.message);
-    ElMessage.error('密码或用户名错误');
-  }
-};
-
-
-    // 返回给组件的数据和方法
+    };
 
     return {
       loginForm,

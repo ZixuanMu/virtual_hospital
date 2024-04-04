@@ -153,48 +153,83 @@
 </template>
 
 <script>
-
+import { ref } from 'vue';
+import { ElMessage } from 'element-plus';
 export default {
+
   data() {
     return {
       InformationVisible:false,
       passwordChangeVisible:false,
       userProfile: {
-        username: '尹茂椿萱',
-        email: 'yinmao@example.com',
-        phone: '+1234567890',
-        sex:1,
-        suffix: 'bg',
-        uid: 'ssssss',
-        password:'',
-        passwordCh:'',
+        username: userData.data.username,
+        email: userData.data.email,
+        phone: userData.data.phone,
+        sex: userData.data.sex,
+        uid: userData.data.uid,
+        password: userData.data.password,
+        passwordCh: '' // 初始化为空，可以根据需要赋值
         // 其他个人资料信息
       },
 };
 },
   methods: {
+    methods: {
+    // 获取用户数据
+    async fetchUserData() {
+      try {
+        // 发送请求获取用户数据
+        const response = await fetch('http://106.54.206.14:8080/users/get_user');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const userData = await response.json();
+        // 将获取到的用户数据赋值给 userProfile 对象
+        this.userProfile = userData.data;
+      } catch (error) {
+        console.error(error);
+        ElMessage.error('获取用户数据失败：' + error.message);
+      }
+    },
+    // 修改个人信息
+    ChangeInfomation() {
+      this.InformationVisible = true;
+    },
+    // 关闭修改个人信息对话框
+    InformationClose() {
+      this.InformationVisible = false;
+    },
+    // 保存个人信息
+    async saveInformation() {
+      try {
+        // 发送请求保存修改后的个人信息
+        const response = await fetch('API_URL_HERE', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.userProfile)
+        });
+        if (!response.ok) {
+          throw new Error('Failed to save user information');
+        }
+        ElMessage.success('个人信息修改成功');
+        // 关闭修改个人信息对话框
+        this.InformationVisible = false;
+      } catch (error) {
+        console.error(error);
+        ElMessage.error('保存个人信息失败：' + error.message);
+      }
 
-    ChangeInfomation(){
-      this.InformationVisible = true
     },
-    InformationClose(){
-      this.InformationClose = false
-    },
-    changePassword() {
-      this.passwordChangeVisible = true
-    },
-    manageSecurity() {
-      // 跳转到安全设置页面或者触发安全设置功能
-    },
-    submitFeedback() {
-      this.$router.push({ name: 'suggestPage' });
-    },
-    openHelpCenter() {
-
-    }
+    // 其他方法...
+  },
+  mounted() {
+    // 在组件挂载时获取用户数据
+    this.fetchUserData();
   }
+}
 };
-
 </script>
 
 <style scoped>

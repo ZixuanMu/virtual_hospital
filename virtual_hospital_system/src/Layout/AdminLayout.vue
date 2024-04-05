@@ -17,7 +17,10 @@
               病例管理
             </el-menu-item>
             <el-menu-item index="/testManage" @click="navigateTo('/testManage')">
-              职能学习
+              考试管理
+            </el-menu-item>
+             <el-menu-item index="/topicManage" @click="navigateTo('/topicManage')">
+              题库管理
             </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>

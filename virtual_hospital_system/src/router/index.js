@@ -12,6 +12,7 @@ import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
+import topicManage from '@/components_admin/topicManage.vue';
 
 
 const routes = [
@@ -68,6 +69,12 @@ const routes = [
         name:"testManage",
         component:testManage,
       },
+      {
+        path:"/topicManage",
+        name:"topicManage",
+        component:topicManage,
+
+      },
     ]
   },
       {
@@ -96,9 +103,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem("token")
   if (token || to.path === "/"){
-    next('/')
-  } else {
     next()
+  } else {
+    next('/')
   }
 })
 

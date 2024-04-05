@@ -41,41 +41,53 @@ export default {
     const router = useRouter();
 
     const Userlogin = async () => {
-      try {
-        const username = encodeURIComponent(loginForm.value.username);
-        const password = encodeURIComponent(loginForm.value.password);
+  try {
+    const username = encodeURIComponent(loginForm.value.username);
+    const password = encodeURIComponent(loginForm.value.password);
 
-        const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
-          method: 'get',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error('未授权：请提供有效凭据');
-          } else if (response.status === 403) {
-            throw new Error('禁止：您没有权限访问');
-          } else {
-            throw new Error('错误：' + response.status);
-          }
-        }
-
-        const jsonData = await response.json();
-        console.log('用户登录成功', jsonData);
-        if(jsonData.data.ismanager === 1){
-          throw new Error('您是管理员，请至管理员登录');
-        }
-        const token = jsonData.token; // 假设服务器响应中包含令牌
-localStorage.setItem('token', token); // 将令牌存储在本地存储中
-        router.push({ name: 'UserLayout' }); // 登录成功后跳转到测试页面
-      } catch (error) {
-        console.error('用户登录失败', error.message);
-        ElMessage.error('登录失败：' + error.message);
+    const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json'
       }
-    };
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('未授权：请提供有效凭据');
+      } else if (response.status === 403) {
+        throw new Error('禁止：您没有权限访问');
+      } else {
+        throw new Error('错误：' + response.status);
+      }
+    }
+
+    // 从响应的 Headers 中获取 satoken
+    const setCookieHeader = response.headers['set-cookie'];
+    const tokenMatch = setCookieHeader.match(/satoken=([^;]*)/);
+    const satoken = tokenMatch && tokenMatch[1]; // 提取出 satoken
+
+    if (!satoken) {
+      throw new Error('未获取到 satoken');
+    }
+
+    // 将 satoken 存储在本地存储中
+    localStorage.setItem('satoken', satoken);
+
+    const jsonData = await response.json();
+    console.log('用户登录成功', jsonData);
+    if (jsonData.data.ismanager === 1) {
+      throw new Error('您是管理员，请至管理员登录');
+    }
     
+    router.push({ name: 'UserLayout' }); // 登录成功后跳转到测试页面
+  } catch (error) {
+    console.error('用户登录失败', error.message);
+    ElMessage.error('登录失败：' + error.message);
+  }
+};
+
+
     const Adminlogin = async () => {
       try {
         const username = encodeURIComponent(loginForm.value.username);

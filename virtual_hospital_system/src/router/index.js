@@ -92,5 +92,14 @@ const router = createRouter({
   history:createWebHistory(),
   routes,
 });
+//路由守卫
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem("token")
+  if (token || to.path === "/"){
+    next('/')
+  } else {
+    next()
+  }
+})
 
 export default router;

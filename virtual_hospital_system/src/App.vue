@@ -67,6 +67,8 @@ export default {
         if(jsonData.data.ismanager === 1){
           throw new Error('您是管理员，请至管理员登录');
         }
+        const token = jsonData.token; // 假设服务器响应中包含令牌
+localStorage.setItem('token', token); // 将令牌存储在本地存储中
         router.push({ name: 'UserLayout' }); // 登录成功后跳转到测试页面
       } catch (error) {
         console.error('用户登录失败', error.message);
@@ -101,6 +103,8 @@ export default {
         if(jsonData.data.ismanager === 0){
           throw new Error("非管理员，无法访问！")
         }
+        const token = jsonData.token; // 假设服务器响应中包含令牌
+localStorage.setItem('token', token); // 将令牌存储在本地存储中
         router.push({ name: 'AdminLayout' }); // 登录成功后跳转到测试页面
       } catch (error) {
         console.error('用户登录失败', error.message);
@@ -108,12 +112,16 @@ export default {
       }
     };
 
+
+    
+
     return {
       loginForm,
       Userlogin,
       Adminlogin
     };
   }
+
 };
 
   

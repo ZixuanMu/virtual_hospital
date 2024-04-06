@@ -11,7 +11,7 @@ import Roleplaying from '@/components/funlearn/rolePlaying.vue'
 import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
-import userManage from '@/components_admin/userManage.vue'
+import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 
 
 const routes = [
@@ -75,16 +75,22 @@ const routes = [
       },
     ]
   },
-  {
-    path:'/funlearn/caseStudying.vue',
-    name:"casestudying",
-    component: Casestudying,
-  },
-  {
-    path:'/funlearn/rolePlaying.vue',
-    name:"roleplaying",
-    component: Roleplaying,
-  }
+      {
+        path:"/mineInformationCo/suggestPage",
+        name:"suggestPage",
+        component: suggestPage,
+      },
+      {
+        path:'/funlearn/caseStudying',
+        name:"casestudying",
+        component: Casestudying,
+      },
+      {
+        path:'/funlearn/rolePlaying',
+        name:"roleplaying",
+        component: Roleplaying,
+      }
+
 ];
 
 const router = createRouter({

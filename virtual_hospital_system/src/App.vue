@@ -4,9 +4,9 @@
       <div id="login-form">
         <h1>登录页面</h1>
         <label for="username"><i class="el-icon-user-solid" style="color: #c1c1c1"></i></label>
-        <input type="text" placeholder="用户名" name="username"  id="username" autocapitalize="off" v-model.trim=username aria-autocomplete="off">
+        <input type="text" placeholder="用户名" name="username"  id="username" autocapitalize="off" v-model.trim=loginForm.username aria-autocomplete="off">
         <label for="password"><i class="el-icon-right" style="color:#c1c1c1"></i></label>
-        <input type="password" placeholder="密码" name="password" id="password" autocapitalize="off" v-model.trim="password">
+        <input type="password" placeholder="密码" name="password" id="password" autocapitalize="off" v-model.trim="loginForm.password">
        <div>
          <el-button type="primary" @click="Userlogin()">用户登录</el-button>
          <el-button type="primary" @click="Adminlogin()">管理员登录</el-button>
@@ -22,50 +22,100 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router'
-import { router } from '@/router/index.js'
+import { ref } from 'vue';
+import { ElMessage, ElPopperArrow } from 'element-plus';
+import { useRouter } from 'vue-router';
+
 
 export default {
-  // 组件逻辑
-  setup(){
+
+ 
+
+
+  setup() {
+    const loginForm = ref({
+      username: '',
+      password: ''
+    });
+
     const router = useRouter();
-    const Userlogin = () => {
-      console.log("触发");
-      router.push('/UserLayout');
+
+    const Userlogin = async () => {
+      try {
+        const username = encodeURIComponent(loginForm.value.username);
+        const password = encodeURIComponent(loginForm.value.password);
+
+        const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('未授权：请提供有效凭据');
+          } else if (response.status === 403) {
+            throw new Error('禁止：您没有权限访问');
+          } else {
+            throw new Error('错误：' + response.status);
+          }
+        }
+
+        const jsonData = await response.json();
+        console.log('用户登录成功', jsonData);
+        if(jsonData.data.ismanager === 1){
+          throw new Error('您是管理员，请至管理员登录');
+        }
+        router.push({ name: 'UserLayout' }); // 登录成功后跳转到测试页面
+      } catch (error) {
+        console.error('用户登录失败', error.message);
+        ElMessage.error('登录失败：' + error.message);
+      }
     };
-    const Adminlogin = () => {
-      console.log("触发");
-      router.push('/AdminLayout');
+    
+    const Adminlogin = async () => {
+      try {
+        const username = encodeURIComponent(loginForm.value.username);
+        const password = encodeURIComponent(loginForm.value.password);
+
+        const response = await fetch(`http://106.54.206.14:8080/users/login?username=${username}&password=${password}`, {
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('未授权：请提供有效凭据');
+          } else if (response.status === 403) {
+            throw new Error('禁止：您没有权限访问');
+          } else {
+            throw new Error('错误：' + response.status);
+          }
+        }
+
+        const jsonData = await response.json();
+        console.log('用户登录成功', jsonData);
+        if(jsonData.data.ismanager === 0){
+          throw new Error("非管理员，无法访问！")
+        }
+        router.push({ name: 'AdminLayout' }); // 登录成功后跳转到测试页面
+      } catch (error) {
+        console.error('用户登录失败', error.message);
+        ElMessage.error('登录失败：' + error.message);
+      }
     };
+
     return {
+      loginForm,
       Userlogin,
       Adminlogin
     };
-  },
-  methods: {
-      openNewWindow() {
-        // 使用 Vue Router 的编程式导航打开新路由
-        this.$router.push({ name: 'Userlayout' });
-      }
-    }
-  /*data(){
-    return {
-      username:"",
-      password:""
-    }
-  },
-  methods:{
-    login(){
-      if(this.username === "admin" && this.password === "123456"){
-        this.$router.push("/layout") 
-      }else{
-        alert("用户名或密码错误")
-      }
-    }
-  }*/
-  
-}
+  }
+};
+
   
 </script>
 

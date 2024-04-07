@@ -62,7 +62,7 @@ const ul = (data) => {
             store.commit('setUserInfo', toStore)
             sessionStorage.setItem("login", JSON.stringify(toStore))
             router.push({
-                path: '/userLayout'
+                path: '/UserLayout'
             })
         }
 
@@ -93,7 +93,7 @@ const ml = (data) => {
             store.commit('setUserInfo', toStore)
             sessionStorage.setItem("login", JSON.stringify(toStore))
             router.push({
-                path: '/managerLayout'
+                path: '/AdminLayout'
             })
         }
 

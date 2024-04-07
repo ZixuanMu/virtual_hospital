@@ -9,7 +9,24 @@ export const login = data => {
     data
   })
 }
-
+export const fetchUserData = data => {
+  return get({
+    url: '/users/get_user',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data
+  });
+};
+export const changeUserInformation = (userData) => {
+  return post({
+    url: '/users/change_information',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: userData
+  });
+};
 export const get_all_cases = data => {
   return get ({
     url: '/cases/get_all_cases',

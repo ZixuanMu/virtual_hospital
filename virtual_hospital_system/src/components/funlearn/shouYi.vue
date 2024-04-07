@@ -1,105 +1,82 @@
 <template>
-    <div class="directory">
-      <h1>兽医</h1>
-      <ul class="chapter-list">
-        <li>
-          <div class="dropdown">
-            <span @click="toggleChapter(1)" class="dropdown-toggle">{{ showChapter === 1 ? '▼' : '▶' }}</span>
-            <h2 class="dropdown-title" @click="toggleChapter(1)">第一部分</h2>
-          </div>
-          <ul v-show="showChapter === 1" class="video-list">
-            <li><a href="#">视频1</a></li>
-            <li><a href="#">视频2</a></li>
-          </ul>
-        </li>
-        <li>
-          <div class="dropdown">
-            <span @click="toggleChapter(2)" class="dropdown-toggle">{{ showChapter === 2 ? '▼' : '▶' }}</span>
-            <h2 class="dropdown-title" @click="toggleChapter(2)">第二部分</h2>
-          </div>
-          <ul v-show="showChapter === 2" class="video-list">
-            <li><a href="#">视频1</a></li>
-            <li><a href="#">视频2</a></li>
-          </ul>
-        </li>
-      </ul>
+  <div class="video-list">
+    <div class="video-item" v-for="(video, index) in videos" :key="index" @click="openVideoPage(video)">
+      <div class="video-container">
+        <img :src="video.thumbnailUrl" alt="视频预览图" class="thumbnail">
+        <p class="description">{{ video.description }}</p>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      showChapter: 0 // 0表示都不展开，1表示第一章展开，2表示第二章展开
+      videos: [
+        {
+          thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
+          description: "手术无菌要求",
+          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+        },
+        {
+          thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
+          description: "常规手术、特殊手等的操作规范",
+          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+        },
+      ],
+      mounted() {
+    // 遍历 videos 数组
+     this.videos.forEach(async (video) => {
+     // 调用 getVideoUrl 方法获取视频 URL
+     const videoUrl = await getVideoUrl(video.description);
+     // 将获取到的视频 URL 赋值给 video 对象的 videoUrl 属性
+     if (videoUrl) {
+      video.videoUrl = videoUrl;
+    } else {
+      // 如果获取失败，可以进行一些错误处理，比如给出提示信息
+      console.error('获取视频 URL 失败:', video.description);
+    }
+  });
+}
     };
   },
   methods: {
-    toggleChapter(chapter) {
-      this.showChapter = this.showChapter === chapter ? 0 : chapter;
+    openVideoPage(video) {
+      // 打开新的页面播放视频，同时传递视频的 URL
+      window.open(`/video-page?videoUrl=${encodeURIComponent(video.videoUrl)}`);
     }
   }
 }
 </script>
 
-<style>
-
-.directory {
-  background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.directory h2 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.chapter-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.chapter-list > li {
-  margin-bottom: 20px;
-}
-
-.dropdown {
-  display: flex;
-  align-items: center;
-}
-
-.dropdown-toggle {
-  font-size: 20px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.dropdown-title {
-  font-size: 20px;
-  color: #666;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
+<style scoped>
 .video-list {
-  list-style-type: none;
-  padding: 0;
-  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.video-list > li {
-  margin-bottom: 5px;
+.video-item {
+  margin-bottom: 10px;
 }
 
-.video-list a {
-  font-size: 16px;
-  color: #333;
-  text-decoration: none;
+.video-container {
+  display: flex;
+  border: 1px solid #ddd; /* 添加边框 */
+  border-radius: 5px; /* 圆角边框 */
+  overflow: hidden; /* 隐藏超出部分 */
 }
 
-.video-list a:hover {
-  text-decoration: underline;
+.thumbnail {
+  width: 100px;
+  height: 70px;
+  object-fit: cover; /* 保持图片比例并填充容器 */
+}
+
+.description {
+  flex-grow: 1; /* 填充剩余空间 */
+  padding: 5px; /* 添加内边距 */
+  font-size: 14px;
+  color: #666;
 }
 </style>

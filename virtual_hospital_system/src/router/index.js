@@ -16,6 +16,8 @@ import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
 import topicManage from '@/components_admin/topicManage.vue';
+import store from '@/store';
+
 const routes = [
 
   {
@@ -114,10 +116,10 @@ const router = createRouter({
   history:createWebHistory(),
   routes,
 });
+
 //路由守卫
 router.beforeEach((to, from, next) => {
-  let token = localStorage.getItem("token")
-  if (token || to.path === "/"){
+  if (store.state.userInfo || to.path === "/"){
     next()
   } else {
     next('/')

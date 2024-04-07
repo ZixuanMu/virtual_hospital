@@ -125,7 +125,7 @@
       addQuestion() {
   // Prepare data for the request
   const requestData = {
-    content: this.newQuestion.content,
+    content: this.newQuestion.question,
     contenta: this.newQuestion.optionA,
     contentb: this.newQuestion.optionB,
     contentc: this.newQuestion.optionC,

@@ -138,6 +138,12 @@ service.interceptors.response.use(response => {
 //  拦截请求，载入加载动画
 service2.interceptors.request.use(config => {
     return config
+    // ,
+    // error => {
+    //     请求错误处理
+    //     console.log('Request Error:', error);
+    //     return Promise.reject(error);
+    //     }
 
 })
 

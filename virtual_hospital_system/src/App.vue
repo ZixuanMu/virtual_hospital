@@ -53,9 +53,9 @@ export default {
     });
 
     if (!response.ok) {
-      if (response.status === 401) {
+      if (response.state === 401) {
         throw new Error('未授权：请提供有效凭据');
-      } else if (response.status === 403) {
+      } else if (response.state === 403) {
         throw new Error('禁止：您没有权限访问');
       } else {
         throw new Error('错误：' + response.status);
@@ -99,11 +99,11 @@ export default {
             'Content-Type': 'application/json'
           }
         });
-
+          console.log(response)
         if (!response.ok) {
-          if (response.status === 401) {
+          if (response.state === 401) {
             throw new Error('未授权：请提供有效凭据');
-          } else if (response.status === 403) {
+          } else if (response.state === 403) {
             throw new Error('禁止：您没有权限访问');
           } else {
             throw new Error('错误：' + response.status);

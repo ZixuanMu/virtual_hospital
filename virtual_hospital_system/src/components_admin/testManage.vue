@@ -117,9 +117,7 @@ export default {
  
     }
   },
-  mounted(){
-  showAddExamDialog()
-}
+
 };
 
 </script>

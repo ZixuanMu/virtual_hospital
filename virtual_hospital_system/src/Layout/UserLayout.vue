@@ -11,7 +11,7 @@
 
       <el-container>
 
-        <el-aside width="200px">
+        <el-aside  style="min-height: 625px;width:150px;">
        <div>
     
       <el-menu active-text-color="#409Eff"

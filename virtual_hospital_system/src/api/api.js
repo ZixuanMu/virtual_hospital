@@ -28,3 +28,12 @@ export const changeUserInformation = (userData) => {
   });
 };
 
+export const getVideoUrl = data => {
+  return get ({
+    url: '/duty/getDutyByName',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}

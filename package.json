@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ZixuanMu/virtual_hospital#readme",
   "dependencies": {
-    "pinia": "^2.1.7"
+    "pinia": "^2.1.7",
+    "sass": "^1.74.1"
   }
 }

@@ -82,8 +82,8 @@
           <template #footer>
              <div class="dialog-footer">
               <el-button @click="InformationClose">Cancel</el-button>
-             <el-button type="primary" @click="InformationClose">
-              Confirm
+             <el-button type="primary" @click="saveInformation">
+              保存修改
           
             </el-button>
       </div>
@@ -156,6 +156,7 @@
 // api.js
 import { fetchUserData } from '@/api/api.js';
 import { ElMessage } from 'element-plus';
+import { changeUserInformation } from '@/api/api.js';
 
 const fetchUserData4 = async (userProfile) => {
   try {
@@ -190,51 +191,62 @@ export default {
         uid: '',
         password: '',
         passwordCh: ''
-      }
+
+      },
+      // 修改后的用户个人信息数据
+      updatedUserProfile: {
+        username: '',
+        email: '',
+        phone: '',
+        sex: ''
+      },
     };
   },
   methods: {
     async fetchData() {
       await fetchUserData4(this.userProfile);
     },
-    // 修改个人信息
+    // 关闭修改信息对话框
+    closeInformationDialog() {
+      this.InformationVisible = false;
+    },
     ChangeInfomation() {
+      this.updatedUserProfile = { ...this.userProfile };
       this.InformationVisible = true;
+
     },
     // 关闭修改个人信息对话框
     InformationClose() {
+      
       this.InformationVisible = false;
     },
     // 保存个人信息
-    async saveInformation() {
-      try {
-        // 发送请求保存修改后的个人信息
-        const response = await fetch('API_URL_HERE', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.userProfile)
-        });
-        if (!response.ok) {
-          throw new Error('Failed to save user information');
-        }
-        ElMessage.success('个人信息修改成功');
-        // 关闭修改个人信息对话框
-        this.InformationVisible = false;
-      } catch (error) {
-        console.error(error);
-        ElMessage.error('保存个人信息失败：' + error.message);
-      }
-    },
-    // 其他方法...
-  },
+    saveInformation() {
+      changeUserInformation({
+        username: this.updatedUserProfile.username,
+        email:this.updatedUserProfile.email,
+        phone: this.updatedUserProfile.phone,
+        sex:this.updatedUserProfile.sex
+    }).then(res => {
+        console.log("res:",res)
+        if (response.state === 0) {
+          ElMessage.success('个人信息修改成功');
+          // 更新页面显示的用户个人信息数据
+          this.userProfile = { ...this.updatedUserProfile };
+          // 关闭修改信息对话框
+          this.informationVisible = false;}
 
+    }).catch(error=>{
+      console.error('保存个人信息失败：', error);
+        ElMessage.error('保存个人信息失败：' + error.message);
+
+        });
+    },
   mounted() {
     this.fetchData();
   },
-};
-
+}
+}
 </script>
 
 <style scoped>

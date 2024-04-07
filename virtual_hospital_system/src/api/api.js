@@ -18,5 +18,13 @@ export const fetchUserData = data => {
     data
   });
 };
-
+export const changeUserInformation = (userData) => {
+  return post({
+    url: '/users/change_information',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: userData
+  });
+};
 

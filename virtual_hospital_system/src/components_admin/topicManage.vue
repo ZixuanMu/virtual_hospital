@@ -35,6 +35,9 @@
           <el-form-item label="选项D" prop="optionD">
             <el-input v-model="newQuestion.optionD"></el-input>
           </el-form-item>
+          <el-form-item label="答案" prop="answer">
+            <el-input v-model="newQuestion.answer"></el-input>
+          </el-form-item>
         </el-form>
         <div  class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
@@ -98,6 +101,9 @@
           ],
           optionD: [
             { required: true, message: '请输入选项D', trigger: 'blur' }
+          ],
+          answer:[
+            {required: true, mess :'请输入答案',trigger:'blur'}
           ]
         }
       };
@@ -111,21 +117,82 @@
       }
     },
     methods: {
+     
       showAddDialog() {
         // 显示添加题目对话框
         this.dialogVisible = true;
       },
       addQuestion() {
-        // 添加题目到题目列表
-        this.questions.push({ id: this.questions.length + 1, ...this.newQuestion });
-        this.dialogVisible = false;
-        // 清空添加题目表单
-        this.$refs.newQuestionForm.resetFields();
-      },
-      deleteQuestion(id) {
-        // 根据ID删除题目
-        this.questions = this.questions.filter(question => question.id !== id);
-      },
+  // Prepare data for the request
+  const requestData = {
+    content: this.newQuestion.content,
+    contenta: this.newQuestion.optionA,
+    contentb: this.newQuestion.optionB,
+    contentc: this.newQuestion.optionC,
+    contentd: this.newQuestion.optionD,
+    answer: this.newQuestion.answer
+  };
+
+  // Make the API request to add a new question
+  fetch('http://106.54.206.14:8080/topics/addTopic', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }else if(response.status ===500){
+      throw new Error('报错码：500')
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Handle success response
+    console.log(data); // Assuming you want to log the response
+    this.dialogVisible = false; // Close dialog on success
+    // Clear the form fields
+    this.newQuestion = {
+      content: '',
+      optionA: '',
+      optionB: '',
+      optionC: '',
+      optionD: '',
+      answer: ''
+    };
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error adding question:', error);
+    // You might want to add some error handling logic here
+  });
+},
+
+deleteQuestion(id) {
+  // Make the API request to delete the question
+  fetch(`/topics/deleteTopic/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
+    },
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to delete question');
+    }
+    // Remove the question from the local list if the request is successful
+    this.questions = this.questions.filter(question => question.id !== id);
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error deleting question:', error);
+    // You might want to add some error handling logic here
+  });
+},
+
       editQuestion(question) {
         // 打开编辑题目对话框并填充编辑内容
         this.editedQuestion = { ...question };

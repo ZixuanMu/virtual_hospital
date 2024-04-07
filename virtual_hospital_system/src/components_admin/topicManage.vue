@@ -83,7 +83,8 @@
           optionA: '', 
           optionB: '', 
           optionC: '', 
-          optionD: '' 
+          optionD: '' ,
+          answer:'',
         }, // 新增题目
         editedQuestion: { id: '', question: '', options: '' }, // 编辑的题目
         rules: { // 表单验证规则
@@ -132,7 +133,7 @@
     contentd: this.newQuestion.optionD,
     answer: this.newQuestion.answer
   };
-
+  console.log(requestData);
   // Make the API request to add a new question
   fetch('http://106.54.206.14:8080/topics/addTopic', {
     method: 'POST',

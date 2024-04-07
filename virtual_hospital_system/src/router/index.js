@@ -15,7 +15,6 @@ import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
-import topicManage from '@/components_admin/topicManage.vue';
 import store from '@/store';
 
 const routes = [
@@ -96,11 +95,6 @@ const routes = [
         path:"/testManage",
         name:"testManage",
         component:testManage,
-      },
-      {
-        path:"/topicManage",
-        name:"topicManage",
-        component:topicManage,
       },
     ]
   },

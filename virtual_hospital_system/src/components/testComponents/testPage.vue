@@ -1,17 +1,12 @@
 <template>
 
 
-    
-  
-
-
-
   <div class="page">
     <el-row class="test-paper">
     <el-container>
       <el-aside width="300px">
 
-        <el-card  shadow="hover">
+        <el-card  shadow="hover" style="min-height: 650px">
           <h4>序号：</h4>
           <div class="all-serial-number">
             <el-button
@@ -32,8 +27,8 @@
           </div>
         </el-card>
       </el-aside>
-      <el-main width="800px">        <!-- 右侧题目 -->
-        <el-card style="min-height: 800px">
+      <el-main >       
+        <el-card style="min-height: 650px">
           <div
             @click="getChenge"
             v-for="(shiTi, index) in examDetails"
@@ -80,13 +75,6 @@
           </div>
         </el-card></el-main>
     </el-container>
-
-
-
-    
-        <!-- 左侧序号 -->
-      
-
     </el-row>
   </div>
 </template>
@@ -269,8 +257,8 @@ export default {
 }
 .test-paper {
   width: 100%;
-  min-width: 1100px;
-  min-height: 800px;
+
+  min-height: 650px;
 }
 ::v-deep .el-card__body {
   padding: 10px;
@@ -280,7 +268,6 @@ export default {
 .answer-sheet {
   display: inline-block;
   margin-right: 10px;
-  width: 330px;
 }
 .test-questions {
   display: inline-block;
@@ -339,6 +326,9 @@ export default {
 .yi-zuo-da {
   color: #fff;
   background: dodgerblue;
+}
+.el-aside {
+background-color: #ffffff;
 }
 </style>
 

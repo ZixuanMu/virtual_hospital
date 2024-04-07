@@ -4,14 +4,22 @@
     
         <el-container>
     
-          <el-header>虚拟宠物医院学习系统</el-header>
+          <el-header>
+            
+      <div>
+        <img src="../assets/医院.png" alt="" />
+        <span>虚拟宠物医院学习系统</span>
+      </div>
+          </el-header>
     
           <el-container>
     
             <el-aside width="200px">
            <div>
         
-          <el-menu :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
+          <el-menu  active-text-color="#409Eff"
+        background-color="#545c64"
+        text-color="#fff" unique-opened :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
             <el-scrollbar>
             <el-menu-item index="/caseManage" @click="navigateTo('/caseManage')">
               病例管理
@@ -57,18 +65,39 @@
       }
       </script>
     
-    <style scoped lang="scss">
-    .el-container{
-        .el-aside{
-        width:230px;
-        }
-        .el-header{
-        height:80px;
-        position: relative;
-        }
-    
-       
-    
-    }
-    
+    <style>
+   .el-header {
+  background-color: #363d40;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+}
+
+.el-header > div {
+  display: flex;
+  align-items: center;
+}
+
+.el-header > div > span {
+  margin-left: 15px;
+}
+
+.el-aside {
+  background-color: #313743;
+}
+
+.el-aside .el-menu {
+  border-right: none;
+}
+
+.el-main {
+  background-color: #e9edf1;
+}
+
+.iconfont {
+  margin-right: 10px;
+}
     </style>

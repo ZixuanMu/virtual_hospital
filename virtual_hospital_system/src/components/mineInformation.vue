@@ -1,23 +1,21 @@
 <template>
 
 
+<div class="personal-center">
 
+    
+<!-- 基本信息 -->
+<div class="section profile">
 
-
-<div class = "suffix">
-  <el-card>
+  
+  <el-card style="max-width:2000px" vertical-align="middle">
     <div class="putOut">
         <el-avatar class="avatar" :size="100" :src="userProfile.suffix" />
         <p class="username">{{ userProfile.username }}</p>
     </div>
   </el-card>
-</div>
+  
 
-  <div class="personal-center">
-
-    
-    <!-- 基本信息 -->
-    <div class="section profile">
       <el-card style="max-width:2000px" vertical-align="middle">
           <template #header>
        <div class="card-header">

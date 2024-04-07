@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
+
 export default {
   data() {
     return {
@@ -114,8 +116,12 @@ export default {
       // 这里假设有一个题目列表 questions，你需要实现一个方法来从题目列表中根据ID获取题目内容
  
     }
-  }
+  },
+  mounted(){
+  showAddExamDialog()
+}
 };
+
 </script>
 
 <style scoped>

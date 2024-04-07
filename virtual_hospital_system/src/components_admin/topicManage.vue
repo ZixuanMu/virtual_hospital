@@ -90,7 +90,7 @@
 
 
 // 导入必要的函数和组件
-import { topicget } from '@/api/api.js'; // 假设这是你的 API 请求函数
+import { topicget ,addTopic} from '@/api/api.js'; // 假设这是你的 API 请求函数
 import { ElMessage } from 'element-plus';
 import{ref} from "vue";
 // let questionsiii = [
@@ -159,11 +159,9 @@ import{ref} from "vue";
         this.dialogVisible = true;
       },
       addQuestion() {
-  // Prepare data for the request
 
-  // Make the API request to add a new question
-  
-  .then(response => {
+
+    addTopic(this.newQuestion.question,this.newQuestion.optionA,this.newQuestion.optionB,this.newQuestion.optionC,this.newQuestion.optionD,this.newQuestion.answer).then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }else if(response.status ===500){

@@ -4,26 +4,39 @@
 
     <el-container hight="50px">
 
-      <el-header class= "title" hight="50px">虚拟宠物医院学习系统</el-header>
+      <el-header>      <div>
+        <img src="../assets/医院.png" alt="" />
+        <span>虚拟宠物医院学习系统</span>
+      </div></el-header>
 
       <el-container>
 
         <el-aside width="200px">
        <div>
     
-      <el-menu :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
+      <el-menu active-text-color="#409Eff"
+        background-color="#545c64"
+        text-color="#fff" unique-opened 
+      :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
         <el-scrollbar>
         <el-menu-item index="/3dviews" @click="navigateTo('/3dviews')">
           3 D 导览
         </el-menu-item>
         <el-menu-item index="/functionalLearning" @click="navigateTo('/functionalLearning')">
+          
+
           职能学习
+
         </el-menu-item>
         <el-menu-item index="/testUser" @click="navigateTo('/testUser')">
+
           测试模块
+
         </el-menu-item>
         <el-menu-item index="/mineInformation" @click="navigateTo('/mineInformation')">
+
           个人信息
+
         </el-menu-item>
         <!-- 更多导航栏项 -->
       </el-scrollbar>
@@ -59,12 +72,43 @@
   }
   }
   </script>
-
-<style scoped lang="scss">
-
-.title{
-  font-weight: bold; /* 加粗 */
-  font-size: 24px; /* 加大 */
+ <style>
+ .el-header {
+background-color: #363d40;
+display: flex;
+justify-content: space-between;
+padding-left: 0;
+align-items: center;
+color: #fff;
+font-size: 20px;
 }
 
-</style>
+.el-header > div {
+display: flex;
+align-items: center;
+}
+
+.el-header > div > span {
+margin-left: 15px;
+}
+
+.el-aside {
+background-color: #313743;
+}
+
+.el-aside .el-menu {
+border-right: none;
+}
+
+.el-main {
+background-color: #e9edf1;
+}
+
+.iconfont {
+margin-right: 10px;
+}
+.cell-item {
+  display: flex;
+  align-items: center;
+}
+  </style>

@@ -12,7 +12,9 @@ import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
-
+import qianTai from '@/components/funlearn/qianTai.vue'
+import yiZhu from '@/components/funlearn/yiZhu.vue'
+import shouYi from '@/components/funlearn/shouYi.vue'
 
 const routes = [
 

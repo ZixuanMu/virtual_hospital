@@ -27,7 +27,7 @@ export const topicget = data => {
     data
   });
 };
-<<<<<<< HEAD
+
 export const changeUserInformation =userData=> {
   return request({
       url: '/users/change_information',
@@ -47,6 +47,7 @@ export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
                     })
 }
 
+
 export const getVideoUrl = data => {
   return get ({
     url: '/duty/getDutyByName',
@@ -56,4 +57,5 @@ export const getVideoUrl = data => {
     data
 
   })
-},
+}
+

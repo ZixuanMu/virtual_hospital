@@ -12,7 +12,10 @@ import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
-
+import userManage from '@/components_admin/userManage.vue'
+import qianTai from '@/components/funlearn/qianTai.vue'
+import yiZhu from '@/components/funlearn/yiZhu.vue'
+import shouYi from '@/components/funlearn/shouYi.vue'
 
 const routes = [
 
@@ -51,6 +54,31 @@ const routes = [
         name:"testUser",
         component: testUser,
       },
+      {
+        path:'/funlearn/caseStudying',
+        name:"casestudying",
+        component: Casestudying,
+      },
+      {
+        path:'/funlearn/rolePlaying',
+        name:"roleplaying",
+        component: Roleplaying,
+      },
+      {
+        path:'/funlearn/qianTai',
+        name:"qiantai",
+        component: qianTai,
+      },
+      {
+        path:'/funlearn/yiZhu',
+        name:"yizhu",
+        component: yiZhu,
+      },
+      {
+        path:'/funlearn/shouYi',
+        name:"shouyi",
+        component: shouYi,
+      },
     ]
   },
   {
@@ -80,16 +108,6 @@ const routes = [
         name:"suggestPage",
         component: suggestPage,
       },
-      {
-        path:'/funlearn/caseStudying',
-        name:"casestudying",
-        component: Casestudying,
-      },
-      {
-        path:'/funlearn/rolePlaying',
-        name:"roleplaying",
-        component: Roleplaying,
-      }
 
 ];
 

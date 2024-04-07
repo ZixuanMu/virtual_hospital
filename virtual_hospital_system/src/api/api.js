@@ -18,7 +18,7 @@ export const fetchUserData = data => {
     data
   });
 };
-export const changeUserInformation = (userData) => {
+export const changeUserInformation = userData => {
   return post({
     url: '/users/change_information',
     headers: {

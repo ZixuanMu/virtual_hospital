@@ -154,9 +154,9 @@
 
 <script>
 // api.js
-import { fetchUserData } from '@/api/api.js';
+import { fetchUserData, changeUserInformation } from '@/api/api.js';
 import { ElMessage } from 'element-plus';
-import { changeUserInformation } from '@/api/api.js';
+
 
 const fetchUserData4 = async (userProfile) => {
   try {
@@ -176,7 +176,31 @@ const fetchUserData4 = async (userProfile) => {
 };
 
 export { fetchUserData4 };
+const saveInformation4 =async(updatedUserProfile)=>
+{
+  console.log(updatedUserProfile.username)
+  changeUserInformation({
+        username:updatedUserProfile.username,
+        email:updatedUserProfile.email,
+        phone: updatedUserProfile.phone,
+        sex:updatedUserProfile.sex
+    }).then(res => {
+        console.log("res:",res)
+        if (response.state === 0) {
+          ElMessage.success('个人信息修改成功');
+          // 更新页面显示的用户个人信息数据
+          this.userProfile = { ...this.updatedUserProfile };
+          // 关闭修改信息对话框
+          this.informationVisible = false;}
 
+    }).catch(error=>{
+      console.error('保存个人信息失败：', error);
+        ElMessage.error('保存个人信息失败：' + error.message);
+
+        });
+
+}
+export {saveInformation4};
 
 export default {
   data() {
@@ -205,6 +229,7 @@ export default {
   methods: {
     async fetchData() {
       await fetchUserData4(this.userProfile);
+   
     },
     // 关闭修改信息对话框
     closeInformationDialog() {
@@ -221,31 +246,15 @@ export default {
       this.InformationVisible = false;
     },
     // 保存个人信息
-    saveInformation() {
-      changeUserInformation({
-        username: this.updatedUserProfile.username,
-        email:this.updatedUserProfile.email,
-        phone: this.updatedUserProfile.phone,
-        sex:this.updatedUserProfile.sex
-    }).then(res => {
-        console.log("res:",res)
-        if (response.state === 0) {
-          ElMessage.success('个人信息修改成功');
-          // 更新页面显示的用户个人信息数据
-          this.userProfile = { ...this.updatedUserProfile };
-          // 关闭修改信息对话框
-          this.informationVisible = false;}
-
-    }).catch(error=>{
-      console.error('保存个人信息失败：', error);
-        ElMessage.error('保存个人信息失败：' + error.message);
-
-        });
+    async saveInformation() {
+    await saveInformation4(this.updatedUserProfile);
     },
-  mounted() {
+
+}  ,
+mounted() {
     this.fetchData();
+    console.log("已经挂载")
   },
-}
 }
 </script>
 

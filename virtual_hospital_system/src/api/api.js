@@ -10,7 +10,7 @@ export const login = data => {
   })
 }
 
-export const getAllCases = data => {
+export const get_all_cases = data => {
   return get ({
     url: '/cases/get_all_cases',
     headers: {
@@ -20,8 +20,8 @@ export const getAllCases = data => {
   })
 }
 
-export const changeCname = data => {
-  return get ({
+export const change_cname = data => {
+  return post2 ({
     url: '/cases/change_cname',
     headers: {
       'Content-Type': 'application/json',
@@ -30,8 +30,8 @@ export const changeCname = data => {
   })
 }
 
-export const changePhoto1 = data => {
-  return get ({
+export const change_photo1 = data => {
+  return post ({
     url: '/cases/change_photo1',
     headers: {
       'Content-Type': 'application/json',
@@ -40,8 +40,8 @@ export const changePhoto1 = data => {
   })
 }
 
-export const changePhoto2 = data => {
-  return get ({
+export const change_photo2 = data => {
+  return post ({
     url: '/cases/change_photo2',
     headers: {
       'Content-Type': 'application/json',
@@ -50,8 +50,8 @@ export const changePhoto2 = data => {
   })
 }
 
-export const changeType = data => {
-  return get ({
+export const change_type = data => {
+  return post ({
     url: '/cases/change_type',
     headers: {
       'Content-Type': 'application/json',
@@ -59,8 +59,8 @@ export const changeType = data => {
     data
   })
 }
-export const changeVideo4 = data => {
-  return get ({
+export const change_video4 = data => {
+  return post ({
     url: '/cases/change_video4',
     headers: {
       'Content-Type': 'application/json',
@@ -68,8 +68,8 @@ export const changeVideo4 = data => {
     data
   })
 }
-export const changeWord1 = data => {
-  return get ({
+export const change_word1 = data => {
+  return post2 ({
     url: '/cases/change_word1',
     headers: {
       'Content-Type': 'application/json',
@@ -77,8 +77,8 @@ export const changeWord1 = data => {
     data
   })
 }
-export const changeWord2 = data => {
-  return get ({
+export const change_word2 = data => {
+  return post2 ({
     url: '/cases/change_word2',
     headers: {
       'Content-Type': 'application/json',
@@ -86,8 +86,8 @@ export const changeWord2 = data => {
     data
   })
 }
-export const changeWord3 = data => {
-  return get ({
+export const change_word3 = data => {
+  return post2 ({
     url: '/cases/change_word3',
     headers: {
       'Content-Type': 'application/json',
@@ -95,8 +95,8 @@ export const changeWord3 = data => {
     data
   })
 }
-export const changeWord4 = data => {
-  return get ({
+export const change_word4 = data => {
+  return post2 ({
     url: '/cases/change_word4',
     headers: {
       'Content-Type': 'application/json',
@@ -104,8 +104,8 @@ export const changeWord4 = data => {
     data
   })
 }
-export const deleteCase = data => {
-  return get ({
+export const delete_case = data => {
+  return post ({
     url: '/cases/delete_case',
     headers: {
       'Content-Type': 'application/json',
@@ -113,8 +113,8 @@ export const deleteCase = data => {
     data
   })
 }
-export const insertCase = data => {
-  return get ({
+export const insert_case = data => {
+  return post ({
     url: '/cases/insert_case',
     headers: {
       'Content-Type': 'application/json',

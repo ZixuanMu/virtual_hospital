@@ -19,8 +19,8 @@
             <el-menu-item index="/testManage" @click="navigateTo('/testManage')">
               考试管理
             </el-menu-item>
-            <el-menu-item index="/userManage" @click="navigateTo('/userManage')">
-              用户管理
+             <el-menu-item index="/topicManage" @click="navigateTo('/topicManage')">
+              题库管理
             </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>

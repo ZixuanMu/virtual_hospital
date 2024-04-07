@@ -153,37 +153,45 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { ElMessage } from 'element-plus';
-export default {
 
+import { ElMessage } from 'element-plus';
+
+export default {
   data() {
     return {
-      InformationVisible:false,
-      passwordChangeVisible:false,
+      InformationVisible: false,
+      passwordChangeVisible: false,
       userProfile: {
-        username: '尹茂椿萱',
-        email: 'yinmao@example.com',
-        phone: '+1234567890',
-        sex:1,
-        suffix: 'bg',
-        uid: 'ssssss',
-        password:'',
-        passwordCh:'',
-        // 其他个人资料信息
-      },
-};
-},
+        username: '',
+        email: '',
+        phone: '',
+        sex: '',
+        uid: '',
+        password: '',
+        passwordCh: ''
+      }
+    };
+  },
   methods: {
-    methods: {
     // 获取用户数据
     async fetchUserData() {
       try {
-        // 发送请求获取用户数据
-        const response = await fetch('http://106.54.206.14:8080/users/get_user');
+        // 获取存储在本地的 Token
+        const token = localStorage.getItem('token'); 
+
+        // 发送请求获取用户数据，并在请求头部中添加 Token
+        const response = await fetch(`http://106.54.206.14:8080/users/get_user`, {
+          method: 'get',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }
+        
         const userData = await response.json();
         // 将获取到的用户数据赋值给 userProfile 对象
         this.userProfile = userData.data;
@@ -221,7 +229,6 @@ export default {
         console.error(error);
         ElMessage.error('保存个人信息失败：' + error.message);
       }
-
     },
     // 其他方法...
   },
@@ -229,8 +236,8 @@ export default {
     // 在组件挂载时获取用户数据
     this.fetchUserData();
   }
-}
 };
+
 </script>
 
 <style scoped>

@@ -9,5 +9,14 @@ export const login = data => {
     data
   })
 }
+export const fetchUserData = data => {
+  return get({
+    url: '/users/get_user',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data
+  });
+};
 
 

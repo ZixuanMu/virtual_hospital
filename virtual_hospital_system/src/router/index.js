@@ -13,6 +13,7 @@ import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 import topicManage from '@/components_admin/topicManage.vue';
+import store from '@/store';
 
 
 const routes = [
@@ -101,8 +102,7 @@ const router = createRouter({
 });
 //路由守卫
 router.beforeEach((to, from, next) => {
-  let token = localStorage.getItem("token")
-  if (token || to.path === "/"){
+  if (store.state.userInfo || to.path === "/"){
     next()
   } else {
     next('/')

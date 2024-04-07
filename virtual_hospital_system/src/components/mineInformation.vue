@@ -7,7 +7,7 @@
 <div class = "suffix">
   <el-card>
     <div class="putOut">
-        <el-avatar class="avatar" :size="100" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+        <el-avatar class="avatar" :size="100" :src="userProfile.suffix" />
         <p class="username">{{ userProfile.username }}</p>
     </div>
   </el-card>
@@ -166,6 +166,7 @@ const fetchUserData4 = async (userProfile) => {
     userProfile.phone = res.data.phone;
     userProfile.sex = res.data.sex;
     userProfile.uid = res.data.uid;
+    userProfile.suffix =res.data.suffix;
     userProfile.password = res.data.password;
     userProfile.passwordCh = ''; // 这里可能需要根据实际情况设置初始值
     console.log("User profile updated:", userProfile);
@@ -186,7 +187,7 @@ const saveInformation4 =async(updatedUserProfile)=>
         sex:updatedUserProfile.sex
     }).then(res => {
         console.log("res:",res)
-        if (response.state === 0) {
+        if (res.state === 0) {
           ElMessage.success('个人信息修改成功');
           // 更新页面显示的用户个人信息数据
           this.userProfile = { ...this.updatedUserProfile };
@@ -200,6 +201,7 @@ const saveInformation4 =async(updatedUserProfile)=>
         });
 
 }
+
 export {saveInformation4};
 
 export default {

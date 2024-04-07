@@ -1,21 +1,41 @@
 <template>
     <div class="question-bank">
+
+      
       <!-- 查询题目 -->
       <el-input v-model="searchQuery" placeholder="搜索题目" class="search-input"></el-input>
-  
+      
+  <el-table :data="questions" style="width: 100%" height="250">
+    <el-table-column fixed prop="tid" label="ID" width="120" />
+    <el-table-column prop="content" label="题干" width="120" />
+    <el-table-column prop="contentA" label="选项A" width="120" />
+    <el-table-column prop="contentB" label="选项B" width="120" />
+    <el-table-column prop="contentC" label="选项C" width="120" />
+    <el-table-column prop="contentD" label="选项D" width="120" />
+    <el-table-column prop="answer" label="答案" width="120" />
+  </el-table>
       <!-- 展示题目列表 -->
-      <el-table :data="filteredQuestions" style="width: 100%">
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="question" label="题目"></el-table-column>
-        <el-table-column prop="options" label="选项"></el-table-column>
-        <el-table-column label="操作">
-          <template #default="{ row }">
-            <el-button type="text" @click="editQuestion(row)">编辑</el-button>
-            <el-button type="text" @click="deleteQuestion(row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-  
+      <!-- <el-table>
+  <tr>
+    <td>id</td>
+    <td>题干</td>
+    <td>选项A</td>
+    <td>选项B</td>
+    <td>选项C</td>
+    <td>选项D</td>
+    <td>答案</td>
+  </tr> -->
+  <!-- 模板内直接访问，不需要使用 .value 方式访问 -->
+  <!-- <tr v-for="(question, index) in questions" :key="index">
+    <td>{{ question.tid }}</td>
+    <td>{{ question.content }}</td>
+    <td>{{ question.contenta }}</td>
+    <td>{{ question.contentb }}</td>
+    <td>{{ question.contentc }}</td>
+    <td>{{ question.contentd }}</td>
+    <td>{{ question.answer }}</td>
+  </tr>  -->
+
       <!-- 添加题目 -->
       <el-dialog v-model="dialogVisible" title="添加题目" @update:visible="dialogVisible = $event">
         <el-form :model="newQuestion" ref="newQuestionForm" :rules="rules" label-width="100px">
@@ -67,15 +87,38 @@
   </template>
   
   <script>
+
+
+// 导入必要的函数和组件
+import { topicget } from '@/api/api.js'; // 假设这是你的 API 请求函数
+import { ElMessage } from 'element-plus';
+import{ref} from "vue";
+// let questionsiii = [
+
+// {answer: "A",
+// content: "1",
+// contentA: 
+// "1",
+// contentB: 
+// "1",
+// contentC: 
+// "1",
+// contentD: 
+// "1",
+// tid: 1}
+// ]
+
+
+// 在需要获取题库数据的地方调用 fetchQuestionData 函数
+// 例如在 mounted 钩子中调用
+
+
   export default {
-    data() {
-        
-      return {
-        questions: [ // 示例题目
-        { id: 1, question: 'What is the capital of France?', options: 'A. London, B. Paris, C. Rome, D. Berlin' },
-        { id: 2, question: 'Which planet is closest to the Sun?', options: 'A. Earth, B. Mercury, C. Mars, D. Venus' }
-      ],
-        searchQuery: '', // 搜索查询
+  data() {
+    return {
+
+        questions:[], // question 数据
+
         dialogVisible: false, // 添加题目对话框可见性
         editDialogVisible: false, // 编辑题目对话框可见性
         newQuestion: { 
@@ -109,14 +152,6 @@
         }
       };
     },
-    computed: {
-      filteredQuestions() {
-        // 根据搜索查询过滤题目列表
-        return this.questions.filter(question =>
-          question.question.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      }
-    },
     methods: {
      
       showAddDialog() {
@@ -125,23 +160,9 @@
       },
       addQuestion() {
   // Prepare data for the request
-  const requestData = {
-    content: this.newQuestion.question,
-    contenta: this.newQuestion.optionA,
-    contentb: this.newQuestion.optionB,
-    contentc: this.newQuestion.optionC,
-    contentd: this.newQuestion.optionD,
-    answer: this.newQuestion.answer
-  };
-  console.log(requestData);
+
   // Make the API request to add a new question
-  fetch('http://106.54.206.14:8080/topics/addTopic', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestData),
-  })
+  
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -173,8 +194,8 @@
 
 deleteQuestion(id) {
   // Make the API request to delete the question
-  fetch(`/topics/deleteTopic/${id}`, {
-    method: 'DELETE',
+  fetch(`http://106.54.206.14:8080/topics/deleteTopic/${id}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       // Add any additional headers if needed
@@ -208,9 +229,34 @@ deleteQuestion(id) {
           // 清空编辑题目表单
           this.$refs.editQuestionForm.resetFields();
         }
+      },
+      async fetchQuestionData() {
+      try {
+        // 发起题库数据请求
+        const res = await topicget();
+
+        // 将获取到的题库数据赋值给组件的 questions 数据
+        this.questions = res.data;
+        
+        // 输出获取到的题库数据
+        console.log("question数组里面的值:", this.questions);
+      } catch (error) {
+        // 处理错误情况
+        console.error('获取题库数据失败：', error);
+        ElMessage.error('获取题库数据失败：' + error.message);
       }
+    },
+    async fetchData4() {
+      await this.fetchQuestionData();
+    },
+
+  },
+  mounted() {
+     this.fetchData4();
+    console.log("已经挂载");
+    console.log(this.questions,"mounted里面的questions");
     }
-  };
+}
   </script>
   
   <style scoped>

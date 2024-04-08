@@ -100,4 +100,7 @@
 .iconfont {
   margin-right: 10px;
 }
+.el-menu-item{
+  color:blue;
+}
     </style>

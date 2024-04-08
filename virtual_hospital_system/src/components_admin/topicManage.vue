@@ -2,10 +2,11 @@
     <div class="question-bank">
 
       
-      <!-- 查询题目 -->
-      <el-input v-model="searchQuery" placeholder="搜索题目" class="search-input"></el-input>
-      
-  <el-table :data="questions" style="width: 100%" height="250">
+      <!-- 查询题目 --><div>
+      <el-input v-model="searchID" placeholder="删除id" class="search-input"></el-input>
+      <el-button type="primary" class="add-button" @click="deleteQuestion()">删除题目</el-button>
+    </div>
+  <el-table :data="questions" style="width: 100%" height="400px">
     <el-table-column fixed prop="tid" label="ID" width="120" />
     <el-table-column prop="content" label="题干" width="120" />
     <el-table-column prop="contentA" label="选项A" width="120" />
@@ -116,7 +117,7 @@ import{ref} from "vue";
   export default {
   data() {
     return {
-
+        searchID:1,
         questions:[], // question 数据
 
         dialogVisible: false, // 添加题目对话框可见性
@@ -190,9 +191,9 @@ import{ref} from "vue";
   });
 },
 
-deleteQuestion(id) {
+deleteQuestion() {
   // Make the API request to delete the question
-  fetch(`http://106.54.206.14:8080/topics/deleteTopic/${id}`, {
+  fetch(`http://106.54.206.14:8080//topics/deleteTopicByTid?tid=${this.searchID}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -200,11 +201,16 @@ deleteQuestion(id) {
     },
   })
   .then(response => {
-    if (!response.ok) {
+    if (response.status != 200) {
       throw new Error('Failed to delete question');
     }
-    // Remove the question from the local list if the request is successful
-    this.questions = this.questions.filter(question => question.id !== id);
+
+
+      this.$router.go(0);
+      this.$message({
+          message: "删除成功",
+          type: "success",
+        });
   })
   .catch(error => {
     // Handle error
@@ -213,21 +219,7 @@ deleteQuestion(id) {
   });
 },
 
-      editQuestion(question) {
-        // 打开编辑题目对话框并填充编辑内容
-        this.editedQuestion = { ...question };
-        this.editDialogVisible = true;
-      },
-      saveEditedQuestion() {
-        // 保存编辑后的题目内容
-        const index = this.questions.findIndex(q => q.id === this.editedQuestion.id);
-        if (index !== -1) {
-          this.questions[index] = { ...this.editedQuestion };
-          this.editDialogVisible = false;
-          // 清空编辑题目表单
-          this.$refs.editQuestionForm.resetFields();
-        }
-      },
+      
       async fetchQuestionData() {
       try {
         // 发起题库数据请求
@@ -251,8 +243,7 @@ deleteQuestion(id) {
   },
   mounted() {
      this.fetchData4();
-    console.log("已经挂载");
-    console.log(this.questions,"mounted里面的questions");
+
     }
 }
   </script>
@@ -262,7 +253,7 @@ deleteQuestion(id) {
     padding: 20px;
   }
   .search-input {
-    margin-bottom: 20px;
+    max-width: 100px;
   }
   .add-button {
     margin-top: 20px;

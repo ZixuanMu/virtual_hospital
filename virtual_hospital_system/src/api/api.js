@@ -1,5 +1,5 @@
 import {post, get, post2,post3,post4,post5,post6,request} from '@/util/service'
-import qs from 'qs';
+
 export const login = data => {
   return get ({
     url: '/users/login',
@@ -9,15 +9,7 @@ export const login = data => {
     data
   })
 }
-export const fetchUserData = data => {
-  return get({
-    url: '/users/get_user',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    data
-  });
-};
+
 export const topicget = data => {
   return get({
     url: '/topics/getAllTopics',
@@ -28,13 +20,7 @@ export const topicget = data => {
   });
 };
 
-export const changeUserInformation =userData=> {
-  return request({
-      url: '/users/change_information',
-      method: 'post',
-      data:qs.stringify(userData)
-  });
-};
+
 export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
   return post({
     url:'/topics/addTopic?content=' + question+
@@ -47,6 +33,13 @@ export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
                     })
 }
 
+export const addExamm =(content,topicnumber)=>{
+  return post({
+    url:'/exams/insertExam?content=' + content+
+                      '&topicnumber=' +topicnumber,
+
+                    })
+}
 
 export const getVideoUrl = data => {
   return get ({

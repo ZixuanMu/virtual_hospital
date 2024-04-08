@@ -115,7 +115,23 @@ export default {
       // 通过题目ID获取题目内容
       // 这里假设有一个题目列表 questions，你需要实现一个方法来从题目列表中根据ID获取题目内容
  
-    }
+    },
+    async fetchQuestionData() {
+      try {
+        // 发起题库数据请求
+        const res = await topicget();
+
+        // 将获取到的题库数据赋值给组件的 questions 数据
+        this.questions = res.data;
+        
+        // 输出获取到的题库数据
+        console.log("question数组里面的值:", this.questions);
+      } catch (error) {
+        // 处理错误情况
+        console.error('获取题库数据失败：', error);
+        ElMessage.error('获取题库数据失败：' + error.message);
+      }
+    },
   },
 
 };

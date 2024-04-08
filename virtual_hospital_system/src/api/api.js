@@ -142,3 +142,11 @@ export const insert_case = data => {
     data
   })
 }
+export async function getExams() {  
+  return get ({
+    url: '/exams/getExams',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}

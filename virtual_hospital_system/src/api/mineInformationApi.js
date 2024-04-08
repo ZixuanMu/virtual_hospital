@@ -20,3 +20,12 @@ export const fetchUserData = data => {
   
     })
   }
+  export const changeUserInformation1 =(username,email,phone,sex)=> {
+    return post({
+        url: '/users/change_information?username='+username+
+        '&email='+email+
+        '&phone='+phone+
+        '&sex='+sex,
+  
+    })
+  }

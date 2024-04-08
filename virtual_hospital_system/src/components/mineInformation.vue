@@ -55,7 +55,7 @@
               <table class="information_change">
                 <tr>
                   <td class="text">用户名:</td>
-                  <el-input v-model="userProfile.username">{{userProfile.username}}</el-input>
+                  <el-input v-model="updatedUserProfile.username"></el-input>
                 </tr>
                 <tr>
                   <td class="text">用户id:</td>
@@ -63,18 +63,18 @@
                 </tr>
                 <tr>
                   <td class="text">性别:</td>
-                  <el-select v-model="userProfile.sex" placeholder="男">
+                  <el-select v-model="updatedUserProfile.sex" placeholder="男">
                       <el-option  :value =1 label="男">男</el-option>
                         <el-option  :value =0 label="女">女</el-option>
                   </el-select>
                 </tr>
                 <tr>
                   <td class="text">邮箱:</td>
-                  <el-input v-model="userProfile.email">{{userProfile.email}}</el-input>
+                  <el-input v-model="updatedUserProfile.email"></el-input>
                 </tr>
                 <tr>
                   <td class="text">手机号码: </td>
-                  <el-input v-model="userProfile.phone">{{userProfile.phone}}</el-input>
+                  <el-input v-model="updatedUserProfile.phone"></el-input>
                 </tr>
             </table>
           <template #footer>
@@ -205,10 +205,14 @@ export default {
       await fetchUserData4(this.userProfile);
    
     },
+    submitFeedback(){
+      this.$router.push("/mineInformationCo/suggestPage")
+    },
     // 关闭修改信息对话框
     closeInformationDialog() {
       this.InformationVisible = false;
     },
+    
     ChangeInfomation() {
       this.updatedUserProfile = { ...this.userProfile };
       this.InformationVisible = true;
@@ -222,6 +226,7 @@ export default {
     // 保存个人信息
     saveInformation4()
 {
+
 
   changeUserInformation(
        this.updatedUserProfile.username,

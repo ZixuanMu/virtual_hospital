@@ -230,13 +230,13 @@ export default {
         this.updatedUserProfile.sex
     ).then(res => {
         console.log("res:",res)
-        if (res.state === 0) {
+        if (res.state === 200) {
           ElMessage.success('个人信息修改成功');
-          // 更新页面显示的用户个人信息数据
-          this.userProfile = { ...this.updatedUserProfile };
-          // 关闭修改信息对话框
-          this.informationVisible = false;}
 
+          this.informationVisible = false;
+          this.$router.go(0)
+        }
+          
     }).catch(error=>{
       console.error('保存个人信息失败：', error);
         ElMessage.error('保存个人信息失败：' + error.message);

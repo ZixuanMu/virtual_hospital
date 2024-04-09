@@ -3,7 +3,6 @@
       class="avatar-uploader"
       action="http://106.54.206.14:8080/users/change_suffix"
       :show-file-list="false"
-      :method="post"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
     >

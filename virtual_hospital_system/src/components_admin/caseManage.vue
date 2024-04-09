@@ -4,9 +4,11 @@
         <el-button type="primary" style="margin-bottom: 20px;" @click="caseAdderVisable=true">新增病例</el-button>
 
         <!-- 搜索栏 -->
-        <el-input placeholder="输入搜索内容" v-model="searchInformation" clearable>
+        <el-input placeholder="输入搜索内容" v-model="searchInformation" clearable style="margin-bottom: 20px;">
             <template #append>
-                <el-button @click="searchInList"><el-icon><search /></el-icon></el-button>
+                <el-button @click="searchInList">
+                    <el-icon><search /></el-icon>
+                </el-button>
             </template>
         </el-input>
 
@@ -19,20 +21,16 @@
             </div>
             <p style="color: lightseagreen;">{{ thisCase.type }}</p>
             <div>
-                <p style="color: darkgray;">文字记录1：</p>
-                <p>{{ thisCase.word1 }}</p>
+                <p style="color: darkgray;">文字记录1：{{ thisCase.word1 }}</p>
             </div>
             <div>
-                <p style="color: darkgray;">文字记录2：</p>
-                <p>{{ thisCase.word2 }}</p>
+                <p style="color: darkgray;">文字记录2：{{ thisCase.word2 }}</p>
             </div>
             <div>
-                <p style="color: darkgray;">文字记录3：</p>
-                <p>{{ thisCase.word3 }}</p>
+                <p style="color: darkgray;">文字记录3：{{ thisCase.word3 }}</p>
             </div>
             <div>
-                <p style="color: darkgray;">文字记录4：</p>
-                <p>{{ thisCase.word4 }}</p>
+                <p style="color: darkgray;">文字记录4：{{ thisCase.word4 }}</p>
             </div>
             <div >
                 <img :src="thisCase.photo1" class="caseImg"></img>
@@ -205,10 +203,18 @@ onMounted(()=>{
 
 // 搜索功能
 const searchInList = () => {
-    getLikeCases(searchInformation).then(res=>{
+    getLikeCases(searchInformation.value).then(res=>{
         if(res.state === 200)
         {
+            caseList.value=res.data
         }
+    }).catch(err=>{
+        ElMessage({
+            message:"服务器或网络出错",
+            type:"error",
+            duration:1500
+        })
+        console.log(err)
     })
 }
 
@@ -320,9 +326,8 @@ const addCase = () => {
     formData.append("type",caseAdderList.value.type);
     formData.append("photo1",caseAdderList.value.photo1.raw);
     formData.append("photo2",caseAdderList.value.photo2.raw);
-    formData.append("video4",caseAdderList.value.video4);
-    insert_case(caseAdderList.value.cname,caseAdderList.value.word1,caseAdderList.value.word2,caseAdderList.value.word3,caseAdderList.value.word4,caseAdderList.value.type,formData).then(res=>{
-        console.log("res:"+res)
+    formData.append("video4",caseAdderList.value.video4.raw);
+    insert_case(formData).then(res=>{
         if(res.state === 200)
         {
             ElMessage({
@@ -348,7 +353,7 @@ const addCase = () => {
                 duration:1500
             })
         caseAdderVisable.value=false
-        console.log("err:"+err)
+        console.error(err)
     })
 }
 </script>

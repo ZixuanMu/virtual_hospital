@@ -49,6 +49,7 @@
                 </tr>
             </table>
           <el-button @click="ChangeInfomation">修改信息</el-button>
+          <el-button @click="ChangeSuffix">修改头像</el-button>
 
 
             <el-dialog v-model="InformationVisible" title="Shipping address" width="500">
@@ -79,7 +80,7 @@
             </table>
           <template #footer>
              <div class="dialog-footer">
-              <el-button @click="InformationClose">Cancel</el-button>
+              <el-button @click="InformationClose">取消</el-button>
              <el-button type="primary" @click="saveInformation4">
               保存修改
           
@@ -104,26 +105,26 @@
          <h3>账户管理</h3>
        </div>
       </template>
-      <el-button @click="changePassword">修改密码</el-button>
+      <el-button @click="changePassword2">修改密码</el-button>
 
 
         
-      <el-dialog v-model="passwordChangeVisible" title="Shipping address" width="500">
+      <el-dialog v-model="passwordChangeVisible" title="修改密码" width="500">
               <table class="password_change">
                 <tr>
                   <td class="text">原密码：</td>
-                  <el-input v-model="userProfile.password"></el-input>
+                  <el-input  show-password v-model="passwordChangefile.opassword"></el-input>
                 </tr>
                 <tr>
                   <td class="text">修改密码:</td>
-                  <el-input v-model="userProfile.passwordCh"></el-input>
+                  <el-input  show-password  v-model="passwordChangefile.npassword"></el-input>
                 </tr>
             </table>
           <template #footer>
              <div class="dialog-footer">
-              <el-button @click="InformationClose">Cancel</el-button>
-             <el-button type="primary" @click="InformationClose">
-              Confirm
+              <el-button @click="InformationClose">取消</el-button>
+             <el-button type="primary" @click="passwordChangeConfirm">
+              确认修改
           
             </el-button>
       </div>
@@ -152,7 +153,7 @@
 
 <script>
 // api.js
-import { fetchUserData, changeUserInformation } from '@/api/mineInformationApi.js';
+import { fetchUserData, changeUserInformation,changePasswordgePassword, changePassword } from '@/api/mineInformationApi.js';
 import { ElMessage } from 'element-plus';
 
 
@@ -188,8 +189,11 @@ export default {
         sex: '',
         uid: '',
         password: '',
-        passwordCh: ''
 
+      },
+      passwordChangefile:{
+        opassword:'',
+        npassword:''
       },
       // 修改后的用户个人信息数据
       updatedUserProfile: {
@@ -201,6 +205,35 @@ export default {
     };
   },
   methods: {
+    ChangeSuffix(){},
+    changePassword2(){
+      this.passwordChangeVisible =true;
+    },
+    passwordChangeConfirm(){
+      console.log(this.passwordChangefile)
+      changePassword(
+       this.passwordChangefile.opassword,
+       this.passwordChangefile.npassword
+    ).then(res => {
+        console.log("res:",res)
+        if (res.state === null) {
+          ElMessage.error('原密码错误：' + error.message);
+        }
+        if(res.state === 200){
+          ElMessage.success("修改成功，请重新登录");
+          setTimeout(()=>{
+            this.$router.push('/')
+          },1500);
+          
+        }
+          
+    }).catch(error=>{
+      console.error('失败：');
+        ElMessage.error('密码错误，修改失败');
+
+        });
+
+    },
     async fetchData() {
       await fetchUserData4(this.userProfile);
    

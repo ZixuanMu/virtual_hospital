@@ -12,10 +12,10 @@
         <span>包含题号：{{ exam.topicnumber }}</span>
       </div>
       </div>
-      
+         <el-button type="primary"  @click="getExamByExid(exam.exid)">查看试卷</el-button>
         <el-button type="text" @click="editExamName(exam)">编辑科目名</el-button>
         <el-button type="text" @click="editExamQuestions(exam)">修改试卷题号</el-button>
-        <el-button type="text" @click="deleteExam(exam.id)">删除试卷</el-button>
+        <el-button type="text" @click="deleteExam(exam.exid)">删除试卷</el-button>
      
     </el-card>
 
@@ -39,7 +39,7 @@
     <el-dialog v-model="editExamDialogVisible" title="修改试卷题目">
       <el-form :model="editedExam" ref="editExamForm">
         <el-form-item label="题目ID列表" prop="questionIds">
-          <el-input v-model="editedExam.questionIds" placeholder="请输入题目ID，用逗号分隔"></el-input>
+          <el-input v-model="editedExam.questionIds" placeholder="请输入题目ID（20道题），用逗号分隔"></el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer">
@@ -114,12 +114,51 @@ console.error('Error adding question:', error);
       }
     },
     deleteExam(examId) {
-      // 根据ID删除试卷
-      this.exams = this.exams.filter(exam => exam.id !== examId);
+      fetch(`http://106.54.206.14:8080//exams/deleteExamByExid?exid=${examId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
     },
-    getQuestionById(questionId) {
-      // 通过题目ID获取题目内容
-      // 这里假设有一个题目列表 questions，你需要实现一个方法来从题目列表中根据ID获取题目内容
+  })
+  .then(response => {
+    if (response.status != 200) {
+      throw new Error('Failed to delete exam');
+    }
+
+
+      this.$router.go(0);
+      this.$message({
+          message: "删除成功",
+          type: "success",
+        });
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error deleting exam:', error);
+    // You might want to add some error handling logic here
+  });
+    },
+    getExamByExid(Exid) {
+      fetch(`http://106.54.206.14:8080//exams/getExamByExid?exid=${Exid}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
+    },
+  })
+  .then(response => {
+    if (response.status != 200) {
+      throw new Error('Failed to delete exam');
+    }
+console.log("res:",response);
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error deleting exam:', error);
+    // You might want to add some error handling logic here
+  });
+
  
     },
     async  getExams5() {

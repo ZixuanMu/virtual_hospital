@@ -6,7 +6,7 @@
         </el-form-item>
         <el-form-item label="意见反馈">
           <el-input
-    v-model="textarea2"
+    v-model="feedback.content"
     style="width: 500px"
     :autosize="{ minRows: 18, maxRows: 100 }"
     type="textarea"
@@ -32,6 +32,17 @@
     },
     methods: {
       submitFeedback() {
+        if(this.feedback.name === ''){
+          this.$message({
+          message: `请输入您的姓名，否则是不能反馈的哦`,
+          type: "error",
+        });
+        }else if(this.feedback.content === ''){
+          this.$message({
+          message: '请认真反馈，不要四大皆空',
+          type: "error",
+        });
+        }else{
         // 这里可以编写提交反馈的逻辑
         console.log('提交的反馈内容：', this.feedback);
         // 清空表单数据
@@ -42,7 +53,7 @@
           type: "success",
         });
         // 可以根据实际情况做进一步的处理，比如发送网络请求等
-      }
+      }}
     }
   };
   </script>

@@ -71,10 +71,15 @@ const routes = [
         component:testManage,
       },
       {
+
         path:"/topicManage",
         name:"topicManage",
         component:topicManage,
-
+      },
+      {
+        path:"/userManage",
+        name:"userManage",
+        component:userManage,
       },
     ]
   },

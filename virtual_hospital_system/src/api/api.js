@@ -102,12 +102,21 @@ export const delete_case = (cid) => {
     url: '/cases/delete_case?cid='+cid,
   })
 }
-export const insert_case = data => {
+export const insert_case = (formData) => {
   return post ({
     url: '/cases/insert_case',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
-    data
+    data:formData
+  })
+}
+
+export const getLikeCases = (cname) => {
+  return get({
+    url:'/cases/getLikeCases?cname='+cname,
+    headers:{
+      'Content-Type': 'application/json'
+    },
   })
 }

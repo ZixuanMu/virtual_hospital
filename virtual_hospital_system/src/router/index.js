@@ -16,7 +16,7 @@ import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
 import store from '@/store';
-
+import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 const routes = [
 
   {
@@ -79,6 +79,7 @@ const routes = [
         name:"shouyi",
         component: shouYi,
       },
+
     ]
   },
   {
@@ -98,11 +99,16 @@ const routes = [
       },
     ]
   },
-      {
+  {
         path:"/mineInformationCo/suggestPage",
         name:"suggestPage",
         component: suggestPage,
-      },
+  },
+  {
+    path:"/funlearn/videoPlay/videoPlay",
+    name:"videoplay",
+    component: videoPlay,
+  },
 
 ];
 

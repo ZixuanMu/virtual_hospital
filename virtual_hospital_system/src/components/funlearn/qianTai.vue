@@ -11,57 +11,204 @@
 
 <script>
 
-import { getVideoUrl } from '@/api/api.js'
-
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
-  data() {
-    return {
-      videos: [
-        {
-          thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
-          description: "接待挂号",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
-        },
-        {
-          thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
+  setup() {
+    // const data = reactive({
+    //     actor: '',
+    //     content: '',
+    //     did :'',
+    //     name :'',
+    //     video :''
+
+    // })    
+    const router = useRouter()
+    const videos = ref([
+      {
+        index: 1,
+        thumbnailUrl: "https://via.placeholder.com/100x70",
+        description: "接待挂号",
+        videoUrl: "" // 初始为空，后续会由接口赋值
+      },
+         {
+          index: 2,
+          thumbnailUrl: "https://via.placeholder.com/100x70",
           description: "导医咨询",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 初始为空，后续会由接口赋值
         },
         {
-          thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
+          index: 3,
+          thumbnailUrl: "https://via.placeholder.com/100x70",
           description: "病历档案发出与回收",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 初始为空，后续会由接口赋值
         },
         {
-          thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
+          index: 4,
+          thumbnailUrl: "https://via.placeholder.com/100x70",
           description: "收费",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 初始为空，后续会由接口赋值
         },
-      ],
-      mounted() {
-    // 遍历 videos 数组
-     this.videos.forEach(async (video) => {
-     // 调用 getVideoUrl 方法获取视频 URL
-     const videoUrl = await getVideoUrl(video.description);
-     // 将获取到的视频 URL 赋值给 video 对象的 videoUrl 属性
-     if (videoUrl) {
-      video.videoUrl = videoUrl;
-    } else {
-      // 如果获取失败，可以进行一些错误处理，比如给出提示信息
-      console.error('获取视频 URL 失败:', video.description);
-    }
+      // 其他视频数据
+    ]);
+    const openVideoPage = async (video) => {
+      try {
+        fetch('http://106.54.206.14:8080//duty/getDutyByDid?did='+video.index,{
+          method:'GET',
+          header:{
+            'Content-Type': 'application/json',
+          }
+        }).then(response => response.json()).then(data =>{ 
+          video.videoUrl = data.data.video;  
+        console.log("vurl:",data.data.video)
+    //     // 打开到新的页面播放视频，
+    //     // 跳转到详情的页面
+    //           router.push({
+    //               path:'/funlearn/videoPlay/videoPlay',
+    //               query:video.videourl
+    //      // 多个参数这样的写法
+    //      // query:{Shuju}
+    //  })
+    
+    router.push({
+    path:'/funlearn/videoPlay/videoPlay',
+    query:{ vurl: video.videoUrl} // 确保这里传递了正确的参数
   });
-}
+
+
+       console.log("videoUrl",video.videoUrl)
+});
+        // 将接口返回的 video 赋值给对应的 videoUrl
+        //videos.value.find(v => v.index === video.index).videoUrl = v_url;
+
+        // 打开到新的页面播放视频，
+        // 跳转到详情的页面
+//         const router = useRouter()
+//         const Detail = (Shuju)=>{
+//               router.push({
+//                   path:'/funlearn/videoPlay/videoPlay',
+//                   query:video.videourl
+//          // 多个参数这样的写法
+//          // query:{Shuju}
+//      })
+//  }
+      // console.log("跳转")
+      // window.open(video.videoUrl);
+
+      } catch (error) {
+        console.error('Error fetching video data:', error);
+      }
     };
-  },
-  methods: {
-    openVideoPage(video) {
-      // 打开新的页面播放视频，同时传递视频的 URL
-      window.open(`/video-page?videoUrl=${encodeURIComponent(video.videoUrl)}`);
-    }
+
+    return {
+      videos,
+      openVideoPage
+    };
   }
-}
+};
+// import { getVideoUrl } from '@/api/api.js';
+// // import { reactive } from 'vue';
+// // import { ElMessage, ElPopperArrow } from 'element-plus';
+
+// export default {
+//   data() {
+//     return {
+//       videos: [
+//         {
+//           index: 1,
+//           thumbnailUrl: "https://via.placeholder.com/100x70",
+//           description: "接待挂号",
+//           videoUrl: "" // 初始为空，后续会由接口赋值
+//         },
+//         {
+//           index: 2,
+//           thumbnailUrl: "https://via.placeholder.com/100x70",
+//           description: "导医咨询",
+//           videoUrl: "" // 初始为空，后续会由接口赋值
+//         },
+//         {
+//           index: 3,
+//           thumbnailUrl: "https://via.placeholder.com/100x70",
+//           description: "病历档案发出与回收",
+//           videoUrl: "" // 初始为空，后续会由接口赋值
+//         },
+//         {
+//           index: 4,
+//           thumbnailUrl: "https://via.placeholder.com/100x70",
+//           description: "收费",
+//           videoUrl: "" // 初始为空，后续会由接口赋值
+//         }
+//       ]
+//     };
+//   },
+
+// const data = reactive({
+//   getUrlData:{
+//     index:''
+//   }
+// }),
+
+// const getAndopenVideoPage = () => {
+//   gao(data.getUrlData)
+// },
+// const gao = (data) => {
+//     getVideoUrl({
+//         did:data.index
+//     }).then(res => {
+//         console.log("res:",res)
+//         if (res.state === 200) {
+
+
+//         }
+
+//     }).catch(error=>{
+//         console.error('请求url错误:', error);
+//         ElMessage({
+//             message: "无法获取视频",
+//             type: 'error',
+//             duration: 1500,
+
+//         });
+//     });
+// },
+
+
+  // mounted() {
+  //   // 在组件挂载后获取视频 URL
+  //   this.videos.forEach(video => {
+  //     this.getVideoUrl2(video.index);
+  //   });
+  // },
+  // methods: {
+  //   getVideoUrl2: function(videos) { // 使用普通函数定义
+  // const requestData = { 
+  //   index:1
+  // };
+
+//   // 调用您的 API 函数，传递正确的参数
+//   getVideoUrl(requestData)
+//     .then(response => {
+//       // 获取后端返回的视频 URL
+//       const videoUrl = response.data.video;
+//       console.log("url是：" + videoUrl + "1111111")
+
+//       // 更新对应视频对象的 videoUrl 属性
+//       // this.videos.find(video => video.index === index).videoUrl = videoUrl;
+//     })
+//     .catch(error => {
+//       console.error('Error fetching video URL:', error);
+//     });
+// },
+
+
+    // openVideoPage(video) {
+    //   // 打开新的页面播放视频，同时传递视频的 URL
+    //   window.open(`/video-page?videoUrl=${encodeURIComponent(video.videoUrl)}`);
+    // }
+  // }
+
 </script>
+
 
 <style scoped>
 .video-list {

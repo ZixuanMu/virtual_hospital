@@ -115,7 +115,7 @@ import{ref} from "vue";
 
 
   export default {
-  data() {
+  data() {    
     return {
         searchID:1,
         questions:[], // question 数据
@@ -210,7 +210,7 @@ deleteQuestion() {
       this.$message({
           message: "删除成功",
           type: "success",
-        });
+        }); 
   })
   .catch(error => {
     // Handle error

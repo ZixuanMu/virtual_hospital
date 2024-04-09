@@ -11,96 +11,113 @@
 
 <script>
 
-import { getVideoUrl } from '@/api/api.js'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
-  data() {
-    return {
-      videos: [
+  setup() {
+    const router = useRouter()
+    const videos = ref([
         {
+          index: 5,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "静脉注射",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 6,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "皮下注射",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 7,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "肌肉注射",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 8,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "局部封闭注射",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 9,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "常见问题的处理方法",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 10,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "输液泵、加热垫的使用方法",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 11,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "注射室的消毒流程",
-          videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 12,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术前对宠物进行麻前给药、注射麻醉、吸入麻醉的流程",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 13,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "保定、剃毛、消毒的流程",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 14,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "常见手术器械的介绍",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 15,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术器械包的准备、灭菌流程",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
         {
+          index: 16,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术人员的消毒、穿戴手术衣流程",
-          videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
+          videoUrl: "" // 示例视频 URL
         },
-      ],
-      mounted() {
-     // 遍历 videos 数组
-     this.videos.forEach(async (video) => {
-     // 调用 getVideoUrl 方法获取视频 URL
-     const videoUrl = await getVideoUrl(video.description);
-     // 将获取到的视频 URL 赋值给 video 对象的 videoUrl 属性
-     if (videoUrl) {
-      video.videoUrl = videoUrl;
-    } else {
-      // 如果获取失败，可以进行一些错误处理，比如给出提示信息
-      console.error('获取视频 URL 失败:', video.description);
-    }
+      ]);
+      const openVideoPage = async (video) => {
+      try {
+        fetch('http://106.54.206.14:8080//duty/getDutyByDid?did='+video.index,{
+          method:'GET',
+          header:{
+            'Content-Type': 'application/json',
+          }
+        }).then(response => response.json()).then(data =>{ 
+          video.videoUrl = data.data.video;  
+        console.log("vurl:",data.data.video)
+    router.push({
+    path:'/funlearn/videoPlay/videoPlay',
+    query:{ vurl: video.videoUrl} // 确保这里传递了正确的参数
   });
-}
+       console.log("videoUrl",video.videoUrl)
+});
+      } catch (error) {
+        console.error('Error fetching video data:', error);
+      }
     };
-  },
-  methods: {
-    openVideoPage(video) {
-      // 打开新的页面播放视频，同时传递视频的 URL
-      window.open(`/video-page?videoUrl=${encodeURIComponent(video.videoUrl)}`);
-    }
+
+    return {
+      videos,
+      openVideoPage
+    };
   }
-}
+};
 </script>
 
 <style scoped>

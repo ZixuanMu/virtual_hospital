@@ -6,7 +6,7 @@
       </div>
       <div class="buttons">
         <button @click="openNewWindow1" style="color:chocolate;">角色扮演</button>
-        <button @click="openNewWindow2"style="color:chocolate">病例学习</button>
+        <button @click="openNewWindow2" style="color:chocolate">病例学习</button>
       </div>
     </div>
 </template>

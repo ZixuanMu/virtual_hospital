@@ -11,12 +11,13 @@ import Roleplaying from '@/components/funlearn/rolePlaying.vue'
 import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
+import topicManage from '@/components_admin/topicManage.vue';
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
 import store from '@/store';
-import topicManage from '@/components_admin/topicManage.vue';
+import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
 const routes = [
 
@@ -85,6 +86,7 @@ const routes = [
         name:"shouyi",
         component: shouYi,
       },
+
     ]
   },
   {
@@ -103,17 +105,22 @@ const routes = [
         component:testManage,
       },
       {
-        path:"/topicManage",
+        path:'/topicManage',
         name:"topicManage",
         component:topicManage,
-      },
+      }
     ]
   },
-      {
+  {
         path:"/mineInformationCo/suggestPage",
         name:"suggestPage",
         component: suggestPage,
-      },
+  },
+  {
+    path:"/funlearn/videoPlay/videoPlay",
+    name:"videoplay",
+    component: videoPlay,
+  },
 
 
 ];

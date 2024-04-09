@@ -32,7 +32,7 @@
                 <img :src="thisCase.photo2" class="caseImg"></img>
             </div>
             <div>
-                <video-player src="thisCase.video4"></video-player>
+                <video-player :src="thisCase.video4" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
             </div>
         </el-card>
 
@@ -129,6 +129,7 @@
 <script setup>
 import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { VideoPlayer } from '@videojs-player/vue'
+import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
 import { get_all_cases,change_cname,change_photo1,change_photo2,change_type,change_video4,change_word1,change_word2,change_word3,change_word4,delete_case,insert_case } from '@/api/api';
 
@@ -251,8 +252,8 @@ const addCase = () => {
 <style>
 .caseImg
 {
-    width:auto;
-    height:200px;
+    width:40%;
+    height:auto;
     margin-right: 20px;
 }
 </style>

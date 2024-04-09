@@ -17,6 +17,7 @@ import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
 import store from '@/store';
 import topicManage from '@/components_admin/topicManage.vue';
+import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
 const routes = [
 
   {
@@ -48,6 +49,11 @@ const routes = [
         path:"/mineInformation",
         name:"mineInformation",
         component: mineInformation,
+      },
+      {
+        path:"/mineInformationCo/changeSuffix",
+        name:"changeSuffix",
+        component: changeSuffix,
       },
       {
         path:"/testUser",
@@ -108,6 +114,7 @@ const routes = [
         name:"suggestPage",
         component: suggestPage,
       },
+
 
 ];
 

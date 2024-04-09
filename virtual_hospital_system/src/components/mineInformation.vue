@@ -205,7 +205,9 @@ export default {
     };
   },
   methods: {
-    ChangeSuffix(){},
+    ChangeSuffix(){
+      this.$router.push('/mineInformationCo/changeSuffix')
+    },
     changePassword2(){
       this.passwordChangeVisible =true;
     },
@@ -216,7 +218,7 @@ export default {
        this.passwordChangefile.npassword
     ).then(res => {
         console.log("res:",res)
-        if (res.state === null) {
+        if (res.state === 4006) {
           ElMessage.error('原密码错误：' + error.message);
         }
         if(res.state === 200){

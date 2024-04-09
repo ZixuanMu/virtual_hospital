@@ -27,3 +27,11 @@ export const fetchUserData = data => {
   
     })
   }
+  export const reqUpload = (file) => {
+    // 创建了一个新的 FormData 对象，用于构建表单数据,并将file添加到FormData对象中
+    const formData = new FormData();
+    formData.append('file', file);
+   
+    return request.post('/users/change_suffix', formData);
+  };
+  

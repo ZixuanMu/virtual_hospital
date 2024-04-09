@@ -4,17 +4,19 @@
     <el-button type="primary" class="add-exam-button" @click="showAddExamDialog">新增试卷</el-button>
 
     <!-- 试卷列表 -->
-    <el-card class="exam-list" v-for="exam in exams" :key="exam.id">
+    <el-card class="exam-list" v-for="exam in exams" :key="exam.exid">
       <div>
-        <span>{{ exam.name }}</span>
-        <el-button type="text" @click="editExamName(exam)">编辑</el-button>
-        <el-button type="text" @click="deleteExam(exam.id)">删除</el-button>
+        <span>考试科目：{{ exam.content }}</span>
+    
+        <div>
+        <span>包含题号：{{ exam.topicnumber }}</span>
       </div>
-      <div v-for="(questionId, index) in exam.questions" :key="index">
-        <span>{{ index + 1 }}. </span>
-        <span>{{ getQuestionById(questionId) }}</span>
       </div>
-      <el-button type="text" @click="editExamQuestions(exam)">修改试卷题目</el-button>
+         <el-button type="primary"  @click="getExamByExid(exam.exid)">查看试卷</el-button>
+        <el-button type="text" @click="editExamName(exam)">编辑科目名</el-button>
+        <el-button type="text" @click="editExamQuestions(exam)">修改试卷题号</el-button>
+        <el-button type="text" @click="deleteExam(exam.exid)">删除试卷</el-button>
+     
     </el-card>
 
     <!-- 新增试卷对话框 -->
@@ -37,7 +39,7 @@
     <el-dialog v-model="editExamDialogVisible" title="修改试卷题目">
       <el-form :model="editedExam" ref="editExamForm">
         <el-form-item label="题目ID列表" prop="questionIds">
-          <el-input v-model="editedExam.questionIds" placeholder="请输入题目ID，用逗号分隔"></el-input>
+          <el-input v-model="editedExam.questionIds" placeholder="请输入题目ID（20道题），用逗号分隔"></el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer">
@@ -50,21 +52,13 @@
 
 <script>
 import { onMounted } from 'vue';
+import { getExams,addExamm } from '@/api/api';
 
 export default {
   data() {
     return {
       exams: [
-        {
-          id: 1,
-          name: '考试一',
-          questions: [1, 2, 3, 4, 5] // 示例题目ID列表
-        },
-        {
-          id: 2,
-          name: '考试二',
-          questions: [6, 7, 8, 9, 10] // 示例题目ID列表
-        }
+
       ], // 试卷列表
       addExamDialogVisible: false, // 新增试卷对话框可见性
       newExam: { name: '', questionIds: '' }, // 新增试卷信息
@@ -78,13 +72,25 @@ export default {
       this.addExamDialogVisible = true;
     },
     addExam() {
-      // 将新增试卷信息添加到试卷列表
-      const exam = { id: this.exams.length + 1, ...this.newExam };
-      this.exams.push(exam);
-      this.addExamDialogVisible = false;
-      // 清空新增试卷表单
-      this.$refs.newExamForm.resetFields();
-    },
+
+addExamm(this.newExam.name,this.newExam.questionIds).then(response => {
+
+return response.json();
+})
+.then(data => {
+// Handle success response
+console.log(data); // Assuming you want to log the response
+this.addExamDialogVisible= false; // Close dialog on success
+// Clear the form fields
+this.newExam={ name: '', questionIds: '' };// 新增试卷信息
+this.$router.go(0)
+    })
+.catch(error => {
+// Handle error
+console.error('Error adding question:', error);
+// You might want to add some error handling logic here
+});
+},
     editExamName(exam) {
       // 编辑试卷名称
       const newName = prompt('请输入新的考试名称', exam.name);
@@ -108,24 +114,63 @@ export default {
       }
     },
     deleteExam(examId) {
-      // 根据ID删除试卷
-      this.exams = this.exams.filter(exam => exam.id !== examId);
+      fetch(`http://106.54.206.14:8080//exams/deleteExamByExid?exid=${examId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
     },
-    getQuestionById(questionId) {
-      // 通过题目ID获取题目内容
-      // 这里假设有一个题目列表 questions，你需要实现一个方法来从题目列表中根据ID获取题目内容
+  })
+  .then(response => {
+    if (response.status != 200) {
+      throw new Error('Failed to delete exam');
+    }
+
+
+      this.$router.go(0);
+      this.$message({
+          message: "删除成功",
+          type: "success",
+        });
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error deleting exam:', error);
+    // You might want to add some error handling logic here
+  });
+    },
+    getExamByExid(Exid) {
+      fetch(`http://106.54.206.14:8080//exams/getExamByExid?exid=${Exid}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
+    },
+  })
+  .then(response => {
+    if (response.status != 200) {
+      throw new Error('Failed to delete exam');
+    }
+console.log("res:",response);
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error deleting exam:', error);
+    // You might want to add some error handling logic here
+  });
+
  
     },
-    async fetchQuestionData() {
+    async  getExams5() {
       try {
         // 发起题库数据请求
-        const res = await topicget();
-
+        const res = await getExams();
+        console.log("res:",res);
         // 将获取到的题库数据赋值给组件的 questions 数据
-        this.questions = res.data;
+        this.exams = res.data;
         
         // 输出获取到的题库数据
-        console.log("question数组里面的值:", this.questions);
+        console.log("exam数组里面的值:", this.exams);
       } catch (error) {
         // 处理错误情况
         console.error('获取题库数据失败：', error);
@@ -133,6 +178,10 @@ export default {
       }
     },
   },
+  mounted() {
+     this.getExams5();
+
+    }
 
 };
 

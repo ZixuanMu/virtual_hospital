@@ -49,13 +49,14 @@
                 </tr>
             </table>
           <el-button @click="ChangeInfomation">修改信息</el-button>
+          <el-button @click="ChangeSuffix">修改头像</el-button>
 
 
             <el-dialog v-model="InformationVisible" title="Shipping address" width="500">
               <table class="information_change">
                 <tr>
                   <td class="text">用户名:</td>
-                  <el-input v-model="userProfile.username">{{userProfile.username}}</el-input>
+                  <el-input v-model="updatedUserProfile.username"></el-input>
                 </tr>
                 <tr>
                   <td class="text">用户id:</td>
@@ -63,24 +64,24 @@
                 </tr>
                 <tr>
                   <td class="text">性别:</td>
-                  <el-select v-model="userProfile.sex" placeholder="男">
+                  <el-select v-model="updatedUserProfile.sex" placeholder="男">
                       <el-option  :value =1 label="男">男</el-option>
                         <el-option  :value =0 label="女">女</el-option>
                   </el-select>
                 </tr>
                 <tr>
                   <td class="text">邮箱:</td>
-                  <el-input v-model="userProfile.email">{{userProfile.email}}</el-input>
+                  <el-input v-model="updatedUserProfile.email"></el-input>
                 </tr>
                 <tr>
                   <td class="text">手机号码: </td>
-                  <el-input v-model="userProfile.phone">{{userProfile.phone}}</el-input>
+                  <el-input v-model="updatedUserProfile.phone"></el-input>
                 </tr>
             </table>
           <template #footer>
              <div class="dialog-footer">
-              <el-button @click="InformationClose">Cancel</el-button>
-             <el-button type="primary" @click="saveInformation">
+              <el-button @click="InformationClose">取消</el-button>
+             <el-button type="primary" @click="saveInformation4">
               保存修改
           
             </el-button>
@@ -104,26 +105,26 @@
          <h3>账户管理</h3>
        </div>
       </template>
-      <el-button @click="changePassword">修改密码</el-button>
+      <el-button @click="changePassword2">修改密码</el-button>
 
 
         
-      <el-dialog v-model="passwordChangeVisible" title="Shipping address" width="500">
+      <el-dialog v-model="passwordChangeVisible" title="修改密码" width="500">
               <table class="password_change">
                 <tr>
                   <td class="text">原密码：</td>
-                  <el-input v-model="userProfile.password"></el-input>
+                  <el-input  show-password v-model="passwordChangefile.opassword"></el-input>
                 </tr>
                 <tr>
                   <td class="text">修改密码:</td>
-                  <el-input v-model="userProfile.passwordCh"></el-input>
+                  <el-input  show-password  v-model="passwordChangefile.npassword"></el-input>
                 </tr>
             </table>
           <template #footer>
              <div class="dialog-footer">
-              <el-button @click="InformationClose">Cancel</el-button>
-             <el-button type="primary" @click="InformationClose">
-              Confirm
+              <el-button @click="InformationClose">取消</el-button>
+             <el-button type="primary" @click="passwordChangeConfirm">
+              确认修改
           
             </el-button>
       </div>
@@ -152,7 +153,7 @@
 
 <script>
 // api.js
-import { fetchUserData, changeUserInformation } from '@/api/api.js';
+import { fetchUserData, changeUserInformation,changePasswordgePassword, changePassword } from '@/api/mineInformationApi.js';
 import { ElMessage } from 'element-plus';
 
 
@@ -175,32 +176,6 @@ const fetchUserData4 = async (userProfile) => {
 };
 
 export { fetchUserData4 };
-const saveInformation4 =async(updatedUserProfile)=>
-{
-  console.log(updatedUserProfile.username)
-  changeUserInformation({
-        username:updatedUserProfile.username,
-        email:updatedUserProfile.email,
-        phone: updatedUserProfile.phone,
-        sex:updatedUserProfile.sex
-    }).then(res => {
-        console.log("res:",res)
-        if (res.state === 0) {
-          ElMessage.success('个人信息修改成功');
-          // 更新页面显示的用户个人信息数据
-          this.userProfile = { ...this.updatedUserProfile };
-          // 关闭修改信息对话框
-          this.informationVisible = false;}
-
-    }).catch(error=>{
-      console.error('保存个人信息失败：', error);
-        ElMessage.error('保存个人信息失败：' + error.message);
-
-        });
-
-}
-
-export {saveInformation4};
 
 export default {
   data() {
@@ -214,8 +189,11 @@ export default {
         sex: '',
         uid: '',
         password: '',
-        passwordCh: ''
 
+      },
+      passwordChangefile:{
+        opassword:'',
+        npassword:''
       },
       // 修改后的用户个人信息数据
       updatedUserProfile: {
@@ -227,14 +205,49 @@ export default {
     };
   },
   methods: {
+    ChangeSuffix(){
+      this.$router.push('/mineInformationCo/changeSuffix')
+    },
+    changePassword2(){
+      this.passwordChangeVisible =true;
+    },
+    passwordChangeConfirm(){
+      console.log(this.passwordChangefile)
+      changePassword(
+       this.passwordChangefile.opassword,
+       this.passwordChangefile.npassword
+    ).then(res => {
+        console.log("res:",res)
+        if (res.state === 4006) {
+          ElMessage.error('原密码错误：' + error.message);
+        }
+        if(res.state === 200){
+          ElMessage.success("修改成功，请重新登录");
+          setTimeout(()=>{
+            this.$router.push('/')
+          },1500);
+          
+        }
+          
+    }).catch(error=>{
+      console.error('失败：');
+        ElMessage.error('密码错误，修改失败');
+
+        });
+
+    },
     async fetchData() {
       await fetchUserData4(this.userProfile);
    
+    },
+    submitFeedback(){
+      this.$router.push("/mineInformationCo/suggestPage")
     },
     // 关闭修改信息对话框
     closeInformationDialog() {
       this.InformationVisible = false;
     },
+    
     ChangeInfomation() {
       this.updatedUserProfile = { ...this.userProfile };
       this.InformationVisible = true;
@@ -246,9 +259,32 @@ export default {
       this.InformationVisible = false;
     },
     // 保存个人信息
-    async saveInformation() {
-    await saveInformation4(this.updatedUserProfile);
-    },
+    saveInformation4()
+{
+
+
+  changeUserInformation(
+       this.updatedUserProfile.username,
+        this.updatedUserProfile.email,
+        this.updatedUserProfile.phone,
+        this.updatedUserProfile.sex
+    ).then(res => {
+        console.log("res:",res)
+        if (res.state === 200) {
+          ElMessage.success('个人信息修改成功');
+
+          this.informationVisible = false;
+          this.$router.go(0)
+        }
+          
+    }).catch(error=>{
+      console.error('保存个人信息失败：', error);
+        ElMessage.error('保存个人信息失败：' + error.message);
+
+        });
+
+}
+
 
 }  ,
 mounted() {

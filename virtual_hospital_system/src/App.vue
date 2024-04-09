@@ -54,16 +54,27 @@ const ul = (data) => {
     }).then(res => {
         console.log("res:",res)
         if (res.state === 200) {
-            const toStore = {
+            if(res.data.ismanager === 0)
+            {
+              const toStore = {
                 data: data,
                 token: res.data.token,
                 id:res.data.uid
+              }
+              store.commit('setUserInfo', toStore)
+              sessionStorage.setItem("login", JSON.stringify(toStore))
+              router.push({
+                  path: '/UserLayout'
+              })
             }
-            store.commit('setUserInfo', toStore)
-            sessionStorage.setItem("login", JSON.stringify(toStore))
-            router.push({
-                path: '/UserLayout'
-            })
+            else if(res.data.ismanager === 1)
+            {
+              ElMessage({
+                message:"您是管理员，请使用管理员登录。",
+                type:'error',
+                duration: 1500,
+              })
+            }
         }
 
     }).catch(error=>{
@@ -85,16 +96,27 @@ const ml = (data) => {
     }).then(res => {
         console.log("res:",res)
         if (res.state === 200) {
-            const toStore = {
+            if(res.data.ismanager === 1)
+            {
+              const toStore = {
                 data: data,
                 token: res.data.token,
                 id:res.data.uid
+              }
+              store.commit('setUserInfo', toStore)
+              sessionStorage.setItem("login", JSON.stringify(toStore))
+              router.push({
+                  path: '/AdminLayout'
+              })
             }
-            store.commit('setUserInfo', toStore)
-            sessionStorage.setItem("login", JSON.stringify(toStore))
-            router.push({
-                path: '/AdminLayout'
-            })
+            else if(res.data.ismanager === 0)
+            {
+              ElMessage({
+                message: "您不是管理员！",
+                type: 'error',
+                duration: 1500,
+              })
+            }
         }
 
     }).catch(error=>{

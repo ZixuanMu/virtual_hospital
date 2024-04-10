@@ -14,4 +14,8 @@ export async function getExams() {
       },
     })
   }
-  
+export const changeEname = (exid,content) => {
+    return post ({
+      url: '/exams/changeExamName?exid='+exid+'&content='+content,
+    })
+  }

@@ -3,7 +3,7 @@
     <h2>线上考试列表</h2>
     <el-card v-for="exam in exams" :key="exam.exid" class="exam" :header="exam.content">
       <p>考试时间:10分钟 </p>
-      <el-button @click="joinExam(exam.exid)">加入考试</el-button>
+      <el-button @click="getExamByExid(exam.exid)">加入考试</el-button>
       <el-button @click="showScore(exam.score)">查看考试成绩</el-button>
     </el-card>
   </div>
@@ -19,11 +19,23 @@ export default {
     };
   },
   methods: {
-    joinExam(id) {
-      // 使用 Vue Router 的编程式导航打开新路由
-      this.$router.push({ name: 'testPage' });
-      // 这里可以添加加入考试的逻辑，比如跳转到考试页面或者执行其他操作
-      console.log('加入考试 ID:', id);
+    getExamByExid(Exid) {
+      fetch(`http://106.54.206.14:8080//exams/getExamByExid?exid=${Exid}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
+    },
+  }).then(response => response.json()).then(data =>{ 
+    // Navigate to the 'testShow' route with query parameters
+    this.$router.push({
+      path: '/testPage', // Assuming 'testShow' is the name of the route
+      query: { exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
+    
+    });
+    console.log(data.data.topicnumber)
+  })
+ 
     },
     showScore(score) {
       if (score >= 60) {

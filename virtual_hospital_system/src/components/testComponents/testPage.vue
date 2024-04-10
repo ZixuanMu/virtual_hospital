@@ -7,7 +7,7 @@
       <el-aside width="300px">
 
         <el-card  shadow="hover" style="min-height: 650px">
-          <h4>序号：</h4>
+          <h4>题号：</h4>
           <div class="all-serial-number">
             <el-button
               @click="handleLeft(index)"
@@ -16,7 +16,8 @@
               class="serial-number"
               size="mini"
               :class="{
-                'yi-zuo-da': item.da.length != 0,
+              'yi-zuo-da': item.answer && item.answer.length != 0
+
               }"
             >
               {{ index + 1 }}
@@ -40,7 +41,7 @@
             <!-- 试题 -->
             <div class="shi-ti-style">
               <!-- 题目 -->
-              <div>{{ index + 1 }}、{{ shiTi.timu }}</div>
+              <div>{{ index + 1 }}、{{ shiTi.content }}</div>
               <!-- 选项 -->
               <div class="xuan-xiang-style">
                 <!-- 单选 -->
@@ -49,7 +50,7 @@
                   v-model="shiTi.da"
                 >
                   <el-radio
-                    v-for="(dan, danIdnex) in shiTi.xuanxiang"
+                    v-for="(dan, danIdnex) in shiTi.options"
                     :label="danIdnex"
                     :key="danIdnex"
                   >
@@ -84,76 +85,7 @@ export default {
   data() {
     return {
       examDetails: [
-        {
-          timu: "《山行》是描绘了( C )的景色。",
-          xuanxiang: ["A、春天", "B、夏天", "C、秋天", " D、冬天"],
-          // 答案存放字符串
-          da: "C",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
+
         // 其他单选题目...
       ],
       navgatorIndex: null,
@@ -244,6 +176,16 @@ export default {
       // 1、 其中判断题可以 用A、B 或者用 对、错 需要单独处理。
       // 2、简单题也需要 单独处理。
       // [0, 0, 0, 0, 0, Array(1), Array(1), Array(1), Array(1), '12', '1212']
+  },
+  mounted() {
+    // 获取通过路由传递的数据
+    this.examDetails = JSON.parse(this.$route.query.topicnumber).map((topic) => ({
+      content: topic.content,
+      options: [topic.contentA, topic.contentB, topic.contentC,topic.contentD],
+      da: null,
+      mark: false,
+    }));
+    console.log(this.examDetails)
   },
 };
 </script>

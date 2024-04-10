@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/ZixuanMu/virtual_hospital#readme",
   "dependencies": {
-    "pinia": "^2.1.7"
+    "@videojs-player/vue": "^1.0.0",
+    "pinia": "^2.1.7",
+    "sass": "^1.74.1",
+    "video.js": "^8.10.0"
   }
 }

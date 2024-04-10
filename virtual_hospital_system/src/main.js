@@ -8,7 +8,9 @@ import router from './router'; // 然后再导入路由配置
 import 'element-plus/dist/index.css';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 //import { provideToken } from './token';//token
-
+import VueVideoPlayer from '@videojs-player/vue'
+import 'video.js/dist/video-js.css'
+                        
 const app = createApp(App);
 app.use(store);
 app.use(VueRouter); // 先使用VueRouter插件
@@ -20,3 +22,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
 app.mount('#app');
+app.use(VueVideoPlayer)

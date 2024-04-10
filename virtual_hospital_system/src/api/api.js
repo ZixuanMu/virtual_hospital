@@ -1,4 +1,4 @@
-import {post, get, post2,post3,post4,post5,post6} from '@/util/service'
+import {post, get, post2,post3,post4,post5,post6,request} from '@/util/service'
 
 export const login = data => {
   return get ({
@@ -9,24 +9,48 @@ export const login = data => {
     data
   })
 }
-export const fetchUserData = data => {
+
+export const topicget = data => {
   return get({
-    url: '/users/get_user',
+    url: '/topics/getAllTopics',
     headers: {
       'Content-Type': 'application/json'
     },
     data
   });
 };
-export const changeUserInformation = (userData) => {
+
+
+export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
   return post({
-    url: '/users/change_information',
+    url:'/topics/addTopic?content=' + question+
+                      '&contenta=' + optionA +
+                      '&contentb=' + optionB +
+                      '&contentc=' + optionC +
+                      '&contentd=' + optionD +
+                      '&answer=' + answer,
+
+                    })
+}
+
+export const addExamm =(content,topicnumber)=>{
+  return post({
+    url:'/exams/insertExam?content=' + content+
+                      '&topicnumber=' +topicnumber,
+
+                    })
+}
+
+export const getVideoUrl = data => {
+  return get ({
+    url: '/duty/getDutyByName',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    data: userData
-  });
-};
+    data
+
+  })
+}
 export const get_all_cases = data => {
   return get ({
     url: '/cases/get_all_cases',
@@ -117,6 +141,14 @@ export const getLikeCases = (cname) => {
     url:'/cases/getLikeCases?cname='+cname,
     headers:{
       'Content-Type': 'application/json'
+    },
+  })
+}
+export async function getExams() {  
+  return get ({
+    url: '/exams/getExams',
+    headers: {
+      'Content-Type': 'application/json',
     },
   })
 }

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
+
 import { getExams,addExamm } from '@/api/api';
 
 export default {

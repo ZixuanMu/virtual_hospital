@@ -1,53 +1,57 @@
 <template>
 
-<div class="common-layout">
+<div style="height: 100%;" class="common-layout">
 
-    <el-container hight="50px">
+    <el-container>
 
-      <el-header>      <div>
-        <img src="../assets/医院.png" alt="" />
-        <span>虚拟宠物医院学习系统</span>
-      </div></el-header>
+      <el-header>   
+        <div>
+          <img src="../assets/医院.png" alt="" />
+          <span>虚拟宠物医院学习系统</span>
+        </div>
+      </el-header>
 
       <el-container>
 
-        <el-aside  style="min-height: 625px;width:150px;">
-       <div>
-    
-      <el-menu active-text-color="#409Eff"
-        background-color="#545c64"
-        text-color="#fff" unique-opened 
-      :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
-        <el-scrollbar>
-        <el-menu-item index="/3dviews" @click="navigateTo('/3dviews')">
-          3 D 导览
-        </el-menu-item>
-        <el-menu-item index="/functionalLearning" @click="navigateTo('/functionalLearning')">
-          
-
-          职能学习
-
-        </el-menu-item>
-        <el-menu-item index="/testUser" @click="navigateTo('/testUser')">
-
-          测试模块
-
-        </el-menu-item>
-        <el-menu-item index="/mineInformation" @click="navigateTo('/mineInformation')">
-
-          个人信息
-
-        </el-menu-item>
-        <!-- 更多导航栏项 -->
-      </el-scrollbar>
-      </el-menu>
-    
-    </div>
-        </el-aside> 
-        <el-main>
-          <el-scrollbar ref="scrollbarRef" height="100%" always @scroll="scroll">
-
+        <el-aside  style="height:830px; width:150px;">
           <div>
+    
+            <el-menu active-text-color="#409Eff"
+              background-color="#545c64"
+              text-color="#fff" unique-opened 
+              :default-active="activeIndex" 
+              mode="vertical" 
+              @select="handleMenuSelect">
+              <el-scrollbar>
+              <el-menu-item index="/3dviews" @click="navigateTo('/3dviews')">
+                3 D 导览
+              </el-menu-item>
+              <el-menu-item index="/functionalLearning" @click="navigateTo('/functionalLearning')">
+                
+
+                职能学习
+
+              </el-menu-item>
+              <el-menu-item index="/testUser" @click="navigateTo('/testUser')">
+
+                测试模块
+
+              </el-menu-item>
+              <el-menu-item index="/mineInformation" @click="navigateTo('/mineInformation')">
+
+                个人信息
+
+              </el-menu-item>
+              <!-- 更多导航栏项 -->
+            </el-scrollbar>
+            </el-menu>
+          
+          </div>
+        </el-aside> 
+        <el-main >
+          <el-scrollbar ref="scrollbarRef" height="780px" always @scroll="scroll">
+
+          <div >
           <router-view></router-view>
           </div>
         </el-scrollbar>
@@ -111,4 +115,5 @@ margin-right: 10px;
   display: flex;
   align-items: center;
 }
+
   </style>

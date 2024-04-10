@@ -20,6 +20,7 @@ import store from '@/store';
 import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
 import userManage from '@/components_admin/userManage.vue';
+import fullScreenView from '@/components/fullScreenView.vue';
 const routes = [
 
   {
@@ -31,6 +32,11 @@ const routes = [
     path:'/testPage',
     name:"testPage",
     component:testPage,
+  },
+  {
+    path:'/fullScreenView',
+    name:"fullScreenView",
+    component:fullScreenView
   },
   {
     path:"/UserLayout",

@@ -52,7 +52,7 @@
 
 <script>
 
-import { getExams,addExamm } from '@/api/api';
+import { getExams,addExamm } from '@/api/examApi'
 
 export default {
   data() {
@@ -79,7 +79,6 @@ return response.json();
 })
 .then(data => {
 // Handle success response
-console.log(data); // Assuming you want to log the response
 this.addExamDialogVisible= false; // Close dialog on success
 // Clear the form fields
 this.newExam={ name: '', questionIds: '' };// 新增试卷信息

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { getExams} from '@/api/api';
+import { getExams} from '@/api/examApi';
 export default {
   data() {
     return {

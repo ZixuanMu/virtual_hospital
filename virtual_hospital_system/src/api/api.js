@@ -33,13 +33,7 @@ export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
                     })
 }
 
-export const addExamm =(content,topicnumber)=>{
-  return post({
-    url:'/exams/insertExam?content=' + content+
-                      '&topicnumber=' +topicnumber,
 
-                    })
-}
 
 export const getVideoUrl = data => {
   return get ({
@@ -141,14 +135,6 @@ export const getLikeCases = (cname) => {
     url:'/cases/getLikeCases?cname='+cname,
     headers:{
       'Content-Type': 'application/json'
-    },
-  })
-}
-export async function getExams() {  
-  return get ({
-    url: '/exams/getExams',
-    headers: {
-      'Content-Type': 'application/json',
     },
   })
 }

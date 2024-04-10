@@ -100,8 +100,8 @@
                 <template #trigger>
                     <el-button size="small">选取图片</el-button>
                 </template>
-                <!-- <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button> -->
+                <el-button style="margin-left: 10px;" size="small" type="success" 
+                    @click="submitUpload">上传</el-button> 
                 </el-upload>
             </el-form-item>
 
@@ -115,8 +115,8 @@
                 <template #trigger>
                     <el-button size="small">选取图片</el-button>
                 </template>
-                <!-- <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button> -->
+                <el-button style="margin-left: 10px;" size="small" type="success" 
+                    @click="submitUpload">上传</el-button> 
                 </el-upload>
             </el-form-item>
 
@@ -130,8 +130,8 @@
                 <template #trigger>
                     <el-button size="small">选取视频</el-button>
                 </template>
-                <!-- <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button> -->
+                <el-button style="margin-left: 10px;" size="small" type="success" 
+                    @click="submitUpload">上传</el-button>
                 </el-upload>
             </el-form-item>
 

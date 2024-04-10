@@ -20,7 +20,9 @@ import shouYi from '@/components/funlearn/shouYi.vue'
 import store from '@/store';
 import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
-
+import userManage from '@/components_admin/userManage.vue';
+import fullScreenView from '@/components/fullScreenView.vue';
+import testShow from '@/components_admin/testShow.vue';
 const routes = [
 
   {
@@ -32,6 +34,11 @@ const routes = [
     path:'/testPage',
     name:"testPage",
     component:testPage,
+  },
+  {
+    path:'/fullScreenView',
+    name:"fullScreenView",
+    component:fullScreenView
   },
   {
     path:"/UserLayout",
@@ -117,6 +124,11 @@ const routes = [
         name:"userManage",
         component:userManage,
       },
+      {
+        path:"/testShow",
+        name:"testShow",
+        component:testShow,
+      }
     ]
   },
   {

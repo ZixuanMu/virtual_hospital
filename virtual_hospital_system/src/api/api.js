@@ -33,13 +33,7 @@ export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
                     })
 }
 
-export const addExamm =(content,topicnumber)=>{
-  return post({
-    url:'/exams/insertExam?content=' + content+
-                      '&topicnumber=' +topicnumber,
 
-                    })
-}
 
 export const getVideoUrl = data => {
   return get ({

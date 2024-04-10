@@ -51,8 +51,9 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
-import { getExams,addExamm } from '@/api/api';
+
+import { getExams,addExamm,changeEname } from '@/api/examApi'
+import { ElMessage } from 'element-plus';
 
 export default {
   data() {
@@ -75,11 +76,7 @@ export default {
 
 addExamm(this.newExam.name,this.newExam.questionIds).then(response => {
 
-return response.json();
-})
-.then(data => {
 // Handle success response
-console.log(data); // Assuming you want to log the response
 this.addExamDialogVisible= false; // Close dialog on success
 // Clear the form fields
 this.newExam={ name: '', questionIds: '' };// 新增试卷信息
@@ -92,12 +89,24 @@ console.error('Error adding question:', error);
 });
 },
     editExamName(exam) {
+      try{
       // 编辑试卷名称
       const newName = prompt('请输入新的考试名称', exam.name);
       if (newName !== null && newName.trim() !== '') {
         exam.name = newName.trim();
+        console.log("shijuan",exam.name)
+       
+        const res=changeEname(exam.exid,exam.name)
+        console.log("res:",res);
+        
+      this.$router.go(0);
       }
-    },
+    }
+        catch(error){
+          ElMessage.error('修改试卷名失败：' + error.message);
+
+        }
+      },
     editExamQuestions(exam) {
       // 打开修改试卷题目对话框
       this.editedExam = { ...exam };
@@ -139,26 +148,22 @@ console.error('Error adding question:', error);
     // You might want to add some error handling logic here
   });
     },
-    getExamByExid(Exid) {
+     getExamByExid(Exid) {
       fetch(`http://106.54.206.14:8080//exams/getExamByExid?exid=${Exid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       // Add any additional headers if needed
     },
+  }).then(response => response.json()).then(data =>{ 
+    // Navigate to the 'testShow' route with query parameters
+    this.$router.push({
+      path: '/testShow', // Assuming 'testShow' is the name of the route
+      query: { exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
+    
+    });
+    console.log(data.data.topicnumber)
   })
-  .then(response => {
-    if (response.status != 200) {
-      throw new Error('Failed to delete exam');
-    }
-console.log("res:",response);
-  })
-  .catch(error => {
-    // Handle error
-    console.error('Error deleting exam:', error);
-    // You might want to add some error handling logic here
-  });
-
  
     },
     async  getExams5() {

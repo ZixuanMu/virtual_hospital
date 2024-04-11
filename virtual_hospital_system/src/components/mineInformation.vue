@@ -255,7 +255,7 @@ export default {
     },
     // 关闭修改个人信息对话框
     InformationClose() {
-      
+      this.passwordChangeVisible =false;
       this.InformationVisible = false;
     },
     // 保存个人信息

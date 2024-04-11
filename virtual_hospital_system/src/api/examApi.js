@@ -35,3 +35,15 @@ export const changeEname = (exid,content) => {
     })
   }
   
+
+  export const getMyexam = data => {
+    return get({
+      url:'/tests/getmyexam',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      data
+    })
+  }
+
+  

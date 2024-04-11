@@ -22,9 +22,10 @@
               {{ index + 1 }}
             </el-button>
           </div>
-          <div>
-            <el-button @click="getSubmit" type="primary" plain>提交</el-button>
-          </div>
+          <div style="display: grid; place-items: center;">
+    <el-button @click="getSubmit" type="primary" plain>提交</el-button>
+</div>
+
         </el-card>
       </el-aside>
       <el-main >       
@@ -81,6 +82,7 @@
 
 <script>
 import { admitexam } from "@/api/examApi";
+import { ElMessage } from 'element-plus';
 
 export {admitexam} from "@/api/examApi"
 export default {
@@ -96,17 +98,15 @@ export default {
       isSkip: true,
       isShiTi: false,
       exid:'',
+      total:'',
     };
   },
   methods: {
-
+  
           getSubmit() {
 
-            this.examDetails.forEach((exam, index) => {
-    
-      
+  this.examDetails.forEach((exam, index) => {
       // 将用户答案拼接到字符串中
-
       if(exam.da===0){
       this.userAnswers += 'A';
       if (index !== this.examDetails.length - 1) {
@@ -137,15 +137,21 @@ export default {
         this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
       }
     }
-
-
-
-
-
+    console.log("da:",exam.da)
     });
     console.log(this.userAnswers)
-        const res  =  admitexam(this.exid,this.userAnswers);
-        console.log('res:',res)
+        admitexam(this.exid,this.userAnswers).then(res => {
+        console.log("res.stas",res.status)
+        if (res.state === 200){
+        ElMessage({
+                message:"提交成功",
+                type:'succes',
+              })
+              setTimeout(() => {
+      this.$router.go(-1)
+    }, 500);
+      }
+        console.log('res:',res)})
       },
 
 
@@ -205,12 +211,7 @@ export default {
     getChenge() {
       this.navgatorIndex = null;
     },
-    // 提交
-   
-      // 0代表A 1代表B 2代表C 3代表D 4代表E 5代表F 6代表G 7代表H 8代表I 9代表J 10代表K... （ 可以用字符串 或者数组的 方法 将至 替换； 回显同理 实例中有一个回显的实例 ）
-      // 1、 其中判断题可以 用A、B 或者用 对、错 需要单独处理。
-      // 2、简单题也需要 单独处理。
-      // [0, 0, 0, 0, 0, Array(1), Array(1), Array(1), Array(1), '12', '1212']
+
   },
   mounted() {
     // 获取通过路由传递的数据

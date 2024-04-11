@@ -23,6 +23,8 @@ import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
 import fullScreenView from '@/components/fullScreenView.vue';
 import testShow from '@/components_admin/testShow.vue';
+import myTestPage from '@/components/testComponents/myTestPage.vue';
+
 const routes = [
 
   {
@@ -95,7 +97,11 @@ const routes = [
         name:"shouyi",
         component: shouYi,
       },
-
+      {
+        path:'/myTestPage',
+        name:"myTestPage",
+        component:myTestPage,
+      }
     ]
   },
   {

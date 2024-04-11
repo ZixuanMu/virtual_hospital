@@ -24,7 +24,7 @@
 
 <script setup>
 import { reactive } from 'vue';
-import { ElMessage, ElPopperArrow } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { login } from '@/api/api.js'
 import { useStore } from 'vuex'

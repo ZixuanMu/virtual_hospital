@@ -14,18 +14,18 @@
     </el-menu>
 
     <div>
-      <h2>线上考试列表</h2>
-      <!-- 根据菜单选择的不同，展示不同的考试列表 -->
+            <!-- 根据菜单选择的不同，展示不同的考试列表 -->
       <el-card v-for="exam in selectedExams" :key="exam.exid" class="exam" :header="exam.content">
         <p>考试时间:10分钟 </p>
-        <el-button @click="getExamByExid(exam.exid)">加入考试</el-button>
-        <el-button v-if="exam.completed" @click="showScore(exam.score)">查看考试成绩</el-button>
+        <el-button  v-if="exam.completed"@click="getMyExam1(exam.exid)">查看考试记录</el-button>
+        <el-button v-if="!exam.completed" @click="getExamByExid(exam.exid)">加入考试</el-button>
+        <el-button v-if="exam.completed" @click="showScore(exam.exid)">查看考试成绩</el-button>
       </el-card>
     </div>
   </div>
 </template>
 <script>
-import { getExams,getCompletedExams} from '@/api/examApi';
+import { getExams,getCompletedExams,getMyexam} from '@/api/examApi';
 export default {
   
 
@@ -34,14 +34,35 @@ export default {
     return {
       exams: [],
       completedExams: [],
-      activeIndex2: '1', // 默认选中已参与的考试
+      activeIndex2: '2', // 默认选中已参与的考试
+      score:'',
     };
   },
   methods: {
-    
+    handleSelect(index) {
+      // 当菜单项被选择时执行的操作
+      console.log('选择了菜单项', index);
+      // 在这里你可以根据选择的菜单项执行不同的逻辑
+      // 例如根据选择的菜单项切换显示不同的考试列表
+      if (index === '1') {
+        // 显示已参与的考试列表
+
+        this.activeIndex2 = '1';
+      } else if (index === '2') {
+        // 显示未参与的考试列表
+        this.activeIndex2 = '2';
+      }
+    },
     getUncompletedExams() {
-      // 返回未考试的试卷列表
-      return this.exams.filter(exam => !this.completedExams.some(completedExam => completedExam.exid === exam.exid));
+      this.exams = this.exams.map(exam => {
+      // 如果当前考试的ID在已参加的考试ID列表中，则将其设置为已参加
+      if (this.completedExams.includes(exam.exid)) {
+        exam.completed = true;
+      } else {
+        exam.completed = false;
+      }
+      return exam;
+    });
     },
     getExamByExid(Exid) {
       //参加考试
@@ -58,24 +79,41 @@ export default {
       query: { exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
     
     });
-    console.log(data.data.topicnumber)
+
   })
  
     },
-    showScore(score) {
+
+    getMyExam1(Exid) {
+   
+    this.$router.push({
+      path: '/myTestPage', // Assuming 'testShow' is the name of the route
+      query: { exid:Exid }
+    
+    });
+
+    },
+
+
+    showScore(exid) {
+
+      getMyexam({ exid: exid }).then(res => {
+ 
+        this.score = res.data.total;
+      });
      // 分数展示
-      if (score >= 60) {
+      if (this.score >= 60) {
         this.$message({
-          message: '您的考试成绩是：' + score + '，恭喜您通过了考试！',
+          message: '您的考试成绩是：' + this.score + '，恭喜您通过了考试！',
           type: 'success'
         });
-      } else if(score >= 0){
+      } else if(this.score >= 0){
         this.$message({
-          message: '您的考试成绩是：' + score + '，很抱歉，您未通过考试。',
+          message: '您的考试成绩是：' + this.score + '，很抱歉，您未通过考试。',
           type: 'warning'
         }
         );
-      }else if(score === -1){
+      }else if(this.score === -1){
         this.$message({
           message: '未参加考试，请先参加考试！',
           type: 'warning'
@@ -96,15 +134,15 @@ export default {
       try {
         // 发起题库数据请求
         const res = await getExams();
-        console.log("res:",res);
+ 
         // 将获取到的题库数据赋值给组件的 questions 数据
         this.exams = res.data;
         
         // 输出获取到的题库数据
-        console.log("exam数组里面的值:", this.exams);
+
       } catch (error) {
         // 处理错误情况
-        console.error('获取题库数据失败：', error);
+        
         ElMessage.error('获取题库数据失败：' + error.message);
       }
     },
@@ -113,7 +151,7 @@ export default {
         const res = await getCompletedExams();
         this.completedExams = res.data;
       } catch (error) {
-        console.error('获取已考试卷失败：', error);
+       
         this.$message.error('获取已考试卷失败：' + error.message);
       }
     },
@@ -121,10 +159,12 @@ export default {
   computed: {
     // 根据菜单选择，返回相应的考试列表
     selectedExams() {
+      this.getUncompletedExams(); 
       if (this.activeIndex2 === '1') {
-        return this.completedExams; // 已参与的考试
+        return this.exams.filter(exam => exam.completed); // 已参与的考试
       } else if (this.activeIndex2 === '2') {
-        return this.getUncompletedExams(); // 未参与的考试
+        
+         return this.exams.filter(exam => !exam.completed);// 未参与的考试
       } else {
         return []; // 其他情况返回空列表
       }

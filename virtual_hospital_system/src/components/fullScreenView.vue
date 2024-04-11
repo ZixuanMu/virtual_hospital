@@ -10,9 +10,9 @@
   <div>科室介绍：{{ departmentInfo.introduction }}</div>
   <br>
   <div v-if="itemList.length">相关器具：</div>
-  <div v-for="equipment in itemList" >
-    <p>{{ equipment.ename }}</p>
-    <img :src="equipment.suffix" @click="showEquipmentInfo(equipment)"></img>
+  <div v-for="equipment in itemList">
+    <div><el-button @click="showEquipmentInfo(equipment)">{{ equipment.ename }}</el-button></div>
+    <div><img :src="equipment.suffix" style="width: 30vw;"></img></div>
   </div>
   <div v-if="medicineList.length">药品一览：</div>
   <div v-for="medicine in medicineList" >
@@ -24,8 +24,8 @@
   title="器具介绍">
     <p>器具名：{{ currentEquipment.ename }}</p>
     <p>器具作用：{{ currentEquipment.fun }}</p>
-    <img :src="currentEquipment.suffix" @click="showEquipmentInfo"></img>
-    <video-player :src="currentEquipment.video" :controls="true" :autoplay="false" style="width: 100%;"></video-player>
+    <img :src="currentEquipment.suffix" style="width: 30vw;height:30vh" @click="showEquipmentInfo"></img>
+    <video-player :src="currentEquipment.video" :controls="true" :autoplay="false" style="width: 30vw;height:30vh;"></video-player>
   </el-dialog>
 </el-dialog>
 </template> 
@@ -38,7 +38,6 @@ import { useRoute, useRouter } from "vue-router";
 import { getDepartmentByDid,getEidByDid,getAllMedicine,getEquipmentByEid } from '@/api/api.js'
 import { VideoPlayer } from '@videojs-player/vue'
 import router from "@/router";
-
 let panoramaViewer = null
 const route = useRoute()
 let thisDid = route.query.did
@@ -49,12 +48,71 @@ const itemList = ref([])
 const medicineList = ref([])
 const imgUrl = ref()
 const currentEquipment = ref()
+const backGroundList = [
+  {
+    did:'4',
+    src:require('@/assets/宠物医院前台.jpg')
+  },
+  {
+    did:'5',
+    src:require('@/assets/宠物医院档案室.jpg')
+  },
+  {
+    did:'6',
+    src:require('@/assets/宠物医院诊室.jpg')
+  },
+  {
+    did:'7',
+    src:require('@/assets/宠物医院免疫室.jpg')
+  },
+  {
+    did:'8',
+    src:require('@/assets/宠物医院化验室.jpg')
+  },{
+    did:'9',
+    src:require('@/assets/宠物医院影像室.jpg')
+  },
+  {
+    did:'10',
+    src:require('@/assets/宠物医院专科检查室.jpg')
+  },
+
+  {
+    did:'11',
+    src:require('@/assets/宠物医院处置室.jpg')
+  },
+  {
+    did:'12',
+    src:require('@/assets/宠物药房.jpg')
+  },
+  {
+    did:'13',
+    src:require('@/assets/宠物医院注射室.jpg')
+  },
+  {
+    did:'14',
+    src:require('@/assets/宠物医院手术准备室.jpg')
+  },
+  {
+    did:'15',
+    src:require('@/assets/宠物医院手术室.jpg')
+  },
+  {
+    did:'16',
+    src:require('@/assets/宠物医院住院部.jpg')
+  },
+  {
+    did:'17',
+    src:require('@/assets/宠物医院病理剖检室.jpg')
+  },
+]
+const currentDepartment = ref ()
 // 全景图初始化
 const initViewer = async function () {
  panoramaViewer = new Viewer({
     container: document.querySelector('#viewer'), // 容器
     // panorama: departmentInfo.value.suffix,
-    panorama: require('@/assets/R-C.jpg'),
+    panorama: currentDepartment.value,
     navbar: [
       'zoom',
       'caption',
@@ -158,6 +216,13 @@ const loadViewer = () => {
   getDepartmentByDid({did:thisDid}).then(res => {
     if(res.state === 200)
     {
+      backGroundList.forEach(element => {
+        if(thisDid === element.did)
+        {
+          currentDepartment.value = element.src
+          console.log("current:"+currentDepartment)
+        }
+      })
       departmentInfo.value = res.data
       initViewer();
       if(res.data.dname === "药房")

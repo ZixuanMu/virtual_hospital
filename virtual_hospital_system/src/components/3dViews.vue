@@ -1,21 +1,25 @@
 <template>
-3dviews 11111
-<el-button @click="switchToView"></el-button>
+    <button @click="switchToView(4)">前台</button>
+    <button @click="switchToView(5)">档案室</button>
+    <button @click="switchToView(6)">诊室</button>
+    <button @click="switchToView(7)">免疫室</button>
+    <button @click="switchToView(8)">化验室</button>
+    <button @click="switchToView(9)">影像室</button>
+    <button @click="switchToView(10)">专科检查室</button>
+    <button @click="switchToView(11)">处置室</button>
+    <button @click="switchToView(12)">药房</button>
 </template>
 
 <script setup>
 import { ref,onMounted, onBeforeMount } from 'vue'
-import { Viewer } from 'photo-sphere-viewer'
-import * as Marker from 'photo-sphere-viewer/dist/plugins/markers' // 引入插件
-import 'photo-sphere-viewer/dist/plugins/markers.css' // 引入标注样式
 import router from '@/router';
 import { ElMessage } from 'element-plus';
-const switchToView = () =>{
-    router.push('/fullScreenView')
-    ElMessage({
-        message:"let's go",
-        type:"success",
-        duration:1500
+const switchToView = (departmentId) =>{
+    router.push({
+        path:'/fullScreenView',
+        query:{
+            did:departmentId
+        }
     })
 }
 </script>

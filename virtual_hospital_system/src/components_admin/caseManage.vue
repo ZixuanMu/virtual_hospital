@@ -13,31 +13,44 @@
         </el-input>
 
         <!-- 病例显示列表 -->
-        <el-card style="margin-bottom: 20px;" v-for="thisCase in caseList" :key="thisCase.cid">
-            <div>
+        <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.cid">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>{{ thisCase.cname }}</span>
-                <el-button type="text" @click="showEditer(thisCase);currentCid=thisCase.cid">编辑</el-button>
-                <el-button type="text" @click="caseDeleterVisable=true;currentCid=thisCase.cid">删除</el-button>
+                <el-button type="primary" @click="showEditer(thisCase);currentCid=thisCase.cid" style="position: absolute;left:70%">编辑</el-button>
+                <el-button type="danger" @click="caseDeleterVisable=true;currentCid=thisCase.cid"style="position: absolute;left:80%">删除</el-button>
+                <el-icon size="medium"@click="toggleExpand(index)">
+                    <ArrowDown v-if="!isExpanded[index]" />
+                    <ArrowUp v-if="isExpanded[index]" />
+                </el-icon>
             </div>
-            <p style="color: lightseagreen;">{{ thisCase.type }}</p>
-            <div>
-                <p style="color: darkgray;">文字记录1：{{ thisCase.word1 }}</p>
-            </div>
-            <div>
-                <p style="color: darkgray;">文字记录2：{{ thisCase.word2 }}</p>
-            </div>
-            <div>
-                <p style="color: darkgray;">文字记录3：{{ thisCase.word3 }}</p>
-            </div>
-            <div>
-                <p style="color: darkgray;">文字记录4：{{ thisCase.word4 }}</p>
-            </div>
-            <div >
-                <img :src="thisCase.photo1" class="caseImg"></img>
-                <img :src="thisCase.photo2" class="caseImg"></img>
-            </div>
-            <div>
-                <video-player :src="thisCase.video4" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
+            <div v-if="isExpanded[index]">
+                <p style="color: lightseagreen;">{{ thisCase.type }}</p>
+                <div>
+                    <p style="color: darkgray;">接诊记录：</p>
+                    <p>{{ thisCase.word1 }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">病例检查：</p>
+                    <p>{{ thisCase.word2 }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">诊断结果：</p>
+                    <p>{{ thisCase.word3 }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">治疗方案：</p>
+                    <p>{{ thisCase.word4 }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">接诊图片：</p>
+                    <img :src="thisCase.photo1" class="caseImg"></img>
+                    <p style="color: darkgray;">诊断结果：</p>
+                    <img :src="thisCase.photo2" class="caseImg"></img>
+                </div>
+                <div>
+                    <p style="color: darkgray;">方案演示：</p>
+                    <video-player :src="thisCase.video4" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
+                </div>
             </div>
         </el-card>
 
@@ -50,17 +63,58 @@
             <el-form-item label="病例种类">
             <el-input v-model="caseEditerList.type" placeholder="请输入病例种类"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录1">
+            <el-form-item label="接诊记录">
             <el-input v-model="caseEditerList.word1" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录2">
+            <el-form-item label="病例检查">
             <el-input v-model="caseEditerList.word2" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录3">
+            <el-form-item label="诊断结果">
             <el-input v-model="caseEditerList.word3" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录4">
+            <el-form-item label="治疗方案">
             <el-input v-model="caseEditerList.word4" placeholder="请输入文字记录"></el-input>
+            </el-form-item>
+            <el-form-item label="接诊图片">
+                <el-upload
+                class="upload-demo"
+                list-type="picture"
+                :before-remove="beforeRemove"
+                :limit=1
+                :auto-upload="false" 
+                :data="caseEditerList.photo1"
+                :on-change="changeEditerPhoto1"
+                accept=".jpg,.png,.jpeg,.tif,.tiff,.gif,.webp,.svg,.bmp">
+                <template #trigger>
+                    <el-button size="small">选取图片</el-button>
+                </template>
+                </el-upload>
+            </el-form-item>
+
+            <el-form-item label="诊断结果">
+                <el-upload
+                :limit=1
+                :auto-upload="false" 
+                :data="caseEditerList.photo2"
+                :on-change="changeEditerPhoto2"
+                accept=".jpg,.png,.jpeg,.tif,.tiff,.gif,.webp,.svg,.bmp">
+                <template #trigger>
+                    <el-button size="small">选取图片</el-button>
+                </template>
+                </el-upload>
+            </el-form-item>
+
+            <el-form-item label="方案演示">
+                <el-upload
+                :limit=1
+                :auto-upload="false" 
+                :data="caseEditerList.video4"
+                :on-change="changeEditerVideo4"
+                accept=".mp4,.m3ug,.flv,.mov,.dvr">
+                <template #trigger>
+                    <el-button size="small">选取视频</el-button>
+                </template>
+                </el-upload>
             </el-form-item>
         </el-form>
         <div class="dialog-footer">
@@ -78,19 +132,19 @@
             <el-form-item label="病例种类">
             <el-input v-model="caseAdderList.type" placeholder="请输入病例种类"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录1">
+            <el-form-item label="接诊记录">
             <el-input v-model="caseAdderList.word1" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录2">
+            <el-form-item label="病例检查">
             <el-input v-model="caseAdderList.word2" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录3">
+            <el-form-item label="诊断结果">
             <el-input v-model="caseAdderList.word3" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="文字记录4">
+            <el-form-item label="治疗方案">
             <el-input v-model="caseAdderList.word4" placeholder="请输入文字记录"></el-input>
             </el-form-item>
-            <el-form-item label="图片1">
+            <el-form-item label="接诊图片">
                 <el-upload
                 :limit=1
                 :auto-upload="false" 
@@ -105,7 +159,7 @@
                 </el-upload>
             </el-form-item>
 
-            <el-form-item label="图片2">
+            <el-form-item label="诊断结果">
                 <el-upload
                 :limit=1
                 :auto-upload="false" 
@@ -120,7 +174,7 @@
                 </el-upload>
             </el-form-item>
 
-            <el-form-item label="视频">
+            <el-form-item label="方案演示">
                 <el-upload
                 :limit=1
                 :auto-upload="false" 
@@ -160,12 +214,13 @@ import { VideoPlayer } from '@videojs-player/vue'
 import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
 import { get_all_cases,change_cname,change_photo1,change_photo2,change_type,change_video4,change_word1,change_word2,change_word3,change_word4,delete_case,insert_case,getLikeCases } from '@/api/api';
-import { ElMessage } from 'element-plus';
+import { ElMessage,ElMessageBox } from 'element-plus';
 
 const searchInformation = ref("")
 const { proxy } = getCurrentInstance()
 const currentCid = ref(0)
 const caseList = ref([])//定义响应式数组变量，存放全部病例
+const isExpanded = reactive({})
 const caseEditerList = ref({
     cid:'',
     cname:'',
@@ -193,6 +248,9 @@ const caseAdderList = ref({
 const caseEditerVisable = ref(false)
 const caseAdderVisable = ref(false)
 const caseDeleterVisable = ref(false)
+const photo1Change = ref(false)
+const photo2Change = ref(false)
+const video4Change = ref(false)
 
 onMounted(()=>{
     get_all_cases().then(res=>{
@@ -200,6 +258,10 @@ onMounted(()=>{
         caseList.value=res.data
     })
 })
+
+const toggleExpand = (index) => {
+    isExpanded[index] = !isExpanded[index];
+}
 
 // 搜索功能
 const searchInList = () => {
@@ -224,59 +286,83 @@ const showEditer = (thisCase) => {
     caseEditerList.value=thisCase;
 }
 
+//编辑病例-图片视频相关
+const changeEditerPhoto1 = (UploadFile) => {
+    caseEditerList.value.photo1 = UploadFile
+    photo1Change.value = true
+}
+
+// 新增病例-图片2相关
+const changeEditerPhoto2 = (UploadFile) => {
+    caseEditerList.value.photo2 = UploadFile
+}
+
+// 新增病例-视频相关
+const changeEditerVideo4 = (UploadFile) => {
+    caseEditerList.value.video4 = UploadFile
+}
+
 // 上传编辑后的病例
 const editCase = (data) => {
     console.log("cid:"+data.cid)
     console.log("cname:"+data.cname)
     change_cname(data.cid,data.cname).then(res=>{
-        if(res.state === 200)
-        {
-            console.log("更改成功")
-        }
     }).catch(error=>{
         console.log("错误err:"+error)
     });
     change_word1(data.cid,data.word1).then(res=>{
-        if(res.state === 200)
-        {
-            console.log("更改成功")
-        }
     }).catch(error=>{
         console.log("错误err:"+error)
     });
     change_word2(data.cid,data.word2).then(res=>{
-        if(res.state === 200)
-        {
-            console.log("更改成功")
-        }
     }).catch(error=>{
         console.log("错误err:"+error)
     });
     change_word3(data.cid,data.word3).then(res=>{
-        if(res.state === 200)
-        {
-            console.log("更改成功")
-        }
     }).catch(error=>{
         console.log("错误err:"+error)
     });
     change_word4(data.cid,data.word4).then(res=>{
-        if(res.state === 200)
-        {
-            console.log("更改成功")
-        }
     }).catch(error=>{
         console.log("错误err:"+error)
     });
     change_type(data.cid,data.type).then(res=>{
-        if(res.state === 200)
-        {
-            console.log("更改成功")
-        }
     }).catch(error=>{
         console.log("错误err:"+error)
     });
+    if (photo1Change === true){
+        let photo1 = new FormData();
+        photo1.append("photo1",data.photo1.raw)
+        change_photo1(data.cid,photo1).then(res=>{
+        }).catch(error=>{
+            console.log("错误err:"+error)
+        });
+        photo1Change.value = false
+    }
+    if (photo2Change === true){
+        let photo2 = new FormData();
+        photo2.append("photo2",data.photo2.raw)
+        change_photo2(data.cid,photo2).then(res=>{
+        }).catch(error=>{
+            console.log("错误err:"+error)
+        });
+        photo2Change.value = false
+    }
+    if (video4Change === true){
+        let video4 = new FormData();
+        video4.append("photo1",data.video4.raw)
+        change_video4(data.cid,video4).then(res=>{
+        }).catch(error=>{
+            console.log("错误err:"+error)
+        });
+        video4Change.value = false
+    }
+    ElMessage({
+        message:"更改信息成功！",
+        type:"success"
+    })
     caseEditerVisable.value=false;
+    location.reload()
 };
 
 // 删除病例
@@ -297,12 +383,6 @@ const deleteCase = (thisCid) => {
 const changePhoto1 = (UploadFile) => {
     caseAdderList.value.photo1 = UploadFile
 }
-// const uploadPhoto1 = (response,file,fileList) => {
-//     caseAdderList.value.photo1 = response.url
-//     console.log("res:"+response)
-//     console.log("file:"+file)
-//     console.log("fileList:"+fileList)
-// }
 
 // 新增病例-图片2相关
 const changePhoto2 = (UploadFile) => {
@@ -312,6 +392,16 @@ const changePhoto2 = (UploadFile) => {
 // 新增病例-视频相关
 const changeVideo4 = (UploadFile) => {
     caseAdderList.value.video4 = UploadFile
+}
+
+// 上传插件事件相关
+const beforeRemove = (uploadFile, uploadFiles) => {
+  return ElMessageBox.confirm(
+    `确定要移除文件 ${uploadFile.name} ?`
+  ).then(
+    () => true,
+    () => false
+  )
 }
 
 // 新增病例

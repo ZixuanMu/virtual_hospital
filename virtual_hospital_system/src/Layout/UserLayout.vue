@@ -1,6 +1,6 @@
 <template>
 
-<div style="height: 100%;" class="common-layout">
+<div class="common-layout">
 
     <el-container>
 
@@ -13,7 +13,7 @@
 
       <el-container>
 
-        <el-aside  style="height:830px; width:150px;">
+        <el-aside  style="height: 92vh; width:150px;">
           <div>
     
             <el-menu active-text-color="#409Eff"
@@ -49,7 +49,7 @@
           </div>
         </el-aside> 
         <el-main >
-          <el-scrollbar ref="scrollbarRef" height="780px" always @scroll="scroll">
+          <el-scrollbar ref="scrollbarRef" always @scroll="scroll">
 
           <div >
           <router-view></router-view>

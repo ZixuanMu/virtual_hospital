@@ -198,6 +198,9 @@ const initViewer = async function () {
       // },
       'fullscreen',
    ],
+   minFov:50,
+   maxFov:80,
+   defaultZoomLvl: 0.6,
    plugins: [], // 标记点
    size: {
      width: '98vw',

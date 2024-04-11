@@ -93,6 +93,9 @@
 
             <el-form-item label="诊断结果">
                 <el-upload
+                class="upload-demo"
+                list-type="picture"
+                :before-remove="beforeRemove"
                 :limit=1
                 :auto-upload="false" 
                 :data="caseEditerList.photo2"
@@ -106,6 +109,7 @@
 
             <el-form-item label="方案演示">
                 <el-upload
+                :before-remove="beforeRemove"
                 :limit=1
                 :auto-upload="false" 
                 :data="caseEditerList.video4"
@@ -146,6 +150,9 @@
             </el-form-item>
             <el-form-item label="接诊图片">
                 <el-upload
+                class="upload-demo"
+                list-type="picture"
+                :before-remove="beforeRemove"
                 :limit=1
                 :auto-upload="false" 
                 :data="caseAdderList.photo1"
@@ -154,13 +161,14 @@
                 <template #trigger>
                     <el-button size="small">选取图片</el-button>
                 </template>
-                <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button> 
                 </el-upload>
             </el-form-item>
 
             <el-form-item label="诊断结果">
                 <el-upload
+                class="upload-demo"
+                list-type="picture"
+                :before-remove="beforeRemove"
                 :limit=1
                 :auto-upload="false" 
                 :data="caseAdderList.photo2"
@@ -169,13 +177,12 @@
                 <template #trigger>
                     <el-button size="small">选取图片</el-button>
                 </template>
-                <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button> 
                 </el-upload>
             </el-form-item>
 
             <el-form-item label="方案演示">
                 <el-upload
+                :before-remove="beforeRemove"
                 :limit=1
                 :auto-upload="false" 
                 :data="caseAdderList.video4"
@@ -184,8 +191,6 @@
                 <template #trigger>
                     <el-button size="small">选取视频</el-button>
                 </template>
-                <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button>
                 </el-upload>
             </el-form-item>
 
@@ -290,22 +295,24 @@ const showEditer = (thisCase) => {
 const changeEditerPhoto1 = (UploadFile) => {
     caseEditerList.value.photo1 = UploadFile
     photo1Change.value = true
+    console.log("photo1:"+photo1Change.value)
 }
 
 // 新增病例-图片2相关
 const changeEditerPhoto2 = (UploadFile) => {
     caseEditerList.value.photo2 = UploadFile
+    photo2Change.value = true
+    console.log("photo2:"+photo2Change.value)
 }
 
 // 新增病例-视频相关
 const changeEditerVideo4 = (UploadFile) => {
     caseEditerList.value.video4 = UploadFile
+    video4Change.value = true
+    console.log("video4:"+video4Change.value)
 }
-
 // 上传编辑后的病例
 const editCase = (data) => {
-    console.log("cid:"+data.cid)
-    console.log("cname:"+data.cname)
     change_cname(data.cid,data.cname).then(res=>{
     }).catch(error=>{
         console.log("错误err:"+error)
@@ -330,28 +337,34 @@ const editCase = (data) => {
     }).catch(error=>{
         console.log("错误err:"+error)
     });
-    if (photo1Change === true){
+    if (photo1Change.value === true){
         let photo1 = new FormData();
+        photo1.append("cid",data.cid)
         photo1.append("photo1",data.photo1.raw)
-        change_photo1(data.cid,photo1).then(res=>{
+        change_photo1(photo1).then(res=>{
+            console.log(res)
         }).catch(error=>{
             console.log("错误err:"+error)
         });
         photo1Change.value = false
     }
-    if (photo2Change === true){
+    if (photo2Change.value === true){
         let photo2 = new FormData();
+        photo2.append("cid",data.cid)
         photo2.append("photo2",data.photo2.raw)
-        change_photo2(data.cid,photo2).then(res=>{
+        change_photo2(photo2).then(res=>{
+            console.log(res)
         }).catch(error=>{
             console.log("错误err:"+error)
         });
         photo2Change.value = false
     }
-    if (video4Change === true){
+    if (video4Change.value === true){
         let video4 = new FormData();
-        video4.append("photo1",data.video4.raw)
-        change_video4(data.cid,video4).then(res=>{
+        video4.append("cid",data.cid)
+        video4.append("video4",data.video4.raw)
+        change_video4(video4).then(res=>{
+            console.log(res)
         }).catch(error=>{
             console.log("错误err:"+error)
         });

@@ -371,11 +371,10 @@ const editCase = (data) => {
         video4Change.value = false
     }
     ElMessage({
-        message:"更改信息成功！",
+        message:"更改信息成功！请耐心等待文件传输完毕",
         type:"success"
     })
     caseEditerVisable.value=false;
-    location.reload()
 };
 
 // 删除病例

@@ -106,7 +106,7 @@
 <script setup>
 import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { Plus } from '@element-plus/icons-vue'
-import { get_all_users,change_user_password,delete_user,register } from '@/api/api';
+import { get_all_users,change_user_password,delete_user,register,getLikeUsers } from '@/api/api';
 import { ElMessage } from 'element-plus';
 
 const searchInformation = ref("")
@@ -147,7 +147,7 @@ onMounted(()=>{
 
 // 搜索功能
 const searchInList = () => {
-     getLikeCases(searchInformation.value).then(res=>{
+     getLikeUsers(searchInformation.value).then(res=>{
         if(res.state === 200)
          {
              userList.value=res.data

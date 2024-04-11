@@ -14,7 +14,7 @@
     
           <el-container>
     
-            <el-aside style="min-height: 625px;width:150px;">
+            <el-aside style="height:92vh; width:150px;">
            <div>
         
           <el-menu  active-text-color="#409Eff"
@@ -32,7 +32,9 @@
             </el-menu-item>
             <el-menu-item index="/userManage" @click="navigateTo('/userManage')">
               用户管理
-
+            </el-menu-item>
+            <el-menu-item index="/studyManage" @click="navigateTo('/studyManage')">
+              学习管理
             </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>
@@ -41,7 +43,7 @@
         </div>
             </el-aside> 
             <el-main>
-              <el-scrollbar ref="scrollbarRef" height="100%" always @scroll="scroll">
+              <el-scrollbar ref="scrollbarRef" always @scroll="scroll">
     
               <div>
               <router-view></router-view>

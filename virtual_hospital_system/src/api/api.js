@@ -61,23 +61,23 @@ export const change_cname = (cid,cname) => {
   })
 }
 
-export const change_photo1 = data => {
+export const change_photo1 = (cid,formData) => {
   return post ({
-    url: '/cases/change_photo1',
+    url: '/cases/change_photo1?cid='+cid,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
-    data
+    data:formData
   })
 }
 
-export const change_photo2 = data => {
+export const change_photo2 = (cid,formData) => {
   return post ({
-    url: '/cases/change_photo2',
+    url: '/cases/change_photo2?cid='+cid,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
-    data
+    data:formData
   })
 }
 
@@ -86,13 +86,13 @@ export const change_type = (cid,type) => {
     url: '/cases/change_type?cid='+cid+'&type='+type,
   })
 }
-export const change_video4 = data => {
+export const change_video4 = (cid,formData) => {
   return post ({
-    url: '/cases/change_video4',
+    url: '/cases/change_video4?cid='+cid,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
-    data
+    data:formData
   })
 }
 export const change_word1 = (cid,word1) => {
@@ -175,5 +175,119 @@ export const register = (formData) => {
       'Content-Type': 'multipart/form-data',
     },
     data:formData
+  })
+}
+
+export const getLikeUsers = (username) => {
+  return get({
+    url:'/manager/get_like_users?username='+username,
+    headers:{
+      'Content-Type': 'application/json'
+    },
+  })
+}
+
+export const get_all_duties = data => {
+  return get ({
+    url: '/duty/get_all_duties',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+
+
+export const change_actor = (did,actor) => {
+  return post ({
+    url: '/duty/change_duty?did='+did+'&actor='+actor,
+  })
+}
+
+export const change_name = (did,name) => {
+  return post ({
+    url: '/duty/change_name?did='+did+'&name='+name,
+  })
+}
+
+export const change_content = (did,content) => {
+  return post ({
+    url: '/duty/change_content?did='+did+'&content='+content,
+  })
+}
+
+export const change_video = data => {
+  return post ({
+    url: '/duty/change_video',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}       
+
+export const delete_duty = (did) => {
+  return post ({
+    url: '/duty/delete_duty?did='+did,
+  })
+}
+
+export const getDutyByActor = data => {
+  return get ({
+    url: '/duty/getDutyByActor',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+
+export const getDutyByName = data => {
+  return get ({
+    url: '/duty/getDutyByName',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+
+export const getDepartmentByDid = data => {
+  return get({
+    url: 'department/getDepartmentByDid',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    data
+  })
+}
+
+export const getEidByDid = data => {
+  return get({
+    url: 'equipment/getEidByDid',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    data
+  })
+}
+
+export const getEquipmentByEid = data => {
+  return get({
+    url: 'equipment/getEquipmentByEid',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    data
+  })
+}
+
+export const getAllMedicine = data => {
+  return get({
+    url: 'medicine/getAllMedicine',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    data
   })
 }

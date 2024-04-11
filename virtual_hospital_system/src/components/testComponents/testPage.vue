@@ -16,8 +16,7 @@
               class="serial-number"
               size="mini"
               :class="{
-              'yi-zuo-da': item.answer && item.answer.length != 0
-
+              'yi-zuo-da': item.da !='未作答'
               }"
             >
               {{ index + 1 }}
@@ -81,6 +80,9 @@
 </template>
 
 <script>
+import { admitexam } from "@/api/examApi";
+
+export {admitexam} from "@/api/examApi"
 export default {
   data() {
     return {
@@ -88,29 +90,62 @@ export default {
 
         // 其他单选题目...
       ],
+      userAnswers:'',
       navgatorIndex: null,
       listBoxState: true, //点击导航栏时，暂时停止监听页面滚动
       isSkip: true,
       isShiTi: false,
+      exid:'',
     };
   },
   methods: {
 
           getSubmit() {
-        let score = 0; // 初始化得分为0
-        this.examDetails.forEach((question) => {
-          // 遍历每个问题
-          if (question.da === question.correctAnswer) {
-            // 如果用户的答案等于正确答案
-            score++; // 分数加1
-          }
-        });
 
-        // 提示用户分数
-        this.$message({
-          message: `您的分数为: ${score}`,
-          type: "success",
-        });
+            this.examDetails.forEach((exam, index) => {
+    
+      
+      // 将用户答案拼接到字符串中
+
+      if(exam.da===0){
+      this.userAnswers += 'A';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else if(exam.da === 1){
+      this.userAnswers += 'B';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else if(exam.da ===2){
+      this.userAnswers += 'C';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else if(exam.da ===3){
+      this.userAnswers += 'D';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else{
+      this.userAnswers += exam.da ;
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+
+
+
+
+
+    });
+    console.log(this.userAnswers)
+        const res  =  admitexam(this.exid,this.userAnswers);
+        console.log('res:',res)
       },
 
 
@@ -179,10 +214,11 @@ export default {
   },
   mounted() {
     // 获取通过路由传递的数据
+    this.exid = this.$route.query.exid;
     this.examDetails = JSON.parse(this.$route.query.topicnumber).map((topic) => ({
       content: topic.content,
       options: [topic.contentA, topic.contentB, topic.contentC,topic.contentD],
-      da: null,
+      da: '未作答',
       mark: false,
     }));
     console.log(this.examDetails)
@@ -226,6 +262,8 @@ export default {
   height: 45px;
   font-size: 16px;
 }
+
+
 /* 具体样式：试题样式 */
 .exam-details {
   margin-bottom: 10px;

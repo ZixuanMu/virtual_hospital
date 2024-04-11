@@ -19,3 +19,19 @@ export const changeEname = (exid,content) => {
       url: '/exams/changeExamName?exid='+exid+'&content='+content,
     })
   }
+
+  export async function getCompletedExams() {
+    return get({
+      url: '/tests/getallmyexams',
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+  export const admitexam = (exid,result) => {
+    return post ({
+      url: '/tests/admitexam?exid='+exid+'&result='+result,
+    })
+  }
+  

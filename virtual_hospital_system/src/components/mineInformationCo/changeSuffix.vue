@@ -1,66 +1,82 @@
 <template>
-    <el-upload
-      class="avatar-uploader"
-      action="http://106.54.206.14:8080/users/change_suffix"
-      :show-file-list="false"
-      :on-success="handleAvatarSuccess"
-      :before-upload="beforeAvatarUpload"
-    >
-      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-    </el-upload>
-  </template>
-  
-  <script lang="js" setup>
-  import { ref } from 'vue';
-  import { ElMessage } from 'element-plus';
-  import { Plus } from '@element-plus/icons-vue';
-  
-  const imageUrl = ref('');
+  <el-upload
+    :limit="1"
+    :auto-upload="false"
+    :data="suffix"
+    :on-change="changesuffix"
+    accept=".jpg,.png,.jpeg,.tif,.tiff,.gif,.webp,.svg,.bmp"
+  >
+    <template #trigger>
+      <el-button size="small">选取图片</el-button>
+    </template>
+  </el-upload>
+  <el-button type="primary" @click="submit">确定</el-button>
+</template>
 
-  const handleAvatarSuccess = (response, uploadFile) => {
-    imageUrl.value = URL.createObjectURL(uploadFile.raw);
-  };
+<script setup>
+import { ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { reqUpload } from '@/api/mineInformationApi';
+
+const suffix = ref("");
+const changesuffix = (UploadFile) => {
+  suffix.value = UploadFile;
+};
+const submit = async () => {
+  let formData = new FormData();
+   console.log(suffix.value.raw)
+    formData.append("file",suffix.value.raw);
+
+    reqUpload(formData).then(res=>{
+        if(res.state === 200)
+        {
+            ElMessage({
+                message:'上传成功！',
+                type:'success',
+                duration:1500
+            })
   
-  const beforeAvatarUpload = (rawFile) => {
-    if (rawFile.type !== 'image/jpeg') {
-      ElMessage.error('Avatar picture must be JPG format!');
-      return false;
-    } else if (rawFile.size / 1024 / 1024 > 2) {
-      ElMessage.error('Avatar picture size can not exceed 2MB!');
-      return false;
-    }
-    return true;
-  };
+            location.reload()
+        }})
+    .catch(err => {
+      ElMessage({
+        message: '服务器出错啦',
+        type: 'error',
+        duration: 1500
+      });
+      console.error(err);
+    });
+  
+};
 </script>
 
-  <style scoped>
-  .avatar-uploader .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-  </style>
-  
-  <style>
-  .avatar-uploader .el-upload {
-    border: 1px dashed var(--el-border-color);
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: var(--el-transition-duration-fast);
-  }
-  
-  .avatar-uploader .el-upload:hover {
-    border-color: var(--el-color-primary);
-  }
-  
-  .el-icon.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    text-align: center;
-  }
-  </style>
+<style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>

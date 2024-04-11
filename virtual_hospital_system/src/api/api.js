@@ -172,7 +172,7 @@ export const register = (formData) => {
   return post ({
     url: '/manager/register',
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'file/form-data',
     },
     data:formData
   })

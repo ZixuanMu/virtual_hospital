@@ -2,7 +2,7 @@
   <div class="video-list">
     <div class="video-item" v-for="(video, index) in videos" :key="index" @click="openVideoPage(video)">
       <div class="video-container">
-        <img :src="video.thumbnailUrl" alt="视频预览图" class="thumbnail">
+        <img :src="require('./pic/'+video.thumbnailUrl)" alt="视频预览图" class="thumbnail">
         <p class="description">{{ video.description }}</p>
       </div>
     </div>
@@ -26,26 +26,26 @@ export default {
     const router = useRouter()
     const videos = ref([
       {
-        index: 1,
-        thumbnailUrl: "https://via.placeholder.com/100x70",
+        index: 18,
+        thumbnailUrl: "jiedai.jpg",
         description: "接待挂号",
         videoUrl: "" // 初始为空，后续会由接口赋值
       },
          {
-          index: 2,
-          thumbnailUrl: "https://via.placeholder.com/100x70",
+          index: 19,
+          thumbnailUrl: "zixun.jpg",
           description: "导医咨询",
           videoUrl: "" // 初始为空，后续会由接口赋值
         },
         {
-          index: 3,
-          thumbnailUrl: "https://via.placeholder.com/100x70",
+          index: 20,
+          thumbnailUrl: "dangan.jpg",
           description: "病历档案发出与回收",
           videoUrl: "" // 初始为空，后续会由接口赋值
         },
         {
-          index: 4,
-          thumbnailUrl: "https://via.placeholder.com/100x70",
+          index: 21,
+          thumbnailUrl: "shoufei.jpg",
           description: "收费",
           videoUrl: "" // 初始为空，后续会由接口赋值
         },
@@ -61,15 +61,6 @@ export default {
         }).then(response => response.json()).then(data =>{ 
           video.videoUrl = data.data.video;  
         console.log("vurl:",data.data.video)
-    //     // 打开到新的页面播放视频，
-    //     // 跳转到详情的页面
-    //           router.push({
-    //               path:'/funlearn/videoPlay/videoPlay',
-    //               query:video.videourl
-    //      // 多个参数这样的写法
-    //      // query:{Shuju}
-    //  })
-    
     router.push({
     path:'/funlearn/videoPlay/videoPlay',
     query:{ vurl: video.videoUrl} // 确保这里传递了正确的参数

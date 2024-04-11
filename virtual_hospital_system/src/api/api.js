@@ -138,3 +138,42 @@ export const getLikeCases = (cname) => {
     },
   })
 }
+export async function getExams() {  
+  return get ({
+    url: '/exams/getExams',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export const get_all_users = data => {
+  return get ({
+    url: '/manager/get_all_users',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+export const change_user_password = (uid,password) => {
+  return post ({
+    url: '/manager/change_user_password?uid='+uid+'&password='+password,
+  })
+}
+
+export const delete_user = (uid) => {
+  return post ({
+    url: '/manager/delete_user?uid='+uid,
+  })
+}
+
+export const register = (formData) => {
+  return post ({
+    url: '/manager/register',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data:formData
+  })
+}

@@ -18,13 +18,13 @@ export default {
     const router = useRouter()
     const videos = ref([
         {
-          index: 17,
+          index: 34,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术无菌要求",
           videoUrl: "https://www.example.com/video1.mp4" // 示例视频 URL
         },
         {
-          index: 18,
+          index: 35,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "常规手术、特殊手等的操作规范",
           videoUrl: "https://www.example.com/video2.mp4" // 示例视频 URL

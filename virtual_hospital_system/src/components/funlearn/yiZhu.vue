@@ -19,73 +19,73 @@ export default {
     const router = useRouter()
     const videos = ref([
         {
-          index: 5,
+          index: 22,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "静脉注射",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 6,
+          index: 23,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "皮下注射",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 7,
+          index: 24,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "肌肉注射",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 8,
+          index: 25,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "局部封闭注射",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 9,
+          index: 26,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "常见问题的处理方法",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 10,
+          index: 27,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "输液泵、加热垫的使用方法",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 11,
+          index: 28,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "注射室的消毒流程",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 12,
+          index: 29,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术前对宠物进行麻前给药、注射麻醉、吸入麻醉的流程",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 13,
+          index: 30,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "保定、剃毛、消毒的流程",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 14,
+          index: 31,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "常见手术器械的介绍",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 15,
+          index: 32,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术器械包的准备、灭菌流程",
           videoUrl: "" // 示例视频 URL
         },
         {
-          index: 16,
+          index: 33,
           thumbnailUrl: "https://via.placeholder.com/100x70", // 示例预览图 URL
           description: "手术人员的消毒、穿戴手术衣流程",
           videoUrl: "" // 示例视频 URL

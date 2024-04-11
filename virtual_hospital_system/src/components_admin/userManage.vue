@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 20px;">
 
-      <el-button type="primary" style="margin-bottom: 20px;" @click="caseAdderVisable=true">新增用户</el-button>
+      <el-button type="primary" style="margin-bottom: 20px;" @click="userAdderVisable=true">新增用户</el-button>
 
       <!-- 搜索栏 -->
       <el-input placeholder="输入搜索内容" v-model="searchInformation" clearable style="margin-bottom: 20px;">
@@ -13,11 +13,11 @@
       </el-input>
 
       <!-- 病例显示列表 -->
-      <el-card style="margin-bottom: 20px;" v-for="thisUser in caseList" :key="thisUser.uid">
+      <el-card style="margin-bottom: 20px;" v-for="thisUser in userList" :key="thisUser.uid">
           <div>
               <span>Uid:{{ thisUser.uid }}</span>
               <el-button type="text" @click="showEditer(thisUser);currentUid=thisUser.uid">修改密码</el-button>
-              <el-button type="text" @click="caseDeleterVisable=true;currentUid=thisUser.uid">删除帐户</el-button>
+              <el-button type="text" @click="userDeleterVisable=true;currentUid=thisUser.uid">删除帐户</el-button>
           </div>
           <p style="color: lightcoral;" v-if="thisUser.ismanager === 1">管理员</p>
           <p style="color: blue;" v-if="thisUser.ismanager === 0">普通用户</p>
@@ -29,7 +29,7 @@
           </div>
           <div>
             <p style="color: darkgray;" v-if="thisUser.sex === 1">性别：男</p>
-            <p style="color: darkgray;" v-if="thisUser.ismanager === 0">性别：女</p>
+            <p style="color: darkgray;" v-if="thisUser.sex === 0">性别：女</p>
           </div>
           <div>
               <p style="color: darkgray;">电话：{{ thisUser.phone }}</p>
@@ -39,31 +39,19 @@
           </div>
       </el-card>
         <!-- 修改密码模块 -->
-        <el-dialog v-model="caseEditerVisable" title="修改密码">
-        <el-form :model="caseEditerList" ref="myEditerList">
+        <el-dialog v-model="userEditerVisable" title="修改密码">
+        <el-form :model="userEditerList" ref="myEditerList">
             <el-form-item label="修改密码">
-            <el-input v-model="caseEditerList.password" placeholder="请输入新密码"></el-input>
+            <el-input v-model="userEditerList.password" placeholder="请输入新密码"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="文字记录1">
-            <el-input v-model="caseEditerList.password" placeholder="请输入密码"></el-input>
-            </el-form-item>
-            <el-form-item label="文字记录2">
-            <el-input v-model="caseEditerList.word2" placeholder="请输入文字记录"></el-input>
-            </el-form-item>
-            <el-form-item label="文字记录3">
-            <el-input v-model="caseEditerList.word3" placeholder="请输入文字记录"></el-input>
-            </el-form-item>
-            <el-form-item label="文字记录4">
-            <el-input v-model="caseEditerList.word4" placeholder="请输入文字记录"></el-input>
-            </el-form-item> -->
         </el-form>
         <div class="dialog-footer">
-            <el-button @click="caseEditerVisable = false">取消</el-button>
-            <el-button type="primary" @click="editCase(caseEditerList)">确定</el-button>
+            <el-button @click="userEditerVisable = false">取消</el-button>
+            <el-button type="primary" @click="editCase(userEditerList)">确定</el-button>
         </div>
         </el-dialog>
         <!-- 新增用户模块 -->
-        <el-dialog v-model="caseAdderVisable" title="新增用户">
+        <el-dialog v-model="userAdderVisable" title="新增用户">
         <el-form :model="caseAdderList" label-width = 'auto' ref="myAdderList" >
             <el-form-item label="用户名" >
             <el-input v-model="caseAdderList.username" placeholder="请输入用户名"></el-input>
@@ -78,8 +66,7 @@
             <el-input v-model="caseAdderList.phone" placeholder="请输入电话"></el-input>
             </el-form-item>
             <el-form-item label="性别">
-            <!-- <el-input v-model="caseAdderList.sex" placeholder="请输入性别"></el-input> -->
-            <el-select v-model="caseAdderList.sex" placeholder="男">
+            <el-select v-model="caseAdderList.sex" placeholder="男或女">
                     <el-option  :value =1 label="男">男</el-option>
                     <el-option  :value =0 label="女">女</el-option>
              </el-select>
@@ -98,18 +85,18 @@
                 </el-upload> 
             </el-form-item>
         </el-form>
-        <div class="dialog-footer">
-            <el-button @click="caseAdderVisable = false">取消</el-button>
+        <div class="dialog-footer" >
+            <el-button @click="userAdderVisable = false">取消</el-button>
             <el-button type="primary" @click="addCase">确定</el-button>
         </div>
         </el-dialog>
 
 
         <!-- 删除提示 -->
-        <el-dialog v-model="caseDeleterVisable" title="删除用户">
+        <el-dialog v-model="userDeleterVisable" title="删除用户">
             <div>确定删除？</div>
             <div class="dialog-footer">
-                <el-button @click="caseDeleterVisable = false">取消</el-button>
+                <el-button @click="userDeleterVisable = false">取消</el-button>
                 <el-button type="primary" @click="deleteUser(currentUid)">确定</el-button>
             </div>
         </el-dialog>
@@ -125,8 +112,8 @@ import { ElMessage } from 'element-plus';
 const searchInformation = ref("")
 const { proxy } = getCurrentInstance()
 const currentUid = ref(0)
-const caseList = ref([])
-const caseEditerList = ref({
+const userList = ref([])
+const userEditerList = ref({
     email:'',
     ismanager: '',
     password: '',
@@ -146,39 +133,39 @@ const caseAdderList = ref({
     uid: '',
     username: ''
 })
-const caseEditerVisable = ref(false)
-const caseAdderVisable = ref(false)
-const caseDeleterVisable = ref(false)
+const userEditerVisable = ref(false)
+const userAdderVisable = ref(false)
+const userDeleterVisable = ref(false)
 
 onMounted(()=>{
     get_all_users().then(res=>{
         console.log(res)
-        caseList.value=res.data
+        userList.value=res.data
     })
     
 })
 
-// // 搜索功能
-// const searchInList = () => {
-//     getLikeCases(searchInformation.value).then(res=>{
-//         if(res.state === 200)
-//         {
-//             caseList.value=res.data
-//         }
-//     }).catch(err=>{
-//         ElMessage({
-//             message:"服务器或网络出错",
-//             type:"error",
-//             duration:1500
-//         })
-//         console.log(err)
-//     })
-// }
+// 搜索功能
+const searchInList = () => {
+     getLikeCases(searchInformation.value).then(res=>{
+        if(res.state === 200)
+         {
+             userList.value=res.data
+         }
+     }).catch(err=>{
+         ElMessage({
+             message:"服务器或网络出错",
+             type:"error",
+             duration:1500
+        })
+         console.log(err)
+     })
+ }
 
 // 显示编辑列表并赋值
 const showEditer = (thisUser) => {
-    caseEditerVisable.value = true;
-    caseEditerList.value=thisUser;
+    userEditerVisable.value = true;
+    userEditerList.value=thisUser;
 }
 
 // 上传编辑后的病例
@@ -193,7 +180,7 @@ const editCase = (data) => {
     }).catch(error=>{
         console.log("错误err:"+error)
     });  
-    caseEditerVisable.value=false;
+    userEditerVisable.value=false;
 };
 
 // 删除用户
@@ -202,7 +189,7 @@ const deleteUser = (thisUid) => {
         if(res.state === 200)
         {
             proxy.$message.success("删除成功")
-            caseDeleterVisable.value=false
+            userDeleterVisable.value=false
             location.reload()
         }
     }).catch(error=>{
@@ -236,7 +223,7 @@ const addCase = () => {
                 type:'success',
                 duration:1500
             })
-            caseAdderVisable.value=false
+            userAdderVisable.value=false
             location.reload()
         }
         else if(res.state === 4001)
@@ -263,7 +250,7 @@ const addCase = () => {
                 type:'error',
                 duration:1500
             })
-        caseAdderVisable.value=false
+        userAdderVisable.value=false
         console.error(err)
     })
 }

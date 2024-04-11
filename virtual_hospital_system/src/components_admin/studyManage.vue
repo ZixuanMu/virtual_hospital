@@ -13,7 +13,7 @@
         </el-input>
 
         <!-- 病例显示列表 -->
-        <el-card style="margin-bottom: 20px;" v-for="thisCase in caseList" :key="thisCase.did">
+        <!-- <el-card style="margin-bottom: 20px;" v-for="thisCase in caseList" :key="thisCase.did">
             <div>
                 <span>{{ thisCase.did }}</span>
                 <el-button type="text" @click="showEditer(thisCase);currentDid=thisCase.did">编辑</el-button>
@@ -28,6 +28,32 @@
             </div>
             <div>
                 <video-player :src="thisCase.video" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
+            </div>
+        </el-card> -->
+        <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.did">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>{{ thisCase.did }}</span>
+                <el-button type="primary" @click="showEditer(thisCase);currentCid=thisCase.did" style="position: absolute;left:70%">编辑</el-button>
+                <el-button type="danger" @click="caseDeleterVisable=true;currentDid=thisCase.did"style="position: absolute;left:80%">删除</el-button>
+                <el-icon size="medium"@click="toggleExpand(index)">
+                    <ArrowDown v-if="!isExpanded[index]" />
+                    <ArrowUp v-if="isExpanded[index]" />
+                </el-icon>
+            </div>
+            <div v-if="isExpanded[index]">
+                <p style="color: lightseagreen;">角色：{{ thisCase.actor }}</p>
+                <div>
+                    <p style="color: darkgray;">职责名：</p>
+                    <p>{{ thisCase.name }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">职责内容：</p>
+                    <p>{{ thisCase.content }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">演示：</p>
+                    <video-player :src="thisCase.video" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
+                </div>
             </div>
         </el-card>
 
@@ -101,13 +127,14 @@ import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { VideoPlayer } from '@videojs-player/vue'
 import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
-import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,getDutyByName } from '@/api/api';
+import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,getDutyByName,insert_duty } from '@/api/api';
 import { ElMessage } from 'element-plus';
 
 const searchInformation = ref("")
 const { proxy } = getCurrentInstance()
 const currentDid = ref(0)
-const caseList = ref([])//定义响应式数组变量，存放全部病例
+const caseList = ref([])//定义响应式数组变量
+const isExpanded = reactive({})
 const caseEditerList = ref({
     actor: "",
     content: "",
@@ -132,6 +159,10 @@ onMounted(()=>{
         caseList.value=res.data
     }) 
 })
+
+const toggleExpand = (index) => {
+    isExpanded[index] = !isExpanded[index];
+}
 
 // 搜索功能
 const searchInList = () => {
@@ -185,6 +216,7 @@ const editCase = (data) => {
         console.log("错误err:"+error)
     });
     caseEditerVisable.value=false;
+    location.reload()
 };
 
 // 删除职责
@@ -214,7 +246,7 @@ const addCase = () => {
     formData.append("content",caseAdderList.value.content);
     formData.append("name",caseAdderList.value.name);
     formData.append("video",caseAdderList.value.video.raw);
-    insert_case(formData).then(res=>{
+    insert_duty(formData).then(res=>{
         if(res.state === 200)
         {
             ElMessage({

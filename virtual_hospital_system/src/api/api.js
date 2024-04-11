@@ -197,6 +197,15 @@ export const get_all_duties = data => {
   })
 }
 
+export const insert_duty = (formData) => {
+  return post ({
+    url: '/duty/insert_duty',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data:formData
+  })
+}
 
 export const change_actor = (did,actor) => {
   return post ({
@@ -216,13 +225,13 @@ export const change_content = (did,content) => {
   })
 }
 
-export const change_video = data => {
+export const change_video = (did,formData) => {
   return post ({
-    url: '/duty/change_video',
+    url: '/duty/change_video?did='+did,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
-    data
+    data:formData
   })
 }       
 

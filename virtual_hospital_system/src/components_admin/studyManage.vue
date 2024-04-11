@@ -139,7 +139,7 @@ import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { VideoPlayer } from '@videojs-player/vue'
 import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
-import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,getDutyByName,insert_duty } from '@/api/api';
+import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,insert_duty } from '@/api/api';
 import { ElMessage,ElMessageBox } from 'element-plus';
 
 const searchInformation = ref("")
@@ -288,6 +288,8 @@ const addCase = () => {
     formData.append("content",caseAdderList.value.content);
     formData.append("name",caseAdderList.value.name);
     insert_duty(formData).then(res=>{
+
+        console.log(res)
         if(res.state === 200)
         {
             ElMessage({

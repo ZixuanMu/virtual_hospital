@@ -37,7 +37,8 @@ export default {
   },
   computed: {
     parsedResult() {
-      var str =this.examData.result.replace(/"/g, '')
+      var resultString = JSON.stringify(this.examData.result);
+      var str =resultString.replace(/"/g, '').replace(/\\/g, '');
       return str.split(",");
     }
   },

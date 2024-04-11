@@ -141,7 +141,7 @@ const initViewer = async function () {
       },
       {
           id: 3,
-          title: 'goLeft',
+          title: '上一个科室',
           content: '<',
           onClick: () => {
             if(thisDid.value === '4')
@@ -172,10 +172,10 @@ const initViewer = async function () {
       },
       {
           id: 4,
-          title: 'goRight',
+          title: '下一个科室',
           content: '>',
           onClick: () => {
-            if(thisDid === '17')
+            if(thisDid.value === '17')
             {
               router.afterEach(() => {
                 location.reload();

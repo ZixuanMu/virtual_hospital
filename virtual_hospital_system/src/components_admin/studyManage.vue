@@ -33,8 +33,8 @@
         <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.did">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>{{ thisCase.did }}</span>
-                <el-button type="primary" @click="showEditer(thisCase);currentCid=thisCase.did" style="position: absolute;left:70%">编辑</el-button>
-                <el-button type="danger" @click="caseDeleterVisable=true;currentDid=thisCase.did"style="position: absolute;left:80%">删除</el-button>
+                <el-button type="primary" @click="showEditer(thisCase);currentCid=thisCase.did" style="position: relative;">编辑</el-button>
+                <el-button type="danger" @click="caseDeleterVisable=true;currentDid=thisCase.did"style="position: relative;">删除</el-button>
                 <el-icon size="medium"@click="toggleExpand(index)">
                     <ArrowDown v-if="!isExpanded[index]" />
                     <ArrowUp v-if="isExpanded[index]" />

@@ -12,6 +12,7 @@ import AdminLayout from '@/Layout/AdminLayout.vue'
 import caseManage from '@/components_admin/caseManage.vue'
 import testManage from '@/components_admin/testManage.vue'
 import topicManage from '@/components_admin/topicManage.vue';
+import userManage from '@/components_admin/userManage.vue';
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
@@ -19,8 +20,10 @@ import shouYi from '@/components/funlearn/shouYi.vue'
 import store from '@/store';
 import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
-import userManage from '@/components_admin/userManage.vue';
 import fullScreenView from '@/components/fullScreenView.vue';
+import testShow from '@/components_admin/testShow.vue';
+import myTestPage from '@/components/testComponents/myTestPage.vue';
+
 const routes = [
 
   {
@@ -93,7 +96,11 @@ const routes = [
         name:"shouyi",
         component: shouYi,
       },
-
+      {
+        path:'/myTestPage',
+        name:"myTestPage",
+        component:myTestPage,
+      }
     ]
   },
   {
@@ -122,6 +129,11 @@ const routes = [
         name:"userManage",
         component:userManage,
       },
+      {
+        path:"/testShow",
+        name:"testShow",
+        component:testShow,
+      }
     ]
   },
   {

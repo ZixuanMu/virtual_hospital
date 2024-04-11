@@ -1,46 +1,119 @@
 <template>
   <div>
-    <h2>线上考试列表</h2>
-    <el-card v-for="exam in exams" :key="exam.id" class="exam" :header="exam.name">
-      <p>日期: {{ exam.date }}</p>
-      <p>时间: {{ exam.time }}</p>
-      <el-button @click="joinExam(exam.id)">加入考试</el-button>
-      <el-button @click="showScore(exam.score)">查看考试成绩</el-button>
-    </el-card>
+    <el-menu
+      :default-active="activeIndex2"
+      class="el-menu-demo"
+      mode="horizontal"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+      @select="handleSelect"
+    >
+      <el-menu-item index="1">已参与的考试</el-menu-item>
+      <el-menu-item index="2">未参与的考试</el-menu-item>
+    </el-menu>
+
+    <div>
+            <!-- 根据菜单选择的不同，展示不同的考试列表 -->
+      <el-card v-for="exam in selectedExams" :key="exam.exid" class="exam" :header="exam.content">
+        <p>考试时间:10分钟 </p>
+        <el-button  v-if="exam.completed"@click="getMyExam1(exam.exid)">查看考试记录</el-button>
+        <el-button v-if="!exam.completed" @click="getExamByExid(exam.exid)">加入考试</el-button>
+        <el-button v-if="exam.completed" @click="showScore(exam.exid)">查看考试成绩</el-button>
+      </el-card>
+    </div>
   </div>
 </template>
-
 <script>
+import { getExams,getCompletedExams,getMyexam} from '@/api/examApi';
 export default {
+  
+
+
   data() {
     return {
-      exams: [
-        { id: 1, name: '数学考试', date: '2024-04-10', time: '10:00', score: 50 },
-        { id: 2, name: '语文考试', date: '2024-04-15', time: '14:00', score: 90 },
-        { id: 3, name: '英语考试', date: '2024-04-20', time: '09:30', score: -1 }
-      ]
+      exams: [],
+      completedExams: [],
+      activeIndex2: '2', // 默认选中已参与的考试
+      score:'',
     };
   },
   methods: {
-    joinExam(id) {
-      // 使用 Vue Router 的编程式导航打开新路由
-      this.$router.push({ name: 'testPage' });
-      // 这里可以添加加入考试的逻辑，比如跳转到考试页面或者执行其他操作
-      console.log('加入考试 ID:', id);
+    handleSelect(index) {
+      // 当菜单项被选择时执行的操作
+      console.log('选择了菜单项', index);
+      // 在这里你可以根据选择的菜单项执行不同的逻辑
+      // 例如根据选择的菜单项切换显示不同的考试列表
+      if (index === '1') {
+        // 显示已参与的考试列表
+
+        this.activeIndex2 = '1';
+      } else if (index === '2') {
+        // 显示未参与的考试列表
+        this.activeIndex2 = '2';
+      }
     },
-    showScore(score) {
-      if (score >= 60) {
+    getUncompletedExams() {
+      this.exams = this.exams.map(exam => {
+      // 如果当前考试的ID在已参加的考试ID列表中，则将其设置为已参加
+      if (this.completedExams.includes(exam.exid)) {
+        exam.completed = true;
+      } else {
+        exam.completed = false;
+      }
+      return exam;
+    });
+    },
+    getExamByExid(Exid) {
+      //参加考试
+      fetch(`http://106.54.206.14:8080//exams/getExamByExid?exid=${Exid}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers if needed
+    },
+  }).then(response => response.json()).then(data =>{ 
+    // Navigate to the 'testShow' route with query parameters
+    this.$router.push({
+      path: '/testPage', // Assuming 'testShow' is the name of the route
+      query: { exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
+    
+    });
+
+  })
+ 
+    },
+
+    getMyExam1(Exid) {
+   
+    this.$router.push({
+      path: '/myTestPage', // Assuming 'testShow' is the name of the route
+      query: { exid:Exid }
+    
+    });
+
+    },
+
+
+    showScore(exid) {
+
+      getMyexam({ exid: exid }).then(res => {
+ 
+        this.score = res.data.total;
+      });
+     // 分数展示
+      if (this.score >= 60) {
         this.$message({
-          message: '您的考试成绩是：' + score + '，恭喜您通过了考试！',
+          message: '您的考试成绩是：' + this.score + '，恭喜您通过了考试！',
           type: 'success'
         });
-      } else if(score >= 0){
+      } else if(this.score >= 0){
         this.$message({
-          message: '您的考试成绩是：' + score + '，很抱歉，您未通过考试。',
+          message: '您的考试成绩是：' + this.score + '，很抱歉，您未通过考试。',
           type: 'warning'
         }
         );
-      }else if(score === -1){
+      }else if(this.score === -1){
         this.$message({
           message: '未参加考试，请先参加考试！',
           type: 'warning'
@@ -54,8 +127,53 @@ export default {
         }
         );
       }
+    },
+
+    async  getExams5() {
+      //获取所有考试
+      try {
+        // 发起题库数据请求
+        const res = await getExams();
+ 
+        // 将获取到的题库数据赋值给组件的 questions 数据
+        this.exams = res.data;
+        
+        // 输出获取到的题库数据
+
+      } catch (error) {
+        // 处理错误情况
+        
+        ElMessage.error('获取题库数据失败：' + error.message);
+      }
+    },
+    async getCompletedExamsList() {
+      try {
+        const res = await getCompletedExams();
+        this.completedExams = res.data;
+      } catch (error) {
+       
+        this.$message.error('获取已考试卷失败：' + error.message);
+      }
+    },
+  },
+  computed: {
+    // 根据菜单选择，返回相应的考试列表
+    selectedExams() {
+      this.getUncompletedExams(); 
+      if (this.activeIndex2 === '1') {
+        return this.exams.filter(exam => exam.completed); // 已参与的考试
+      } else if (this.activeIndex2 === '2') {
+        
+         return this.exams.filter(exam => !exam.completed);// 未参与的考试
+      } else {
+        return []; // 其他情况返回空列表
+      }
+    },
+  },
+  mounted() {
+     this.getExams5();
+     this.getCompletedExamsList(); 
     }
-  }
 };
 </script>
 

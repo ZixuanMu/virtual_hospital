@@ -8,9 +8,10 @@
         <label for="password"><i class="el-icon-right" style="color:#c1c1c1"></i></label>
         <input type="password" placeholder="密码" name="password" id="password" autocapitalize="off" v-model.trim="data.loginData.password">
        <div>
-         <el-button type="primary" @click="Userlogin()">用户登录</el-button>
-         <el-button type="primary" @click="Adminlogin()">管理员登录</el-button>
+         <el-button type="primary" @click="Userlogin()">我是实习生</el-button>
+         <el-button type="primary" @click="Adminlogin()">我是管理员</el-button>
        </div>
+       <div style="padding-left: 250px;"><a style="color: aliceblue;" href=""  onclick="alert('请联系所在部门管理员')">忘记密码</a></div>
       </div>
     </div> 
   </router-view>
@@ -23,7 +24,7 @@
 
 <script setup>
 import { reactive } from 'vue';
-import { ElMessage, ElPopperArrow } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { login } from '@/api/api.js'
 import { useStore } from 'vuex'
@@ -76,6 +77,13 @@ const ul = (data) => {
               })
             }
         }
+        else{
+              ElMessage({
+                message:"用户名或密码错误",
+                type:'error',
+                duration: 1500,
+              })
+        }
 
     }).catch(error=>{
         console.error('登录请求出错:', error);
@@ -117,6 +125,13 @@ const ml = (data) => {
                 duration: 1500,
               })
             }
+        }
+        else{
+              ElMessage({
+                message:"用户名或密码错误",
+                type:'error',
+                duration: 1500,
+              })
         }
 
     }).catch(error=>{
@@ -257,8 +272,9 @@ const ml = (data) => {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50vw;
-  min-width: 300px;
-  max-width: 400px;
+  height: 400px;
+  min-width: 450px;
+  max-width: 500px;
   display: flex;
   flex-direction: column ;
   background-color: rgba(0, 0, 0, 0.7);

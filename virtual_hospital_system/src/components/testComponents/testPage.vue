@@ -7,7 +7,7 @@
       <el-aside width="300px">
 
         <el-card  shadow="hover" style="min-height: 650px">
-          <h4>序号：</h4>
+          <h4>题号：</h4>
           <div class="all-serial-number">
             <el-button
               @click="handleLeft(index)"
@@ -16,15 +16,16 @@
               class="serial-number"
               size="mini"
               :class="{
-                'yi-zuo-da': item.da.length != 0,
+              'yi-zuo-da': item.da !='未作答'
               }"
             >
               {{ index + 1 }}
             </el-button>
           </div>
-          <div>
-            <el-button @click="getSubmit" type="primary" plain>提交</el-button>
-          </div>
+          <div style="display: grid; place-items: center;">
+    <el-button @click="getSubmit" type="primary" plain>提交</el-button>
+</div>
+
         </el-card>
       </el-aside>
       <el-main >       
@@ -40,7 +41,7 @@
             <!-- 试题 -->
             <div class="shi-ti-style">
               <!-- 题目 -->
-              <div>{{ index + 1 }}、{{ shiTi.timu }}</div>
+              <div>{{ index + 1 }}、{{ shiTi.content }}</div>
               <!-- 选项 -->
               <div class="xuan-xiang-style">
                 <!-- 单选 -->
@@ -49,7 +50,7 @@
                   v-model="shiTi.da"
                 >
                   <el-radio
-                    v-for="(dan, danIdnex) in shiTi.xuanxiang"
+                    v-for="(dan, danIdnex) in shiTi.options"
                     :label="danIdnex"
                     :key="danIdnex"
                   >
@@ -80,105 +81,77 @@
 </template>
 
 <script>
+import { admitexam } from "@/api/examApi";
+import { ElMessage } from 'element-plus';
+
+export {admitexam} from "@/api/examApi"
 export default {
   data() {
     return {
       examDetails: [
-        {
-          timu: "《山行》是描绘了( C )的景色。",
-          xuanxiang: ["A、春天", "B、夏天", "C、秋天", " D、冬天"],
-          // 答案存放字符串
-          da: "C",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
-        {
-          timu: "劝君更尽一杯酒，西出阳关无故人。”出自( B )的名句。",
-          xuanxiang: ["A、李白", "B、王维", "C、王昌龄", "D、杜牧"],
-          // 答案存放字符串
-          da: "B",
-          mark: false,
-        },
+
         // 其他单选题目...
       ],
+      userAnswers:'',
       navgatorIndex: null,
       listBoxState: true, //点击导航栏时，暂时停止监听页面滚动
       isSkip: true,
       isShiTi: false,
+      exid:'',
+      total:'',
     };
   },
   methods: {
-
+  
           getSubmit() {
-        let score = 0; // 初始化得分为0
-        this.examDetails.forEach((question) => {
-          // 遍历每个问题
-          if (question.da === question.correctAnswer) {
-            // 如果用户的答案等于正确答案
-            score++; // 分数加1
-          }
-        });
 
-        // 提示用户分数
-        this.$message({
-          message: `您的分数为: ${score}`,
-          type: "success",
-        });
+  this.examDetails.forEach((exam, index) => {
+      // 将用户答案拼接到字符串中
+      if(exam.da===0){
+      this.userAnswers += 'A';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else if(exam.da === 1){
+      this.userAnswers += 'B';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else if(exam.da ===2){
+      this.userAnswers += 'C';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else if(exam.da ===3){
+      this.userAnswers += 'D';
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    else{
+      this.userAnswers += exam.da ;
+      if (index !== this.examDetails.length - 1) {
+        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+      }
+    }
+    console.log("da:",exam.da)
+    });
+    console.log(this.userAnswers)
+        admitexam(this.exid,this.userAnswers).then(res => {
+        console.log("res.stas",res.status)
+        if (res.state === 200){
+        ElMessage({
+                message:"提交成功",
+                type:'succes',
+              })
+              setTimeout(() => {
+      this.$router.go(-1)
+    }, 500);
+      }
+        console.log('res:',res)})
       },
 
 
@@ -238,12 +211,18 @@ export default {
     getChenge() {
       this.navgatorIndex = null;
     },
-    // 提交
-   
-      // 0代表A 1代表B 2代表C 3代表D 4代表E 5代表F 6代表G 7代表H 8代表I 9代表J 10代表K... （ 可以用字符串 或者数组的 方法 将至 替换； 回显同理 实例中有一个回显的实例 ）
-      // 1、 其中判断题可以 用A、B 或者用 对、错 需要单独处理。
-      // 2、简单题也需要 单独处理。
-      // [0, 0, 0, 0, 0, Array(1), Array(1), Array(1), Array(1), '12', '1212']
+
+  },
+  mounted() {
+    // 获取通过路由传递的数据
+    this.exid = this.$route.query.exid;
+    this.examDetails = JSON.parse(this.$route.query.topicnumber).map((topic) => ({
+      content: topic.content,
+      options: [topic.contentA, topic.contentB, topic.contentC,topic.contentD],
+      da: '未作答',
+      mark: false,
+    }));
+    console.log(this.examDetails)
   },
 };
 </script>
@@ -284,6 +263,8 @@ export default {
   height: 45px;
   font-size: 16px;
 }
+
+
 /* 具体样式：试题样式 */
 .exam-details {
   margin-bottom: 10px;

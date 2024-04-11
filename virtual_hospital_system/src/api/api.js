@@ -33,13 +33,7 @@ export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
                     })
 }
 
-export const addExamm =(content,topicnumber)=>{
-  return post({
-    url:'/exams/insertExam?content=' + content+
-                      '&topicnumber=' +topicnumber,
 
-                    })
-}
 
 export const getVideoUrl = data => {
   return get ({
@@ -153,6 +147,36 @@ export async function getExams() {
   })
 }
 
+export const get_all_users = data => {
+  return get ({
+    url: '/manager/get_all_users',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+export const change_user_password = (uid,password) => {
+  return post ({
+    url: '/manager/change_user_password?uid='+uid+'&password='+password,
+  })
+}
+
+export const delete_user = (uid) => {
+  return post ({
+    url: '/manager/delete_user?uid='+uid,
+  })
+}
+
+export const register = (formData) => {
+  return post ({
+    url: '/manager/register',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data:formData
+  })
+}
 export const getDepartmentByDid = data => {
   return get({
     url: 'department/getDepartmentByDid',

@@ -177,3 +177,77 @@ export const register = (formData) => {
     data:formData
   })
 }
+
+export const getLikeUsers = (username) => {
+  return get({
+    url:'/manager/get_like_users?username='+username,
+    headers:{
+      'Content-Type': 'application/json'
+    },
+  })
+}
+
+export const get_all_duties = data => {
+  return get ({
+    url: '/duty/get_all_duties',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+
+
+export const change_actor = (did,actor) => {
+  return post ({
+    url: '/duty/change_duty?did='+did+'&actor='+actor,
+  })
+}
+
+export const change_name = (did,name) => {
+  return post ({
+    url: '/duty/change_name?did='+did+'&name='+name,
+  })
+}
+
+export const change_content = (did,content) => {
+  return post ({
+    url: '/duty/change_content?did='+did+'&content='+content,
+  })
+}
+
+export const change_video = data => {
+  return post ({
+    url: '/duty/change_video',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}       
+
+export const delete_duty = (did) => {
+  return post ({
+    url: '/duty/delete_duty?did='+did,
+  })
+}
+
+export const getDutyByActor = data => {
+  return get ({
+    url: '/duty/getDutyByActor',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
+
+export const getDutyByName = data => {
+  return get ({
+    url: '/duty/getDutyByName',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}

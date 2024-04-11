@@ -14,8 +14,6 @@
       <el-card style="margin-bottom: 20px;" v-for="thisCase in caseList" :key="thisCase.cid">
           <div>
               <span>{{ thisCase.cname }}</span>
-              <el-button type="text" @click="showEditer(thisCase);currentCid=thisCase.cid">编辑</el-button>
-              <el-button type="text" @click="caseDeleterVisable=true;currentCid=thisCase.cid">删除</el-button>
           </div>
           <p style="color: lightseagreen;">{{ thisCase.type }}</p>
           <div>

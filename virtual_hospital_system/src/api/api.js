@@ -61,9 +61,9 @@ export const change_cname = (cid,cname) => {
   })
 }
 
-export const change_photo1 = (cid,formData) => {
+export const change_photo1 = (formData) => {
   return post ({
-    url: '/cases/change_photo1?cid='+cid,
+    url: '/cases/change_photo1',
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -71,9 +71,9 @@ export const change_photo1 = (cid,formData) => {
   })
 }
 
-export const change_photo2 = (cid,formData) => {
+export const change_photo2 = (formData) => {
   return post ({
-    url: '/cases/change_photo2?cid='+cid,
+    url: '/cases/change_photo2',
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -86,9 +86,9 @@ export const change_type = (cid,type) => {
     url: '/cases/change_type?cid='+cid+'&type='+type,
   })
 }
-export const change_video4 = (cid,formData) => {
+export const change_video4 = (formData) => {
   return post ({
-    url: '/cases/change_video4?cid='+cid,
+    url: '/cases/change_video4',
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -197,6 +197,15 @@ export const get_all_duties = data => {
   })
 }
 
+export const insert_duty = (formData) => {
+  return post ({
+    url: '/duty/insert_duty',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data:formData
+  })
+}
 
 export const change_actor = (did,actor) => {
   return post ({
@@ -216,13 +225,13 @@ export const change_content = (did,content) => {
   })
 }
 
-export const change_video = data => {
+export const change_video = (did,formData) => {
   return post ({
-    url: '/duty/change_video',
+    url: '/duty/change_video?did='+did,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
-    data
+    data:formData
   })
 }       
 

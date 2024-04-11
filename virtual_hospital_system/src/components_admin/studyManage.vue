@@ -13,7 +13,7 @@
         </el-input>
 
         <!-- 病例显示列表 -->
-        <el-card style="margin-bottom: 20px;" v-for="thisCase in caseList" :key="thisCase.did">
+        <!-- <el-card style="margin-bottom: 20px;" v-for="thisCase in caseList" :key="thisCase.did">
             <div>
                 <span>{{ thisCase.did }}</span>
                 <el-button type="text" @click="showEditer(thisCase);currentDid=thisCase.did">编辑</el-button>
@@ -29,6 +29,33 @@
             <div>
                 <video-player :src="thisCase.video" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
             </div>
+        </el-card> -->
+        <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.did">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>{{ thisCase.name }}</span>
+                <el-button type="primary" @click="showEditer(thisCase);currentCid=thisCase.did" style="position: relative;">编辑</el-button>
+                <el-button type="danger" @click="caseDeleterVisable=true;currentDid=thisCase.did"style="position: relative;">删除</el-button>
+                <el-icon size="medium"@click="toggleExpand(index)">
+                    <ArrowDown v-if="!isExpanded[index]" />
+                    <ArrowUp v-if="isExpanded[index]" />
+                </el-icon>
+            </div>
+            <div v-if="isExpanded[index]">
+                <p style="color: lightseagreen;">id：{{ thisCase.did }}</p>
+                <p style="color: darkgray;">角色：{{ thisCase.actor }}</p>
+                <div>
+                    <p style="color: darkgray;">职责名：</p>
+                    <p>{{ thisCase.name }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">职责内容：</p>
+                    <p>{{ thisCase.content }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">演示：</p>
+                    <video-player :src="thisCase.video" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
+                </div>
+            </div>
         </el-card>
 
         <!-- 编辑学习模块 -->
@@ -42,6 +69,19 @@
             </el-form-item>
             <el-form-item label="描述content">
             <el-input v-model="caseEditerList.content" placeholder="请输入content"></el-input>
+            </el-form-item>          
+            <el-form-item label="视频演示">
+                <el-upload
+                :before-remove="beforeRemove"
+                :limit=1
+                :auto-upload="false" 
+                :data="caseEditerList.video"
+                :on-change="changeEditerVideo"
+                accept=".mp4,.m3ug,.flv,.mov,.dvr">
+                <template #trigger>
+                    <el-button size="small">选取视频</el-button>
+                </template>
+                </el-upload>
             </el-form-item>
         </el-form>
         <div class="dialog-footer">
@@ -67,13 +107,11 @@
                 :limit=1
                 :auto-upload="false" 
                 :data="caseAdderList.video"
-                :on-change="changeVideo"
+                :on-change="changeAdderVideo"
                 accept=".mp4,.m3ug,.flv,.mov,.dvr">
                 <template #trigger>
                     <el-button size="small">选取视频</el-button>
                 </template>
-                <el-button style="margin-left: 10px;" size="small" type="success" 
-                    @click="submitUpload">上传</el-button>
                 </el-upload>
             </el-form-item>
 
@@ -101,13 +139,14 @@ import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { VideoPlayer } from '@videojs-player/vue'
 import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
-import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,getDutyByName } from '@/api/api';
-import { ElMessage } from 'element-plus';
+import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,getDutyByName,insert_duty } from '@/api/api';
+import { ElMessage,ElMessageBox } from 'element-plus';
 
 const searchInformation = ref("")
 const { proxy } = getCurrentInstance()
 const currentDid = ref(0)
-const caseList = ref([])//定义响应式数组变量，存放全部病例
+const caseList = ref([])//定义响应式数组变量
+const isExpanded = reactive({})
 const caseEditerList = ref({
     actor: "",
     content: "",
@@ -125,13 +164,17 @@ const caseAdderList = ref({
 const caseEditerVisable = ref(false)
 const caseAdderVisable = ref(false)
 const caseDeleterVisable = ref(false)
-
+const videoChange = ref(false)
 onMounted(()=>{
     get_all_duties().then(res=>{
         console.log(res)
         caseList.value=res.data
     }) 
 })
+
+const toggleExpand = (index) => {
+    isExpanded[index] = !isExpanded[index];
+}
 
 // 搜索功能
 const searchInList = () => {
@@ -156,6 +199,10 @@ const showEditer = (thisCase) => {
     caseEditerList.value=thisCase;
 }
 
+const changeEditerVideo = (UploadFile) => {
+    caseEditerList.value.video = UploadFile
+    videoChange.value = true
+}
 // 上传编辑后的病例
 const editCase = (data) => {
     console.log("did:"+data.did)
@@ -184,7 +231,23 @@ const editCase = (data) => {
     }).catch(error=>{
         console.log("错误err:"+error)
     });
+    if (videoChange.value === true){
+        let video = new FormData();
+        video.append("did",data.did)
+        video.append("file",data.video.raw)
+        change_video(video).then(res=>{
+            console.log(res)
+        }).catch(error=>{
+            console.log("错误err:"+error)
+        });
+        videoChange.value = false
+    }
+    ElMessage({
+        message:"更改信息成功！",
+        type:"success"
+    })
     caseEditerVisable.value=false;
+    location.reload()
 };
 
 // 删除职责
@@ -202,19 +265,29 @@ const deleteDuty = (thisDid) => {
 }
 
 // 新增病例-视频相关
-const changeVideo = (UploadFile) => {
+const changeAdderVideo = (UploadFile) => {
     caseAdderList.value.video = UploadFile
+}
+
+// 上传插件事件相关
+const beforeRemove = (uploadFile, uploadFiles) => {
+  return ElMessageBox.confirm(
+    `确定要移除文件 ${uploadFile.name} ?`
+  ).then(
+    () => true,
+    () => false
+  )
 }
 
 // 新增病例
 const addCase = () => {
     console.log(caseAdderList.value)
     let formData = new FormData();
+    formData.append("file",caseAdderList.value.video.raw);
     formData.append("actor",caseAdderList.value.actor);
     formData.append("content",caseAdderList.value.content);
     formData.append("name",caseAdderList.value.name);
-    formData.append("video",caseAdderList.value.video.raw);
-    insert_case(formData).then(res=>{
+    insert_duty(formData).then(res=>{
         if(res.state === 200)
         {
             ElMessage({

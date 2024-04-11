@@ -16,7 +16,7 @@
   </div>
   <div v-if="medicineList.length">药品一览：</div>
   <div v-for="medicine in medicineList" >
-    <p>{{ medicine.mname }}（id:{{ medicine.mid }}）</p>
+    <p>{{ medicine.mname }}</p>
     <p>药品用途：{{ medicine.content }}</p>
   </div>
   <el-dialog 
@@ -34,13 +34,14 @@
 import { ref, onMounted} from "vue"; 
 import { Viewer } from 'photo-sphere-viewer' // 引入插件
 import 'photo-sphere-viewer/dist/photo-sphere-viewer.css' //引入CSS样式
-import { useRoute, useRouter } from "vue-router";
+import { loadRouteLocation, useRoute, useRouter } from "vue-router";
 import { getDepartmentByDid,getEidByDid,getAllMedicine,getEquipmentByEid } from '@/api/api.js'
 import { VideoPlayer } from '@videojs-player/vue'
 import router from "@/router";
+import { stringify } from "json-bigint";
 let panoramaViewer = null
 const route = useRoute()
-let thisDid = route.query.did
+const thisDid = ref(route.query.did)
 const departmentInfo = ref()
 const discriptionVisible = ref(false)
 const equipmentInfoVisible = ref(false)
@@ -138,66 +139,72 @@ const initViewer = async function () {
             router.push('/3dviews')
           },
       },
-      // {
-      //     id: 3,
-      //     title: 'goLeft',
-      //     content: '<',
-      //     onClick: () => {
-      //       if(thisDid === 4)
-      //       {
-      //         router.push({
-      //           path:'/fullScreenView',
-      //           query:{
-      //               did:12
-      //           }
-      //         })
-      //         panoramaViewer.destroy()
-      //         loadViewer()
-      //       }
-      //       else{
-      //         router.push({
-      //           path:'/fullScreenView',
-      //           query:{
-      //               did:parseInt(thisDid)-1
-      //           }
-      //         })
-      //         panoramaViewer.destroy()
-      //         loadViewer()
-      //       }
-      //       location.reload()
-      //     },
-      // },
-      // {
-      //     id: 4,
-      //     title: 'goRight',
-      //     content: '>',
-      //     onClick: () => {
-      //       if(thisDid === 12)
-      //       {
-      //         router.push({
-      //           path:'/fullScreenView',
-      //           query:{
-      //               did:4
-      //           }
-      //         })
-      //         panoramaViewer.destroy()
-      //         loadViewer()
-      //       }
-      //       else{
-      //         router.push({
-      //           path:'/fullScreenView',
-      //           query:{
-      //               did:parseInt(thisDid)+1
-      //           }
-      //         })
-      //         panoramaViewer.destroy()
-      //         loadViewer()
-      //       }
-      //       location.reload()
-      //     },
-      // },
+      {
+          id: 3,
+          title: 'goLeft',
+          content: '<',
+          onClick: () => {
+            if(thisDid.value === '4')
+            {
+              router.afterEach(() => {
+                location.reload();
+              })
+              router.replace({
+                path:'/fullScreenView',
+                query:{
+                  did:'17'
+                }
+              })
+            }
+            else{
+              console.log(thisDid.value)
+              router.afterEach(() => {
+                location.reload();
+              })
+              router.replace({
+                path:'/fullScreenView',
+                query:{
+                  did:stringify(Number(thisDid.value)-1)
+                }
+              })
+            }
+          },
+      },
+      {
+          id: 4,
+          title: 'goRight',
+          content: '>',
+          onClick: () => {
+            if(thisDid === '17')
+            {
+              router.afterEach(() => {
+                location.reload();
+              })
+              router.replace({
+                path:'/fullScreenView',
+                query:{
+                  did:'4'
+                }
+              })
+            }
+            else{
+              router.afterEach(() => {
+                location.reload();
+              })
+              router.replace({
+                path:'/fullScreenView',
+                query:{
+                  did:stringify(Number(thisDid.value)+1)
+                }
+              })
+            }
+          },
+      },
       'fullscreen',
    ],
+   minFov:50,
+   maxFov:80,
+   defaultZoomLvl: 0.6,
    plugins: [], // 标记点
    size: {
      width: '98vw',
@@ -213,11 +220,11 @@ onMounted(() => {
   loadViewer()
 })
 const loadViewer = () => {
-  getDepartmentByDid({did:thisDid}).then(res => {
+  getDepartmentByDid({did:thisDid.value}).then(res => {
     if(res.state === 200)
     {
       backGroundList.forEach(element => {
-        if(thisDid === element.did)
+        if(thisDid.value === element.did)
         {
           currentDepartment.value = element.src
           console.log("current:"+currentDepartment)
@@ -238,7 +245,7 @@ const loadViewer = () => {
         })
       }
       else{
-        getEidByDid({did:thisDid}).then(res =>{
+        getEidByDid({did:thisDid.value}).then(res =>{
           console.log(res)
           if(res.state === 200)
           {

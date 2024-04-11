@@ -49,7 +49,7 @@
           </div>
         </el-aside> 
         <el-main >
-          <el-scrollbar ref="scrollbarRef" always @scroll="scroll">
+          <el-scrollbar style="height: 90vh;" ref="scrollbarRef" always @scroll="scroll">
 
           <div >
           <router-view></router-view>

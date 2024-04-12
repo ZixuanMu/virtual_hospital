@@ -49,7 +49,8 @@ export default {
         question.contentA,
         question.contentB,
         question.contentC,
-        question.contentD
+        question.contentD,
+
       ];
     },
     getResult(questionIndex) {

@@ -209,7 +209,7 @@ export const insert_duty = (formData) => {
 
 export const change_actor = (did,actor) => {
   return post ({
-    url: '/duty/change_duty?did='+did+'&actor='+actor,
+    url: '/duty/change_actor?did='+did+'&actor='+actor,
   })
 }
 
@@ -244,16 +244,6 @@ export const delete_duty = (did) => {
 export const getDutyByActor = data => {
   return get ({
     url: '/duty/getDutyByActor',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data
-  })
-}
-
-export const getDutyByName = data => {
-  return get ({
-    url: '/duty/getDutyByName',
     headers: {
       'Content-Type': 'application/json',
     },

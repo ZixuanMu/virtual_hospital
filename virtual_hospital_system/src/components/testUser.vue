@@ -178,6 +178,10 @@ export default {
 </script>
 
 <style scoped>
+.el-menu {
+  z-index: 1000; /* 菜单的 z-index 值 */
+}
+
 .exam {
   margin-bottom: 10px;
 }

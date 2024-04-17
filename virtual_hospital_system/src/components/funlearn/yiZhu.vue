@@ -23,6 +23,10 @@
                   <p>{{ thisStudy.content }}</p>
               </div>
               <div>
+                    <p style="color: darkgray;">示例图片：</p>
+                    <img :src="thisStudy.pic" class="studyImg"></img>
+                </div>
+              <div>
                   <p style="color: darkgray;">演示：</p>
                   <video-player :src="thisStudy.video" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>
               </div>

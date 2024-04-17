@@ -1,81 +1,55 @@
 <template>
-  <div>
-    <!-- 悬浮球 -->
-    <div
-      class="floating-ball"
-      ref="floatingBall"
-      @mousedown="startDrag"
-      @touchstart="startDrag"
-      @click="clickOn"
-    >
-    <img src="../assets/help.jpg"  class="half-image" style=" width: 90px;
-  height: 90px;">
+  <div class="floating-ball" :style="{ right: ballPosition.right + 'px', bottom: ballPosition.bottom + 'px' }" @mousedown="startDrag">
+    <div class="ball" @click="toggleDrawer">
+      <i class="el-icon-chat-line"></i>
+      <img src="../assets/help.jpg"  class="half-image"style="height: 80px;width: 80px;">
     </div>
-
-    <!-- 对话框 -->
-    <el-dialog
-      :visible="dialogVisible"
-      title="对话框标题"
-      @close="dialogVisible = false"
-    >
-      <p>对话框内容</p>
-    </el-dialog>
   </div>
+
+  <el-drawer v-model="drawerVisible" title="I am the title" :with-header="false">
+    <ChatBox/>
+  </el-drawer>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import ChatBox from './ChatBox.vue'; // 假设这是与ChatGPT对接的聊天框组件
 
 export default {
+  components: {
+    ChatBox
+  },
   data() {
     return {
-      dialogVisible: false,
-      dragging: false,
-      initialMousePos: { x: 0, y: 0 },
-      initialBallPos: { x: 0, y: 0 }
+      ballPosition: { right: 20, bottom: 20 }, // 初始位置调整为右下角
+      drawerVisible: false
     };
   },
   methods: {
     startDrag(event) {
-      this.dragging = true;
-      this.initialMousePos = this.getMousePosition(event);
-      this.initialBallPos = {
-        x: this.$refs.floatingBall.offsetLeft,
-        y: this.$refs.floatingBall.offsetTop
+      const ball = event.target.parentNode;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
+      const initialBallX = ball.offsetLeft;
+      const initialBallY = ball.offsetTop;
+
+      const onMouseMove = (event) => {
+        const deltaX = event.clientX - initialMouseX;
+        const deltaY = event.clientY - initialMouseY;
+        this.ballPosition.left = initialBallX + deltaX;
+        this.ballPosition.top = initialBallY + deltaY;
       };
 
-      document.addEventListener('mousemove', this.drag);
-      document.addEventListener('mouseup', this.endDrag);
+      const onMouseUp = () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      };
 
-      document.addEventListener('touchmove', this.drag);
-      document.addEventListener('touchend', this.endDrag);
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
     },
-    drag(event) {
-      if (this.dragging) {
-        const mousePos = this.getMousePosition(event);
-        const deltaX = mousePos.x - this.initialMousePos.x;
-        const deltaY = mousePos.y - this.initialMousePos.y;
-        this.$refs.floatingBall.style.left = this.initialBallPos.x + deltaX + 'px';
-        this.$refs.floatingBall.style.top = this.initialBallPos.y + deltaY + 'px';
-      }
-    },
-    endDrag() {
-      this.dragging = false;
-      
-this.dialogVisible = true;
-      document.removeEventListener('mousemove', this.drag);
-      document.removeEventListener('mouseup', this.endDrag);
-      document.removeEventListener('touchmove', this.drag);
-      document.removeEventListener('touchend', this.endDrag);
-    },
-    getMousePosition(event) {
-      const touches = event.touches || [event];
-      const { pageX, pageY } = touches[0];
-      return { x: pageX, y: pageY };
-    },
-    clickOn(){
-
-this.dialogVisible = true;
+    toggleDrawer() {
+      this.drawerVisible = !this.drawerVisible;
     }
   }
 };
@@ -84,19 +58,22 @@ this.dialogVisible = true;
 <style>
 .floating-ball {
   position: fixed;
-  width: 80px;
-  height: 80px;
-  background-color: #409eff;
-  color: #fff;
+  z-index: 9999;
+}
+
+.ball {
+  width: 60px;
+  height: 60px;
+  background-color: #007bff;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
   cursor: pointer;
-  z-index: 1999; 
 }
 
-.el-dialog {
-  z-index: 2000; /* 确保对话框在悬浮球之上 */
+.ball i {
+  font-size: 24px;
 }
 </style>

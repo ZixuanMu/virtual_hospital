@@ -19,7 +19,6 @@ import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
 import store from '@/store';
-import videoPlay from '@/components/funlearn/videoPlay/videoPlay.vue'
 import changeSuffix from '@/components/mineInformationCo/changeSuffix.vue';
 import fullScreenView from '@/components/fullScreenView.vue';
 import testShow from '@/components_admin/testShow.vue';
@@ -146,11 +145,6 @@ const routes = [
         path:"/mineInformationCo/suggestPage",
         name:"suggestPage",
         component: suggestPage,
-  },
-  {
-    path:"/funlearn/videoPlay/videoPlay",
-    name:"videoplay",
-    component: videoPlay,
   },
 
 

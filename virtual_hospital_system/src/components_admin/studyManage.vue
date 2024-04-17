@@ -10,19 +10,29 @@
                 </el-button>
             </template>
         </el-input>
+        <el-select v-model="searchInformation" placeholder="前台医助或兽医">
+                    <el-option  :value = 1 label="前台">前台</el-option>
+                    <el-option  :value = 2 label="医助">医助</el-option>
+                    <el-option  :value = 3 label="兽医">兽医</el-option>
+        </el-select>
         <el-card style="margin-bottom: 20px;" v-for="(thisStudy,index) in studyList" :key="thisStudy.did">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>{{ thisStudy.name }}</span>
+                <div style="margin-left: auto;">
                 <el-button type="primary" @click="showEditer(thisStudy);currentCid=thisStudy.did" style="position: relative;">编辑</el-button>
                 <el-button type="danger" @click="studyDeleterVisable=true;currentDid=thisStudy.did"style="position: relative;">删除</el-button>
                 <el-icon size="medium"@click="toggleExpand(index)">
                     <ArrowDown v-if="!isExpanded[index]" />
                     <ArrowUp v-if="isExpanded[index]" />
                 </el-icon>
+                </div>
             </div>
             <div v-if="isExpanded[index]">
                 <p style="color: lightseagreen;">id：{{ thisStudy.did }}</p>
-                <p style="color: darkgray;">角色：{{ thisStudy.actor }}</p>
+                <p style="color: darkgray;">角色：</p>
+                <p style="color: black;" v-if="thisStudy.actor === 1">前台</p>
+                <p style="color: black;" v-if="thisStudy.actor === 2">医助</p>
+                <p style="color: black;" v-if="thisStudy.actor === 3">兽医</p>
                 <div>
                     <p style="color: darkgray;">职责名：</p>
                     <p>{{ thisStudy.name }}</p>
@@ -30,6 +40,10 @@
                 <div>
                     <p style="color: darkgray;">职责内容：</p>
                     <p>{{ thisStudy.content }}</p>
+                </div>
+                <div>
+                    <p style="color: darkgray;">示例图片：</p>
+                    <img :src="thisStudy.pic" class="studyImg"></img>
                 </div>
                 <div>
                     <p style="color: darkgray;">演示：</p>
@@ -41,14 +55,29 @@
         <!-- 编辑学习模块 -->
         <el-dialog v-model="studyEditerVisable" title="编辑">
         <el-form :model="studyEditerList" ref="myEditerList">
-            <el-form-item label="角色actor">
+            <el-form-item label="角色">
             <el-input v-model="studyEditerList.actor" placeholder="请更换角色"></el-input>
             </el-form-item>
-            <el-form-item label="这个name">
-            <el-input v-model="studyEditerList.name" placeholder="请输入name"></el-input>
+            <el-form-item label="职责名">
+            <el-input v-model="studyEditerList.name" placeholder="请输入职责名"></el-input>
             </el-form-item>
-            <el-form-item label="描述content">
-            <el-input v-model="studyEditerList.content" placeholder="请输入content"></el-input>
+            <el-form-item label="职责描述">
+            <el-input v-model="studyEditerList.content" placeholder="职责描述"></el-input>
+            </el-form-item>
+            <el-form-item label="示例图片">
+                <el-upload
+                class="upload-demo"
+                list-type="picture"
+                :before-remove="beforeRemove"
+                :limit=1
+                :auto-upload="false" 
+                :data="studyEditerList.pic"
+                :on-change="changeEditerPic"
+                accept=".jpg,.png,.jpeg,.tif,.tiff,.gif,.webp,.svg,.bmp">
+                <template #trigger>
+                    <el-button size="small">选取图片</el-button>
+                </template>
+                </el-upload>
             </el-form-item>          
             <el-form-item label="视频演示">
                 <el-upload
@@ -73,15 +102,35 @@
         <!-- 新增学习模块 -->
         <el-dialog v-model="studyAdderVisable" title="新增学习">
         <el-form :model="studyAdderList" ref="myAdderList">
-            <el-form-item label="角色actor" placeholder="请输入角色名">
-            <el-input v-model="studyAdderList.actor"></el-input>
+            <el-form-item label="角色">
+            <el-select v-model="studyAdderList.actor" placeholder="前台医助或兽医">
+                    <el-option  :value = 1 label="前台">前台</el-option>
+                    <el-option  :value = 2 label="医助">医助</el-option>
+                    <el-option  :value = 3 label="兽医">兽医</el-option>
+             </el-select>
+             </el-form-item>
+            <el-form-item label="职责名">
+            <el-input v-model="studyAdderList.name" placeholder="职责名"></el-input>
             </el-form-item>
-            <el-form-item label="学习的name">
-            <el-input v-model="studyAdderList.name" placeholder="请输入name"></el-input>
+            <el-form-item label="职责描述">
+            <el-input v-model="studyAdderList.content" placeholder="职责描述"></el-input>
             </el-form-item>
-            <el-form-item label="描述content">
-            <el-input v-model="studyAdderList.content" placeholder="请输入content"></el-input>
+            <el-form-item label="示例图片">
+                <el-upload
+                class="upload-demo"
+                list-type="picture"
+                :before-remove="beforeRemove"
+                :limit=1
+                :auto-upload="false" 
+                :data="studyAdderList.pic"
+                :on-change="changePic"
+                accept=".jpg,.png,.jpeg,.tif,.tiff,.gif,.webp,.svg,.bmp">
+                <template #trigger>
+                    <el-button size="small">选取图片</el-button>
+                </template>
+                </el-upload>
             </el-form-item>
+
             <el-form-item label="视频">
                 <el-upload
                 :limit=1
@@ -119,7 +168,7 @@ import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { VideoPlayer } from '@videojs-player/vue'
 import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
-import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,insert_duty } from '@/api/api';
+import { get_all_duties,change_actor,change_name,change_content,change_video,delete_duty,getDutyByActor,insert_duty,change_pic } from '@/api/api';
 import { ElMessage,ElMessageBox } from 'element-plus';
 
 const searchInformation = ref("")
@@ -132,6 +181,7 @@ const studyEditerList = ref({
     content: "",
     did: "",
     name: "",
+    pic:"",
     video: ""
 })
 const studyAdderList = ref({
@@ -139,12 +189,16 @@ const studyAdderList = ref({
     content: "",
     did: "",
     name: "",
+    pic:"",
     video: ""
 })
 const studyEditerVisable = ref(false)
 const studyAdderVisable = ref(false)
 const studyDeleterVisable = ref(false)
 const videoChange = ref(false)
+const picChange = ref(false)
+
+console.log(studyList)
 onMounted(()=>{
     get_all_duties().then(res=>{
         console.log(res)
@@ -186,10 +240,20 @@ const showEditer = (thisStudy) => {
     studyEditerList.value=thisStudy;
 }
 
+//编辑病例-图片视频相关
+const changeEditerPic = (UploadFile) => {
+    studyEditerList.value.pic = UploadFile
+    picChange.value = true
+    console.log("pic:"+picChange.value)
+}
+
 const changeEditerVideo = (UploadFile) => {
     studyEditerList.value.video = UploadFile
     videoChange.value = true
 }
+
+
+
 // 上传编辑后的病例
 const editStudy = (data) => {
     console.log("did:"+data.did)
@@ -218,6 +282,17 @@ const editStudy = (data) => {
     }).catch(error=>{
         console.log("错误err:"+error)
     });
+    if (picChange.value === true){
+        let pic = new FormData();
+        pic.append("file",data.pic.raw)
+        pic.append("did",data.did)
+        change_pic(pic).then(res=>{
+            console.log(res)
+        }).catch(error=>{
+            console.log("错误err:"+error)
+        });
+        picChange.value = false
+    }
     if (videoChange.value === true){
         let video = new FormData();
         video.append("did",data.did)
@@ -230,11 +305,10 @@ const editStudy = (data) => {
         videoChange.value = false
     }
     ElMessage({
-        message:"更改信息成功！",
+        message:"更改信息成功！请重新刷新",
         type:"success"
     })
     studyEditerVisable.value=false;
-    location.reload()
 };
 
 // 删除职责
@@ -251,10 +325,15 @@ const deleteDuty = (thisDid) => {
     })
 }
 
-// 新增病例-视频相关
+// 新增病例-图片视频相关
+const changePic = (UploadFile) => {
+    studyAdderList.value.pic = UploadFile
+}
+
 const changeAdderVideo = (UploadFile) => {
     studyAdderList.value.video = UploadFile
 }
+
 
 // 上传插件事件相关
 const beforeRemove = (uploadFile, uploadFiles) => {
@@ -270,7 +349,8 @@ const beforeRemove = (uploadFile, uploadFiles) => {
 const addStudy = () => {
     console.log(studyAdderList.value)
     let formData = new FormData();
-    formData.append("file",studyAdderList.value.video.raw);
+    formData.append("pic",studyAdderList.value.pic.raw);
+    formData.append("video",studyAdderList.value.video.raw);
     formData.append("actor",studyAdderList.value.actor);
     formData.append("content",studyAdderList.value.content);
     formData.append("name",studyAdderList.value.name);
@@ -290,7 +370,7 @@ const addStudy = () => {
         else
         {
             ElMessage({
-                message:'上传失败，请检查是否填满选项，并等待文件传输完毕。',
+                message:'上传失败，请检查是否填满选项或职责名重复，并等待文件传输完毕。',
                 type:'error',
                 duration:1500
             })

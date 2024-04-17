@@ -16,12 +16,14 @@
         <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.cid">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>{{ thisCase.cname }}</span>
+                <div style="margin-left: auto;">
                 <el-button type="primary" @click="showEditer(thisCase);currentCid=thisCase.cid" style="position: relative;">编辑</el-button>
                 <el-button type="danger" @click="caseDeleterVisable=true;currentCid=thisCase.cid"style="position: relative;">删除</el-button>
                 <el-icon size="medium"@click="toggleExpand(index)">
                     <ArrowDown v-if="!isExpanded[index]" />
                     <ArrowUp v-if="isExpanded[index]" />
                 </el-icon>
+                </div>
             </div>
             <div v-if="isExpanded[index]">
                 <p style="color: lightseagreen;">{{ thisCase.type }}</p>

@@ -225,6 +225,16 @@ export const change_content = (did,content) => {
   })
 }
 
+export const change_pic = (formData) => {
+  return post ({
+    url: '/duty/change_pic',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data:formData
+  })
+}
+
 export const change_video = (did,formData) => {
   return post ({
     url: '/duty/change_video?did='+did,

@@ -13,7 +13,6 @@
               <p style="color: black;" v-if="thisStudy.actor === 1">前台</p>
               <p style="color: black;" v-if="thisStudy.actor === 2">医助</p>
               <p style="color: black;" v-if="thisStudy.actor === 3">兽医</p>
-
               <div>
                   <p style="color: darkgray;">职责名：</p>
                   <p>{{ thisStudy.name }}</p>
@@ -22,6 +21,10 @@
                   <p style="color: darkgray;">职责内容：</p>
                   <p>{{ thisStudy.content }}</p>
               </div>
+              <div>
+                    <p style="color: darkgray;">示例图片：</p>
+                    <img :src="thisStudy.pic" class="studyImg"></img>
+                </div>
               <div>
                   <p style="color: darkgray;">演示：</p>
                   <video-player :src="thisStudy.video" :controls="true" :autoplay="false" style="width: 100%;height: 400px;"></video-player>

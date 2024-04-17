@@ -52,6 +52,7 @@
           <el-scrollbar style="height: 90vh;" ref="scrollbarRef" always @scroll="scroll">
 
           <div >
+         <FloatingWindow/>
           <router-view></router-view>
           </div>
         </el-scrollbar>
@@ -64,7 +65,13 @@
   
   <script>
   import { useRouter } from 'vue-router'
-  export default {
+
+  import FloatingWindow from '@/components/FloatingWindow.vue';
+export default {
+  components: {
+    FloatingWindow
+  },
+
     setup(){
     const router = useRouter();
     const navigateTo = (path) => {

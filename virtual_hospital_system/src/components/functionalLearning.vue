@@ -1,10 +1,17 @@
-<template>
+<template>           
+
+
+<div>
+  <FloatingWindow/>
+  </div>
+ 
     <div class="content">
       <div class="images">
         <img src="../assets/roleplay.jpg"  class="half-image">
         <img src="../assets/casestudy.jpg"  class="half-image">
       </div>
       <div class="buttons">
+     
         <button @click="openNewWindow1" style="color:chocolate;">角色扮演</button>
         <button @click="openNewWindow2" style="color:chocolate">病例学习</button>
       </div>
@@ -12,7 +19,9 @@
 </template>
 
 <script>
+
 export default {
+
   methods: {
     openNewWindow1() {
       // 使用 Vue Router 的编程式导航打开新路由

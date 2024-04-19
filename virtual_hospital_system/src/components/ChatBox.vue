@@ -27,7 +27,7 @@ export default {
       if (this.inputMessage.trim() === '') return;
 
       // // 发送用户消息到后端
-      // const response = await this.sendToBackend(this.inputMessage);
+       const response = await this.sendToBackend(this.inputMessage);
       
       // 将用户消息显示在对话框中
       this.messages.push({ text: this.inputMessage, sender: 'user' });

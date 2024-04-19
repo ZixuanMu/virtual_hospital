@@ -71,13 +71,13 @@
       }
       </script>
     
-    <style>
+    <style scoped>
    .el-header {
   background-color: #363d40;
   display: flex;
   justify-content: space-between;
   padding-left: 0;
-  align-items: center;
+  align-items: cente r;
   color: #fff;
   font-size: 20px;
 }

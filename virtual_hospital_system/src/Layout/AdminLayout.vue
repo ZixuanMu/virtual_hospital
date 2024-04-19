@@ -36,6 +36,9 @@
             <el-menu-item index="/studyManage" @click="navigateTo('/studyManage')">
               学习管理
             </el-menu-item>
+            <el-menu-item index="/medicineManage" @click="navigateTo('/medicineManage')">
+              药品管理
+            </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>
           </el-menu>

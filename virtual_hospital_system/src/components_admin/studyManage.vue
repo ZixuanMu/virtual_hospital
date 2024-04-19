@@ -10,11 +10,6 @@
                 </el-button>
             </template>
         </el-input>
-        <el-select v-model="searchInformation" placeholder="前台医助或兽医">
-                    <el-option  :value = 1 label="前台">前台</el-option>
-                    <el-option  :value = 2 label="医助">医助</el-option>
-                    <el-option  :value = 3 label="兽医">兽医</el-option>
-        </el-select>
         <el-card style="margin-bottom: 20px;" v-for="(thisStudy,index) in studyList" :key="thisStudy.did">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>{{ thisStudy.name }}</span>

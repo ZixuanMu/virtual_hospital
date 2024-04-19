@@ -15,6 +15,7 @@ import topicManage from '@/components_admin/topicManage.vue';
 import userManage from '@/components_admin/userManage.vue';
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
 import studyManage from '@/components_admin/studyManage.vue';
+import medicineManage from '@/components_admin/medicineManage.vue';
 import qianTai from '@/components/funlearn/qianTai.vue'
 import yiZhu from '@/components/funlearn/yiZhu.vue'
 import shouYi from '@/components/funlearn/shouYi.vue'
@@ -138,6 +139,11 @@ const routes = [
         path:"/studyManage",
         name:"studyManage",
         component:studyManage,
+      },
+      {
+        path:"/medicineManage",
+        name:"meidicineManage",
+        component:medicineManage,
       }
     ]
   },

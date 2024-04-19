@@ -1,162 +1,160 @@
+
 <template>
-
-
   <div class="page">
     <el-row class="test-paper">
-    <el-container>
-      <el-aside width="300px">
-
-        <el-card  shadow="hover" style="min-height: 650px">
-          <h4>题号：</h4>
-          <div class="all-serial-number">
-            <el-button
-              @click="handleLeft(index)"
-              v-for="(item, index) in examDetails"
-              :key="index"
-              class="serial-number"
-              size="mini"
-              :class="{
-              'yi-zuo-da': item.da !='未作答'
-              }"
-            >
-              {{ index + 1 }}
-            </el-button>
+      <el-container>
+        <el-aside width="300px">
+          <el-card shadow="hover" style="min-height: 650px">
+            <h4>题号：</h4>
+            <div class="all-serial-number">
+              <el-button
+                @click="handleLeft(index)"
+                v-for="(item, index) in examDetails"
+                :key="index"
+                class="serial-number"
+                size="mini"
+                :class="{ 'yi-zuo-da': item.da !='未作答' }"
+              >
+                {{ index + 1 }}
+              </el-button>
+            </div>
+            <div style="display: grid; place-items: center;">
+              <el-button @click="getSubmit" type="primary" plain>提交</el-button>
+            </div>
+          </el-card>
+          <!-- 添加倒计时显示 -->
+          <div style="text-align: center; margin-top: 20px;">
+            <span style="font-size: 20px;">剩余时间：</span>
+            <span style="font-size: 20px; color: red;">{{ remainingTime }}</span>
           </div>
-          <div style="display: grid; place-items: center;">
-    <el-button @click="getSubmit" type="primary" plain>提交</el-button>
-</div>
-
-        </el-card>
-      </el-aside>
-      <el-main >       
-        <el-card style="min-height: 650px">
-          <div
-            @click="getChenge"
-            v-for="(shiTi, index) in examDetails"
-            :key="index"
-            :id="'id' + index"
-            class="exam-details"
-            :class="{ 'skip-style': index === navgatorIndex }"
-          >
-            <!-- 试题 -->
-            <div class="shi-ti-style">
-              <!-- 题目 -->
-              <div>{{ index + 1 }}、{{ shiTi.content }}</div>
-              <!-- 选项 -->
-              <div class="xuan-xiang-style">
-                <!-- 单选 -->
-                <el-radio-group
-                  @input="gegegegeg(shiTi, index)"
-                  v-model="shiTi.da"
-                >
-                  <el-radio
-                    v-for="(dan, danIdnex) in shiTi.options"
-                    :label="danIdnex"
-                    :key="danIdnex"
+        </el-aside>
+   
+          <el-main>
+          <el-card style="min-height: 650px">
+            <div
+              @click="getChenge"
+              v-for="(shiTi, index) in examDetails"
+              :key="index"
+              :id="'id' + index"
+              class="exam-details"
+              :class="{ 'skip-style': index === navgatorIndex }"
+            >
+              <!-- 试题 -->
+              <div class="shi-ti-style">
+                <!-- 题目 -->
+                <div>{{ index + 1 }}、{{ shiTi.content }}</div>
+                <!-- 选项 -->
+                <div class="xuan-xiang-style">
+                  <!-- 单选 -->
+                  <el-radio-group
+                    @input="gegegegeg(shiTi, index)"
+                    v-model="shiTi.da"
                   >
-                    {{ dan }}
-                  </el-radio>
-                </el-radio-group>
+                    <el-radio
+                      v-for="(dan, danIdnex) in shiTi.options"
+                      :label="danIdnex"
+                      :key="danIdnex"
+                    >
+                      {{ dan }}
+                    </el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+              <!-- 标记 -->
+              <div class="mark-style">
+                <el-tooltip
+                  :content="shiTi.mark ? '已标记' : '可标记'"
+                  placement="right"
+                  effect="light"
+                >
+                  <a
+                    @click="getChangMark(index)"
+                    class="el-icon-star-on"
+                    :class="{ mark: shiTi.mark }"
+                  ></a>
+                </el-tooltip>
               </div>
             </div>
-            <!-- 标记 -->
-            <div class="mark-style">
-              <el-tooltip
-                :content="shiTi.mark ? '已标记' : '可标记'"
-                placement="right"
-                effect="light"
-              >
-                <a
-                  @click="getChangMark(index)"
-                  class="el-icon-star-on"
-                  :class="{ mark: shiTi.mark }"
-                ></a>
-              </el-tooltip>
-            </div>
-          </div>
-        </el-card></el-main>
-    </el-container>
+          </el-card>
+  
+        </el-main>
+      </el-container>
     </el-row>
   </div>
 </template>
 
+
+
 <script>
 import { admitexam } from "@/api/examApi";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
-export {admitexam} from "@/api/examApi"
 export default {
   data() {
     return {
-      examDetails: [
-
-        // 其他单选题目...
-      ],
-      userAnswers:'',
+      examDetails: [],
+      userAnswers: '',
       navgatorIndex: null,
       listBoxState: true, //点击导航栏时，暂时停止监听页面滚动
       isSkip: true,
       isShiTi: false,
-      exid:'',
-      total:'',
+      exid: '',
+      total: '',
+      time: '',
+      remainingTime: '', // 剩余时间
+      countdownTimer: null,
     };
   },
   methods: {
-  
-          getSubmit() {
+    async getSubmit() {
+      const confirmResult = await ElMessageBox.confirm('确定要提交答卷吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        clearInterval(this.countdownTimer); // 停止倒计时
 
-  this.examDetails.forEach((exam, index) => {
-      // 将用户答案拼接到字符串中
-      if(exam.da===0){
-      this.userAnswers += 'A';
-      if (index !== this.examDetails.length - 1) {
-        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
-      }
-    }
-    else if(exam.da === 1){
-      this.userAnswers += 'B';
-      if (index !== this.examDetails.length - 1) {
-        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
-      }
-    }
-    else if(exam.da ===2){
-      this.userAnswers += 'C';
-      if (index !== this.examDetails.length - 1) {
-        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
-      }
-    }
-    else if(exam.da ===3){
-      this.userAnswers += 'D';
-      if (index !== this.examDetails.length - 1) {
-        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
-      }
-    }
-    else{
-      this.userAnswers += exam.da ;
-      if (index !== this.examDetails.length - 1) {
-        this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
-      }
-    }
-    console.log("da:",exam.da)
-    });
-    console.log(this.userAnswers)
-        admitexam(this.exid,this.userAnswers).then(res => {
-        console.log("res.stas",res.status)
-        if (res.state === 200){
-        ElMessage({
-                message:"提交成功",
-                type:'succes',
-              })
-              setTimeout(() => {
+this.examDetails.forEach((exam, index) => {
+  // 将用户答案拼接到字符串中
+  if (exam.da === 0) {
+    this.userAnswers += 'A';
+  } else if (exam.da === 1) {
+    this.userAnswers += 'B';
+  } else if (exam.da === 2) {
+    this.userAnswers += 'C';
+  } else if (exam.da === 3) {
+    this.userAnswers += 'D';
+  } else {
+    this.userAnswers += exam.da;
+  }
+
+  if (index !== this.examDetails.length - 1) {
+    this.userAnswers += ','; // 在除了最后一个答案外，添加逗号分隔符
+  }
+})
+
+admitexam(this.exid, this.userAnswers).then(res => {
+  if (res.state === 200) {
+    ElMessage({
+      message: "提交成功",
+      type: 'success',
+    })
+    setTimeout(() => {
       this.$router.go(-1)
     }, 500);
-      }
-        console.log('res:',res)})
-      },
-
-
+  }
+}).catch(error => {
+  console.error("提交失败：", error);
+  ElMessage.error("提交失败，请重试");
+});
+      }).catch(()=>{
+        ElMessage({
+      message: "继续考试",
+      type: 'success',
+    })
+      })
     
-    // 点击导航菜单，页面滚动到指定位置
+    },
 
     handleLeft(index) {
       this.navgatorIndex = index;
@@ -173,7 +171,7 @@ export default {
         this.listBoxState = true;
       }, 200);
     },
-    // 监听页面元素滚动，改变导航栏选中
+
     scrollToTop() {
       // dom滚动位置
       var scrollTop =
@@ -199,30 +197,51 @@ export default {
         }
       }
     },
-    // 标记 或者 收藏
-    // 标记 或者 收藏
+
     getChangMark(num) {
       this.examDetails[num].mark = !this.examDetails[num].mark;
     },
+
     gegegegeg(val, num) {
       console.log(val);
     },
-    // 跳转样式 取消
+
     getChenge() {
       this.navgatorIndex = null;
     },
 
+    startCountdown() {
+      let remainingTime = this.time * 60; // 转换为秒
+      this.countdownTimer = setInterval(() => {
+        remainingTime--;
+        if (remainingTime <= 0) {
+          clearInterval(this.countdownTimer);
+          this.getSubmit(); // 倒计时结束自动提交
+        } else {
+          const minutes = Math.floor(remainingTime / 60);
+          const seconds = remainingTime % 60;
+          this.remainingTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+      }, 1000);
+    },
   },
   mounted() {
     // 获取通过路由传递的数据
     this.exid = this.$route.query.exid;
     this.examDetails = JSON.parse(this.$route.query.topicnumber).map((topic) => ({
       content: topic.content,
-      options: [topic.contentA, topic.contentB, topic.contentC,topic.contentD],
+      options: [topic.contentA, topic.contentB, topic.contentC, topic.contentD],
       da: '未作答',
       mark: false,
     }));
-    console.log(this.examDetails)
+    this.time = this.$route.query.time;
+
+    // 开始倒计时
+    this.startCountdown();
+  },
+
+  beforeDestroy() {
+    clearInterval(this.countdownTimer); // 组件销毁前清除计时器
   },
 };
 </script>

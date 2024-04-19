@@ -9,7 +9,15 @@ export const login = data => {
     data
   })
 }
-
+export const chatWithGpt = data => {
+  return get ({
+    url: 'assistance/gethelp',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+}
 export const topicget = data => {
   return get({
     url: '/topics/getAllTopics',

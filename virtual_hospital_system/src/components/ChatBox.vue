@@ -6,14 +6,15 @@
       </div>
     </div>
     <div class="input-container">
-      <input type="text" v-model="inputMessage" @keyup.enter="sendMessage" placeholder="Type your message here..." />
-      <button @click="sendMessage">Send</button>
+      <input type="text" v-model="inputMessage" @keyup.enter="sendMessage" placeholder="请输入您的消息" />
+      <button @click="sendMessage">发送</button>
     </div>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
+import { chatWithGpt } from '@/api/api';
 
 export default {
   data() {
@@ -27,28 +28,21 @@ export default {
       if (this.inputMessage.trim() === '') return;
 
       // // 发送用户消息到后端
-       const response = await this.sendToBackend(this.inputMessage);
-      
-      // 将用户消息显示在对话框中
-      this.messages.push({ text: this.inputMessage, sender: 'user' });
-
+     
+      chatWithGpt({txt:this.inputMessage}).then(response => {
+        console.log("res:",response.data)
+        this.messages.push({ text: this.inputMessage, sender: 'user' });
+        this.inputMessage = '';
+      setTimeout(() => {
       // 将后端返回的消息显示在对话框中
       this.messages.push({ text: response.data, sender: 'bot' });
-
       // 清空输入框
-      this.inputMessage = '';
+      },500)
     },
-    async sendToBackend(message) {
-      // 在这里向后端发送消息，然后从后端获取回复
-      // 你需要实现与后端的通信，这可能涉及到使用 fetch 或 axios 等工具发送请求
-      // 以下代码只是一个示例，实际情况需要根据你的后端接口进行修改
+      )}
+      // 将用户消息显示在对话框中
+     
 
-      const url = `http://105.54.206.14:8080/assistance/gethelp?txt=${encodeURIComponent(message)}`;
-
-      const response = await fetch(url);
-      console.log(response);
-      return await response.json();
-    }
   }
 };
 </script>

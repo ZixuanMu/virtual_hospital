@@ -26,6 +26,7 @@
 </template>
 <script>
 import { getExams,getCompletedExams,getMyexam} from '@/api/examApi';
+import { SelectProps } from 'element-plus/es/components/select/src/select';
 export default {
   
 
@@ -99,8 +100,11 @@ export default {
 
       getMyexam({ exid: exid }).then(res => {
  
-        this.score = res.data.total;
+        this.score = res.data.total
       });
+      setTimeout(() => {
+      console.log('500ms后执行的方法');
+    
      // 分数展示
       if (this.score >= 60) {
         this.$message({
@@ -127,6 +131,7 @@ export default {
         }
         );
       }
+    }, 500);
     },
 
     async  getExams5() {

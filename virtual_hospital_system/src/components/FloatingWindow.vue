@@ -2,7 +2,8 @@
   <div class="floating-ball" :style="{ right: ballPosition.right + 'px', bottom: ballPosition.bottom + 'px' }" @mousedown="startDrag">
     <div class="ball" @click="toggleDrawer">
       <i class="el-icon-chat-line"></i>
-      <img src="../assets/help.jpg"  class="half-image"style="height: 80px;width: 80px;">
+      <img src="../assets/help.jpg"  class="half-image"style=" border-radius: 50%;height: 80px;width: 80px;">
+
     </div>
   </div>
 

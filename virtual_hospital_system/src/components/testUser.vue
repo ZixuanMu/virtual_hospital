@@ -16,7 +16,7 @@
     <div>
             <!-- 根据菜单选择的不同，展示不同的考试列表 -->
       <el-card v-for="exam in selectedExams" :key="exam.exid" class="exam" :header="exam.content">
-        <p>考试时间:10分钟 </p>
+        <p>考试时间:{{ exam.time }}分钟 </p>
         <el-button  v-if="exam.completed"@click="getMyExam1(exam.exid)">查看考试记录</el-button>
         <el-button v-if="!exam.completed" @click="getExamByExid(exam.exid)">加入考试</el-button>
         <el-button v-if="exam.completed" @click="showScore(exam.exid)">查看考试成绩</el-button>
@@ -76,7 +76,7 @@ export default {
     // Navigate to the 'testShow' route with query parameters
     this.$router.push({
       path: '/testPage', // Assuming 'testShow' is the name of the route
-      query: { exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
+      query: { time:data.data.time,exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
     
     });
 

@@ -6,7 +6,7 @@
       <el-input v-model="searchID" placeholder="删除id" class="search-input"></el-input>
       <el-button type="primary" class="add-button" @click="deleteQuestion()">删除题目</el-button>
     </div>
-  <el-table :data="questions" style="width: 100%" height="350px">
+  <el-table :data="questions" style="width: 100%" height="400px">
     <el-table-column fixed prop="tid" label="ID" width="120" />
     <el-table-column prop="content" label="题干" width="120" />
     <el-table-column prop="contentA" label="选项A" width="120" />

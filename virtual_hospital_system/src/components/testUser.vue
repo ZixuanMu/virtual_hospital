@@ -15,11 +15,18 @@
 
     <div>
             <!-- 根据菜单选择的不同，展示不同的考试列表 -->
-      <el-card v-for="exam in selectedExams" :key="exam.exid" class="exam" :header="exam.content">
+      <el-card v-for="exam in selectedExams" :key="exam.exid" class="exam" >
+
+        <template #header>
+            <span class="card-header-title" >{{exam.content}}</span>
+            <span class="right-tag" style=" float: right;"></span>
+       </template>
+
         <p>考试时间:{{ exam.time }}分钟 </p>
         <el-button  v-if="exam.completed"@click="getMyExam1(exam.exid)">查看考试记录</el-button>
         <el-button v-if="!exam.completed" @click="getExamByExid(exam.exid)">加入考试</el-button>
         <el-button v-if="exam.completed" @click="showScore(exam.exid)">查看考试成绩</el-button>
+        <el-button v-if="exam.completed" @click="getExamByExid(exam.exid)">重新考试</el-button>
       </el-card>
     </div>
   </div>
@@ -104,33 +111,36 @@ export default {
       });
       setTimeout(() => {
       console.log('500ms后执行的方法');
-    
-     // 分数展示
-      if (this.score >= 60) {
-        this.$message({
-          message: '您的考试成绩是：' + this.score + '，恭喜您通过了考试！',
+      this.$message({
+          message: '您的考试成绩是：' + this.score ,
           type: 'success'
         });
-      } else if(this.score >= 0){
-        this.$message({
-          message: '您的考试成绩是：' + this.score + '，很抱歉，您未通过考试。',
-          type: 'warning'
-        }
-        );
-      }else if(this.score === -1){
-        this.$message({
-          message: '未参加考试，请先参加考试！',
-          type: 'warning'
-        }
-        );
+    //  // 分数展示
+    //   if (this.score >= 60) {
+    //     this.$message({
+    //       message: '您的考试成绩是：' + this.score + '，恭喜您通过了考试！',
+    //       type: 'success'
+    //     });
+    //   } else if(this.score >= 0){
+    //     this.$message({
+    //       message: '您的考试成绩是：' + this.score + '，很抱歉，您未通过考试。',
+    //       type: 'warning'
+    //     }
+    //     );
+    //   }else if(this.score === -1){
+    //     this.$message({
+    //       message: '未参加考试，请先参加考试！',
+    //       type: 'warning'
+    //     }
+    //     );
 
-      }else{
-        this.$message({
-          message: '后台系统错误',
-          type: 'warning'
-        }
-        );
-      }
+    //   }else{
+    //     this.$message({
+    //       message: '后台系统错误',
+    //       type: 'warning'
+    //     }
+    //     );
+    //   }
     }, 500);
     },
 

@@ -1,8 +1,8 @@
 import {post, get, post2,post3,post4,post5,post6,request} from '@/util/service'
-export const addExamm =(content,topicnumber)=>{
+export const addExamm =(content,topicnumber,time)=>{
     return post({
       url:'/exams/insertExam?content=' + content+
-                        '&topicnumber=' +topicnumber,
+                        '&topicnumber=' +topicnumber+'&time='+time,
   
                       })
   }
@@ -46,4 +46,8 @@ export const changeEname = (exid,content) => {
     })
   }
 
-  
+  export const changetime =(time,exid)=> {
+   return post ({
+      url: '/exams/changeExamTime?exid='+exid+'&time='+time,
+    })
+  }

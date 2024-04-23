@@ -19,9 +19,9 @@
       </div>
          <el-button type="primary"  @click="getExamByExid(exam.exid)">查看试卷</el-button>
         <el-button type="text" @click="editExamName(exam)">编辑科目名</el-button>
-        <el-button type="text" @click="editExamQuestions(exam)">修改试卷题号</el-button>
+        <!-- <el-button type="text" @click="editExamQuestions(exam)">修改试卷题号</el-button> -->
         <el-button type="text" @click="deleteExam(exam.exid)">删除试卷</el-button>
-     
+        <el-button type="text" @click="channgeTimeExam(exam.exid)">修改考试时间</el-button>
     </el-card>
 
     <!-- 新增试卷对话框 -->
@@ -30,10 +30,14 @@
         <el-form-item label="考试名称" prop="name">
           <el-input v-model="newExam.name"></el-input>
         </el-form-item>
+        <el-form-item label="考试时间" prop="time"  >
+          <el-input v-model="newExam.time" placeholder="分钟"></el-input>
+        </el-form-item>
         <el-form-item label="题目ID列表" prop="questionIds">
           <el-button type="primary" class="add-question-button" @click="showQuestionPickerDialog">选择题目</el-button>
 
         </el-form-item>
+      
       </el-form>
       <div class="dialog-footer">
         <el-button @click="addExamDialogVisible = false">取消</el-button>
@@ -55,23 +59,22 @@
         <el-table-column prop="answer" label="答案" width="120"></el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addExam">确定</el-button>
+        <el-button @click="questionPickerDialogVisible = false">确定</el-button>
         <el-button @click="questionPickerDialogVisible = false">取消</el-button>
       </div>
     </el-dialog>
   </div>
 
 
-    <!-- 修改试卷题目对话框 -->
-    <el-dialog v-model="editExamDialogVisible" title="修改试卷题目">
-      <el-form :model="editedExam" ref="editExamForm">
-        <el-form-item label="题目ID列表" prop="questionIds">
-          <el-input v-model="editedExam.questionIds" placeholder="请输入题目ID（20道题），用逗号分隔"></el-input>
+
+    <el-dialog v-model="edittimeVisible" title="修改试卷时间">
+   
+      <el-form-item label="考试时间" prop="time"  >
+          <el-input v-model="editedtime" placeholder="分钟"></el-input>
         </el-form-item>
-      </el-form>
       <div class="dialog-footer">
-        <el-button @click="editExamDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveEditedExam">保存</el-button>
+        <el-button @click="edittimeVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveEditedtime(editedtime)">保存</el-button>
       </div>
     </el-dialog>
 </template>
@@ -79,7 +82,7 @@
 <script>
 
 
-import { addExamm,getExams,changeEname } from '@/api/examApi.js'; // 假设这是你的添加试卷的 API 请求函数
+import { addExamm,getExams,changeEname,changetime } from '@/api/examApi.js'; // 假设这是你的添加试卷的 API 请求函数
 import { topicget } from '@/api/api.js'; // 假设这是你的题库数据获取函数
 import { ElMessage } from 'element-plus';
 
@@ -96,12 +99,17 @@ export default {
         questionIds: [] // 题目ID列表
       },
       questions: [] ,// 题库数据
-      editExamDialogVisible: false, // 修改试卷题目对话框可见性
-      editedExam: { id: '', questionIds: '' } ,// 被编辑的试卷信息
-      selection:[]
+      edittimeVisible: false, // 修改试卷题目对话框可见性
+      editedtime:'',// 被编辑的试卷信息
+      selection:[],
+      changeTimeexid:''
     };
   },
   methods: {
+    channgeTimeExam(exid){
+      this.edittimeVisible=true;
+      this.changeTimeexid=exid;
+    },
     handleSelectionChange(selection) {
     this.newExam.questionIds = selection.map(question => question.tid).join(',');
   },
@@ -113,7 +121,7 @@ export default {
 
     // 添加试卷
     addExam() {
-      addExamm(this.newExam.name, this.newExam.questionIds)
+      addExamm(this.newExam.name, this.newExam.questionIds,this.newExam.time)
         .then(response => {
           // 处理成功情况
           console.log(response); // 假设输出成功信息
@@ -169,21 +177,36 @@ export default {
 
         }
       },
-    editExamQuestions(exam) {
-      // 打开修改试卷题目对话框
-      this.editedExam = { ...exam };
-      this.editExamDialogVisible = true;
+    // editExamQuestions(exam) {
+    //   // 打开修改试卷题目对话框
+    //   this.editedExam = { ...exam };
+    //   this.editExamDialogVisible = true;
+    // },
+    saveEditedtime(time){
+      console.log(time,this.changeTimeexid)
+      changetime(time,this.changeTimeexid)
+      .then(response => {
+          // 处理成功情况
+          console.log(response); // 假设输出成功信息
+          this.edittimeVisible = false; // 关闭对话框
+          this.$message.success('修改成功'); 
+          this.$router.go(0)// 提示添加成功
+        })
+        .catch(error => {
+          // 处理失败情况
+      
+        });
     },
-    saveEditedExam() {
-      // 保存修改后的试卷题目
-      const index = this.exams.findIndex(exam => exam.id === this.editedExam.id);
-      if (index !== -1) {
-        this.exams[index].questionIds = this.editedExam.questionIds;
-        this.editExamDialogVisible = false;
-        // 清空编辑试卷题目表单
-        this.$refs.editExamForm.resetFields();
-      }
-    },
+    // saveEditedExam() {
+    //   // 保存修改后的试卷题目
+    //   const index = this.exams.findIndex(exam => exam.id === this.editedExam.id);
+    //   if (index !== -1) {
+    //     this.exams[index].questionIds = this.editedExam.questionIds;
+    //     this.editExamDialogVisible = false;
+    //     // 清空编辑试卷题目表单
+    //     this.$refs.editExamForm.resetFields();
+    //   }
+    // },
     deleteExam(examId) {
       fetch(`http://106.54.206.14:8080//exams/deleteExamByExid?exid=${examId}`, {
     method: 'GET',

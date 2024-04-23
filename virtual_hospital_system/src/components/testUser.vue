@@ -9,8 +9,9 @@
       active-text-color="#ffd04b"
       @select="handleSelect"
     >
+    <el-menu-item index="2">未参与的考试</el-menu-item>
       <el-menu-item index="1">已参与的考试</el-menu-item>
-      <el-menu-item index="2">未参与的考试</el-menu-item>
+     
     </el-menu>
 
     <div>

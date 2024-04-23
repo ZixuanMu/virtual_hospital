@@ -65,7 +65,7 @@ const ul = (data) => {
               store.commit('setUserInfo', toStore)
               sessionStorage.setItem("login", JSON.stringify(toStore))
               router.push({
-                  path: '/UserLayout'
+                  path: '/3dviews'
               })
             }
             else if(res.data.ismanager === 1)
@@ -114,7 +114,7 @@ const ml = (data) => {
               store.commit('setUserInfo', toStore)
               sessionStorage.setItem("login", JSON.stringify(toStore))
               router.push({
-                  path: '/AdminLayout'
+                  path: "/caseManage"
               })
             }
             else if(res.data.ismanager === 0)

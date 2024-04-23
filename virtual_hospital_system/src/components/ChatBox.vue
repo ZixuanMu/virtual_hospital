@@ -12,7 +12,7 @@
     </div>
     
     <div class="input-container">
-      <input type="text" v-model="inputMessage" @keyup.enter="sendMessage" placeholder="请输入您的消息" />
+      <input type="text" v-model="inputMessage" @keyup.enter="sendMessage" placeholder="请输入您的问题" />
       <button :disabled="loading" @click="sendMessage" :class="{ 'loading': loading }">发送</button>
     </div>
   </div>
@@ -56,8 +56,8 @@ export default {
 
 <style scoped>
 .chat-container {
-  z-index: 100000;
-  width: 300px;
+  z-index: 100000200;
+  width: 25vw;
   margin: 0 auto;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -65,8 +65,8 @@ export default {
 }
 
 .chat-dialog {
-  z-index: 10000;
-  height: 500px;
+  z-index: 1000000;
+  height: 75vh;
   padding: 10px;
   overflow-y: auto;
 }

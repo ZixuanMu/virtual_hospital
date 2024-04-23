@@ -68,7 +68,7 @@
 
 
         <!-- 删除提示 -->
-        <el-dialog v-model="caseDeleterVisable" title="删除病例">
+        <el-dialog v-model="caseDeleterVisable" title="删除药品">
             <div>确定删除？</div>
             <div class="dialog-footer">
                 <el-button @click="caseDeleterVisable = false">取消</el-button>

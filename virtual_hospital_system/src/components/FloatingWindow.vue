@@ -7,8 +7,8 @@
     </div>
   </div>
 
-  <el-drawer v-model="drawerVisible" title="I am the title" :with-header="false">
-    <ChatBox/>
+  <el-drawer v-model="drawerVisible" title="I am the title" :with-header="false" style="z-index: 100000;">
+    <ChatBox style="z-index: 100000;"/>
   </el-drawer>
 </template>
 

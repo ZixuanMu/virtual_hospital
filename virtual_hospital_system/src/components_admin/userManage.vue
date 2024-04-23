@@ -12,7 +12,7 @@
           </template>
       </el-input>
 
-      <!-- 病例显示列表 -->
+      <!-- 用户显示列表 -->
       <el-card style="margin-bottom: 20px;" v-for="thisUser in userList" :key="thisUser.uid">
           <div>
               <span>Uid:{{ thisUser.uid }}</span>
@@ -47,26 +47,26 @@
         </el-form>
         <div class="dialog-footer">
             <el-button @click="userEditerVisable = false">取消</el-button>
-            <el-button type="primary" @click="editCase(userEditerList)">确定</el-button>
+            <el-button type="primary" @click="editUser(userEditerList)">确定</el-button>
         </div>
         </el-dialog>
         <!-- 新增用户模块 -->
         <el-dialog v-model="userAdderVisable" title="新增用户">
-        <el-form :model="caseAdderList" label-width = 'auto' ref="myAdderList" >
+        <el-form :model="userAdderList" label-width = 'auto' ref="myAdderList" >
             <el-form-item label="用户名" >
-            <el-input v-model="caseAdderList.username" placeholder="请输入用户名"></el-input>
+            <el-input v-model="userAdderList.username" placeholder="请输入用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-            <el-input v-model="caseAdderList.password" placeholder="请输入密码"></el-input>
+            <el-input v-model="userAdderList.password" placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-form-item label="邮箱">
-            <el-input v-model="caseAdderList.email" placeholder="请输入邮箱"></el-input>
+            <el-input v-model="userAdderList.email" placeholder="请输入邮箱"></el-input>
             </el-form-item>
             <el-form-item label="电话">
-            <el-input v-model="caseAdderList.phone" placeholder="请输入电话"></el-input>
+            <el-input v-model="userAdderList.phone" placeholder="请输入电话"></el-input>
             </el-form-item>
             <el-form-item label="性别">
-            <el-select v-model="caseAdderList.sex" placeholder="男或女">
+            <el-select v-model="userAdderList.sex" placeholder="男或女">
                     <el-option  :value =1 label="男">男</el-option>
                     <el-option  :value =0 label="女">女</el-option>
              </el-select>
@@ -76,7 +76,7 @@
                 <el-upload
                 :limit=1
                 :auto-upload="false" 
-                :data="caseAdderList.suffix"
+                :data="userAdderList.suffix"
                 :on-change="changesuffix"
                 accept=".jpg,.png,.jpeg,.tif,.tiff,.gif,.webp,.svg,.bmp">
                 <template #trigger>
@@ -87,7 +87,7 @@
         </el-form>
         <div class="dialog-footer" >
             <el-button @click="userAdderVisable = false">取消</el-button>
-            <el-button type="primary" @click="addCase">确定</el-button>
+            <el-button type="primary" @click="addUser">确定</el-button>
         </div>
         </el-dialog>
 
@@ -123,7 +123,7 @@ const userEditerList = ref({
     uid: '',
     username: ''
 })
-const caseAdderList = ref({
+const userAdderList = ref({
     email:'',
     ismanager: '',
     password: '',
@@ -168,8 +168,8 @@ const showEditer = (thisUser) => {
     userEditerList.value=thisUser;
 }
 
-// 上传编辑后的病例
-const editCase = (data) => {
+// 上传编辑后的用户
+const editUser = (data) => {
     console.log("uid:"+data.uid)
     console.log("password:"+data.password)
     change_user_password(data.uid,data.password).then(res=>{
@@ -199,22 +199,22 @@ const deleteUser = (thisUid) => {
 
 // 新增用户-suffix相关
 const changesuffix = (UploadFile) => {
-    caseAdderList.value.suffix = UploadFile
+    userAdderList.value.suffix = UploadFile
 }
 
 
 // 新增用户
-const addCase = () => {
-    console.log(caseAdderList.value)
+const addUser = () => {
+    console.log(userAdderList.value)
     let formData = new FormData();
-    formData.append("email",caseAdderList.value.email);
+    formData.append("email",userAdderList.value.email);
     //formData.append("isManager",'0');
-    formData.append("password",caseAdderList.value.password);
-    formData.append("phone",caseAdderList.value.phone);
-    formData.append("sex",caseAdderList.value.sex);
-    formData.append("file",caseAdderList.value.suffix.raw);
-    formData.append("uid",caseAdderList.value.uid);
-    formData.append("username",caseAdderList.value.username);
+    formData.append("password",userAdderList.value.password);
+    formData.append("phone",userAdderList.value.phone);
+    formData.append("sex",userAdderList.value.sex);
+    formData.append("file",userAdderList.value.suffix.raw);
+    formData.append("uid",userAdderList.value.uid);
+    formData.append("username",userAdderList.value.username);
     register(formData).then(res=>{
         if(res.state === 200)
         {
@@ -255,11 +255,3 @@ const addCase = () => {
     })
 }
 </script>
-<style>
-.caseImg
-{
-    width:40%;
-    height:auto;
-    margin-right: 20px;
-}
-</style>

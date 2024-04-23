@@ -1,7 +1,7 @@
 <template>
     <div style="padding: 20px;">
 
-        <el-button type="primary" style="margin-bottom: 20px;" @click="caseAdderVisable=true">新增药品</el-button>
+        <el-button type="primary" style="margin-bottom: 20px;" @click="medicineAdderVisable=true">新增药品</el-button>
 
         <!-- 搜索栏 -->
         <el-input placeholder="输入搜索内容" v-model="searchInformation" clearable style="margin-bottom: 20px;">
@@ -13,12 +13,12 @@
         </el-input>
 
         <!-- 药品显示列表 -->
-        <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.mid">
+        <el-card style="margin-bottom: 20px;" v-for="(thisMedicine,index) in medicineList" :key="thisMedicine.mid">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span>{{ thisCase.mname }}</span>
+                <span>{{ thisMedicine.mname }}</span>
                 <div style="margin-left: auto;">
-                <el-button type="primary" @click="showEditer(thisCase);currentMid=thisCase.mid" style="position: relative;">编辑</el-button>
-                <el-button type="danger" @click="caseDeleterVisable=true;currentMid=thisCase.mid"style="position: relative;">删除</el-button>
+                <el-button type="primary" @click="showEditer(thisMedicine);currentMid=thisMedicine.mid" style="position: relative;">编辑</el-button>
+                <el-button type="danger" @click="medicineDeleterVisable=true;currentMid=thisMedicine.mid"style="position: relative;">删除</el-button>
                 <el-icon size="medium"@click="toggleExpand(index)">
                     <ArrowDown v-if="!isExpanded[index]" />
                     <ArrowUp v-if="isExpanded[index]" />
@@ -26,52 +26,52 @@
                 </div>
             </div>
             <div v-if="isExpanded[index]">
-                <p style="color: lightseagreen;">id：{{ thisCase.mid }}</p>
+                <p style="color: lightseagreen;">id：{{ thisMedicine.mid }}</p>
                 <div>
                     <p style="color: darkgray;">药品内容：</p>
-                    <p>{{ thisCase.content }}</p>
+                    <p>{{ thisMedicine.content }}</p>
                 </div>
             </div>
         </el-card>
 
         <!-- 编辑药品模块 -->
-        <el-dialog v-model="caseEditerVisable" title="编辑药品">
-        <el-form :model="caseEditerList" ref="myEditerList">
+        <el-dialog v-model="medicineEditerVisable" title="编辑药品">
+        <el-form :model="medicineEditerList" ref="myEditerList">
             <el-form-item label="药品名称">
-            <el-input v-model="caseEditerList.mname" placeholder="请输入药品名称"></el-input>
+            <el-input v-model="medicineEditerList.mname" placeholder="请输入药品名称"></el-input>
             </el-form-item>
             <el-form-item label="药品内容">
-            <el-input v-model="caseEditerList.content" placeholder="请输入药品内容"></el-input>
+            <el-input v-model="medicineEditerList.content" placeholder="请输入药品内容"></el-input>
             </el-form-item>
         </el-form>
         <div class="dialog-footer">
-            <el-button @click="caseEditerVisable = false">取消</el-button>
-            <el-button type="primary" @click="editCase(caseEditerList)">确定</el-button>
+            <el-button @click="medicineEditerVisable = false">取消</el-button>
+            <el-button type="primary" @click="editCase(medicineEditerList)">确定</el-button>
         </div>
         </el-dialog>
 
         <!-- 新增药品模块 -->
-        <el-dialog v-model="caseAdderVisable" title="新增药品">
-        <el-form :model="caseAdderList" ref="myAdderList">
-            <el-form-item label="药品名称" placeholder="请输入药品名称">
-            <el-input v-model="caseAdderList.mname"></el-input>
+        <el-dialog v-model="medicineAdderVisable" title="新增药品">
+        <el-form :model="medicineAdderList" ref="myAdderList">
+            <el-form-item label="药品名称" >
+            <el-input v-model="medicineAdderList.mname" placeholder="请输入药品名称"></el-input>
             </el-form-item>
             <el-form-item label="药品内容">
-            <el-input v-model="caseAdderList.content" placeholder="请输入药品内容"></el-input>
+            <el-input v-model="medicineAdderList.content" placeholder="请输入药品内容"></el-input>
             </el-form-item>
         </el-form>
         <div class="dialog-footer">
-            <el-button @click="caseAdderVisable = false">取消</el-button>
+            <el-button @click="medicineAdderVisable = false">取消</el-button>
             <el-button type="primary" @click="addCase">确定</el-button>
         </div>
         </el-dialog>
 
 
         <!-- 删除提示 -->
-        <el-dialog v-model="caseDeleterVisable" title="删除药品">
+        <el-dialog v-model="medicineDeleterVisable" title="删除病例">
             <div>确定删除？</div>
             <div class="dialog-footer">
-                <el-button @click="caseDeleterVisable = false">取消</el-button>
+                <el-button @click="medicineDeleterVisable = false">取消</el-button>
                 <el-button type="primary" @click="deleteCase(currentMid)">确定</el-button>
             </div>
         </el-dialog>
@@ -86,26 +86,26 @@ import { ElMessage } from 'element-plus';
 const searchInformation = ref("")
 const { proxy } = getCurrentInstance()
 const currentMid = ref(0)
-const caseList = ref([])
+const medicineList = ref([])
 const isExpanded = reactive({})
-const caseEditerList = ref({
+const medicineEditerList = ref({
     content:'',
     mid:'',
     mname:''
 })
-const caseAdderList = ref({
+const medicineAdderList = ref({
     content:'',
     mid:'',
     mname:''
 })
-const caseEditerVisable = ref(false)
-const caseAdderVisable = ref(false)
-const caseDeleterVisable = ref(false)
+const medicineEditerVisable = ref(false)
+const medicineAdderVisable = ref(false)
+const medicineDeleterVisable = ref(false)
 
 onMounted(()=>{
     get_all_medicine().then(res=>{
         console.log("data",res.data)
-        caseList.value=res.data
+        medicineList.value=res.data
     })
 })
 
@@ -117,13 +117,13 @@ const toggleExpand = (index) => {
 const searchInList = () => {
     if(searchInformation.value === ''){
         get_all_medicine().then(res=>{
-        caseList.value=res.data
+        medicineList.value=res.data
     }) 
     }else{  
     getMedicineByMname(searchInformation.value).then(res=>{
         if(res.state === 200)
         {
-            caseList.value=[res.data]
+            medicineList.value=[res.data]
         }
     }).catch(err=>{
         ElMessage({
@@ -136,12 +136,12 @@ const searchInList = () => {
 }
 
 // 显示编辑列表并赋值
-const showEditer = (thisCase) => {
-    caseEditerVisable.value = true;
-    caseEditerList.value=thisCase;
+const showEditer = (thisMedicine) => {
+    medicineEditerVisable.value = true;
+    medicineEditerList.value=thisMedicine;
 }
 
-// 上传编辑后的病例
+// 上传编辑后的药品
 const editCase = (data) => {
     if(data.mname === ''){
         ElMessage({
@@ -168,17 +168,17 @@ const editCase = (data) => {
         message:"更改信息成功！",
         type:"success"
     })
-    caseEditerVisable.value=false;
+    medicineEditerVisable.value=false;
     }
 };
 
-// 删除病例
+// 删除药品
 const deleteCase = (thisMid) => {
     delete_medicine(thisMid).then(res=>{
         if(res.state === 200)
         {
             proxy.$message.success("删除成功")
-            caseDeleterVisable.value=false
+            medicineDeleterVisable.value=false
             location.reload()
         }
     }).catch(error=>{
@@ -187,8 +187,8 @@ const deleteCase = (thisMid) => {
 }
 // 新增药品
 const addCase = () => {
-    console.log(caseAdderList.value)
-    insert_medicine(caseAdderList.value.mname,caseAdderList.value.content).then(res=>{
+    console.log(medicineAdderList.value)
+    insert_medicine(medicineAdderList.value.mname,medicineAdderList.value.content).then(res=>{
         if(res.state === 200)
         {
             ElMessage({
@@ -196,7 +196,7 @@ const addCase = () => {
                 type:'success',
                 duration:1500
             })
-            caseAdderVisable.value=false
+            medicineAdderVisable.value=false
             location.reload()
         }
         else
@@ -213,16 +213,8 @@ const addCase = () => {
                 type:'error',
                 duration:1500
             })
-        caseAdderVisable.value=false
+        medicineAdderVisable.value=false
         console.error(err)
     })
 }
 </script>
-<style>
-.caseImg
-{
-    width:40%;
-    height:auto;
-    margin-right: 20px;
-}
-</style>

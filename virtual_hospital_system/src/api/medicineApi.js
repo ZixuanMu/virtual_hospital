@@ -34,9 +34,9 @@ export const get_all_medicine = data => {
     })
   }
   
-  export const getMedicineByMname = (mname) => {
+  export const getMedicineByMname = (ename) => {
     return get ({
-      url: '/medicine/getMedicineByMname?mname='+mname,
+      url: '/equipment/getEquipmentByEname?ename='+ename,
       headers: {
         'Content-Type': 'application/json',
       },

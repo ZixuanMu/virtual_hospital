@@ -58,7 +58,7 @@
 
         <!-- 编辑病例模块 -->
         <el-dialog v-model="caseEditerVisable" title="编辑病例">
-        <el-form :model="caseEditerList" ref="myEditerList">
+        <el-form :model="caseEditerList" label-width = 'auto' ref="myEditerList">
             <el-form-item label="病例名">
             <el-input v-model="caseEditerList.cname" placeholder="请输入病例名"></el-input>
             </el-form-item>
@@ -131,9 +131,9 @@
 
         <!-- 新增病例模块 -->
         <el-dialog v-model="caseAdderVisable" title="新增病例">
-        <el-form :model="caseAdderList" ref="myAdderList">
-            <el-form-item label="病例名" placeholder="请输入病例名">
-            <el-input v-model="caseAdderList.cname"></el-input>
+        <el-form :model="caseAdderList" label-width = 'auto' ref="myAdderList">
+            <el-form-item label="病例名">
+            <el-input v-model="caseAdderList.cname" placeholder="请输入病例名"></el-input>
             </el-form-item>
             <el-form-item label="病例种类">
             <el-input v-model="caseAdderList.type" placeholder="请输入病例种类"></el-input>

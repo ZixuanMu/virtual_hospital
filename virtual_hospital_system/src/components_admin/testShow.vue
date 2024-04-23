@@ -1,6 +1,7 @@
 <template>
     <div class="exam-container">
-      <h1>{{ examData.content }}</h1>
+      <h2>{{ examData.content }}</h2>
+      <h1>考试时间：{{ examData.time }}分钟</h1>
       <el-card v-for="topic in examData.topicnumber" :key="topic.tid" class="exam-card">
         <p>{{ topic.content }}</p>
         <p>A. {{ topic.contentA }}</p>
@@ -30,6 +31,7 @@
       this.examData.exid = this.$route.query.exid;
       this.examData.content = this.$route.query.content;
       this.examData.topicnumber = JSON.parse(this.$route.query.topicnumber);
+      this.examData.time = this.$route.query.time;
       console.log(this.examData.topicnumber)
 
     }

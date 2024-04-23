@@ -84,7 +84,8 @@ export default {
     return {
       navigateTo
     };
-  }
+  },
+
   }
   </script>
  <style>

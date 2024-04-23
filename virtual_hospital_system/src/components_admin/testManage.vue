@@ -7,11 +7,15 @@
     <!-- 试卷列表 -->
     <el-card class="exam-list" v-for="exam in exams" :key="exam.exid">
       <div>
-        <span>考试科目：{{ exam.content }}</span>
+        <span>考试科目:{{ exam.content }}</span>
     
         <div>
-        <span>包含题号：{{ exam.topicnumber }}</span>
+          
+        <span>包含题号:{{ exam.topicnumber }}</span>
       </div>
+      <div>
+        <span>考试时间:{{ exam.time }}分钟 </span>
+        </div>
       </div>
          <el-button type="primary"  @click="getExamByExid(exam.exid)">查看试卷</el-button>
         <el-button type="text" @click="editExamName(exam)">编辑科目名</el-button>
@@ -217,7 +221,7 @@ export default {
     // Navigate to the 'testShow' route with query parameters
     this.$router.push({
       path: '/testShow', // Assuming 'testShow' is the name of the route
-      query: { exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
+      query: { time:data.data.time,exid:data.data.exid,content:data.data.content,topicnumber:JSON.stringify(data.data.topicnumber) }
     
     });
     console.log(data.data.topicnumber)

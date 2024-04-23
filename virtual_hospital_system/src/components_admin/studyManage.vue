@@ -49,7 +49,7 @@
 
         <!-- 编辑学习模块 -->
         <el-dialog v-model="studyEditerVisable" title="编辑">
-        <el-form :model="studyEditerList" ref="myEditerList">
+        <el-form :model="studyEditerList"  label-width = 'auto' ref="myEditerList">
             <el-form-item label="角色">
             <el-input v-model="studyEditerList.actor" placeholder="请更换角色"></el-input>
             </el-form-item>
@@ -96,7 +96,7 @@
 
         <!-- 新增学习模块 -->
         <el-dialog v-model="studyAdderVisable" title="新增学习">
-        <el-form :model="studyAdderList" ref="myAdderList">
+        <el-form :model="studyAdderList"  label-width = 'auto' ref="myAdderList">
             <el-form-item label="角色">
             <el-select v-model="studyAdderList.actor" placeholder="前台医助或兽医">
                     <el-option  :value = 1 label="前台">前台</el-option>

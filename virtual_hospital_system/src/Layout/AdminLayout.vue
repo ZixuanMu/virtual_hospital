@@ -39,6 +39,9 @@
             <el-menu-item index="/medicineManage" @click="navigateTo('/medicineManage')">
               药品管理
             </el-menu-item>
+            <el-menu-item index="/equipmentManage" @click="navigateTo('/equipmentManage')">
+              器具管理
+            </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>
           </el-menu>

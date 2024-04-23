@@ -41,18 +41,6 @@ export const addTopic =(question,optionA,optionB,optionC,optionD,answer)=>{
                     })
 }
 
-
-
-export const getVideoUrl = data => {
-  return get ({
-    url: '/duty/getDutyByName',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data
-
-  })
-}
 export const get_all_cases = data => {
   return get ({
     url: '/cases/get_all_cases',

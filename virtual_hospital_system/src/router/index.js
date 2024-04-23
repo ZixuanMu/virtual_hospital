@@ -14,6 +14,7 @@ import testManage from '@/components_admin/testManage.vue'
 import topicManage from '@/components_admin/topicManage.vue';
 import userManage from '@/components_admin/userManage.vue';
 import suggestPage from '@/components/mineInformationCo/suggestPage.vue'
+import equipmentManage from '@/components_admin/equitmentManage.vue';
 import studyManage from '@/components_admin/studyManage.vue';
 import medicineManage from '@/components_admin/medicineManage.vue';
 import qianTai from '@/components/funlearn/qianTai.vue'
@@ -144,6 +145,11 @@ const routes = [
         path:"/medicineManage",
         name:"meidicineManage",
         component:medicineManage,
+      },
+      {
+        path:"/equipmentManage",
+        name:"equipmentManage",
+        component:equipmentManage,
       }
     ]
   },

@@ -19,13 +19,13 @@
 
         <template #header>
             <span class="card-header-title" >{{exam.content}}</span>
-            <span class="right-tag" style=" float: right;"></span>
+            <span v-if="exam.completed" class="right-tag" style=" float: right;">分数：{{ exam.score }}/{{ exam.totalsocre }}</span>
        </template>
 
         <p>考试时间:{{ exam.time }}分钟 </p>
         <el-button  v-if="exam.completed"@click="getMyExam1(exam.exid)">查看考试记录</el-button>
         <el-button v-if="!exam.completed" @click="getExamByExid(exam.exid)">加入考试</el-button>
-        <el-button v-if="exam.completed" @click="showScore(exam.exid)">查看考试成绩</el-button>
+        <!-- <el-button v-if="exam.completed" @click="showScore(exam.exid)">查看考试成绩</el-button> -->
         <el-button v-if="exam.completed" @click="getExamByExid(exam.exid)">重新考试</el-button>
       </el-card>
     </div>
@@ -43,7 +43,7 @@ export default {
       exams: [],
       completedExams: [],
       activeIndex2: '2', // 默认选中已参与的考试
-      score:'',
+      scores:'',
     };
   },
   methods: {
@@ -66,6 +66,10 @@ export default {
       // 如果当前考试的ID在已参加的考试ID列表中，则将其设置为已参加
       if (this.completedExams.includes(exam.exid)) {
         exam.completed = true;
+        getMyexam({ exid: exam.exid }).then(res => {
+ 
+            exam.score = res.data.total
+            });
       } else {
         exam.completed = false;
       }
@@ -103,18 +107,21 @@ export default {
     },
 
 
-    showScore(exid) {
 
-      getMyexam({ exid: exid }).then(res => {
+
+     
+    showScore(exid) {
+       getMyexam({ exid: exid }).then(res => {
  
-        this.score = res.data.total
+        this.scores = res.data.total
       });
+    
       setTimeout(() => {
       console.log('500ms后执行的方法');
       this.$message({
-          message: '您的考试成绩是：' + this.score ,
+          message: '您的考试成绩是：' + this.scores ,
           type: 'success'
-        });
+        });},500);
     //  // 分数展示
     //   if (this.score >= 60) {
     //     this.$message({
@@ -141,7 +148,7 @@ export default {
     //     }
     //     );
     //   }
-    }, 500);
+    
     },
 
     async  getExams5() {
@@ -152,13 +159,18 @@ export default {
  
         // 将获取到的题库数据赋值给组件的 questions 数据
         this.exams = res.data;
+        console.log("data:",res.data);
+        console.log("data:",this.exams);
+        this.exams = this.exams.map(exam => {
+          exam.totalsocre =exam.topicnumber.split(',').length*5;
+          return exam;
+        })
         
-        // 输出获取到的题库数据
+        console.log("exams:",this.exams)
 
       } catch (error) {
         // 处理错误情况
         
-        ElMessage.error('获取题库数据失败：' + error.message);
       }
     },
     async getCompletedExamsList() {
@@ -176,7 +188,9 @@ export default {
     selectedExams() {
       this.getUncompletedExams(); 
       if (this.activeIndex2 === '1') {
+        console.log("exams:",this.exams);
         return this.exams.filter(exam => exam.completed); // 已参与的考试
+  
       } else if (this.activeIndex2 === '2') {
         
          return this.exams.filter(exam => !exam.completed);// 未参与的考试
@@ -187,7 +201,11 @@ export default {
   },
   mounted() {
      this.getExams5();
+
      this.getCompletedExamsList(); 
+
+
+
     }
 };
 </script>

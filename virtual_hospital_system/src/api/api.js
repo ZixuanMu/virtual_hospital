@@ -296,3 +296,12 @@ export const getAllMedicine = data => {
     data
   })
 }
+
+export const getCaseByType = (type) => {
+  return get({
+    url:'/cases/getCaseByType?type='+type,
+    headers:{
+      'Content-Type': 'application/json'
+    },
+  })
+}

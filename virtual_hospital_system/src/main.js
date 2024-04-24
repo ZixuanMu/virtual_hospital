@@ -10,6 +10,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 //import { provideToken } from './token';//token
 import VueVideoPlayer from '@videojs-player/vue'
 import 'video.js/dist/video-js.css'
+import 'photo-sphere-viewer'
                         
 const app = createApp(App);
 app.use(store);

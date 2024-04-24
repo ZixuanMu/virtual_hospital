@@ -21,7 +21,7 @@
               text-color="#fff" unique-opened 
               :default-active="activeIndex" 
               mode="vertical" 
-              @select="handleMenuSelect">
+              @select="handleMenuSelect" scoped>
               <el-scrollbar>
               <el-menu-item index="/3dviews" @click="navigateTo('/3dviews')">
                 3 D 导览
@@ -42,6 +42,9 @@
                 个人信息
 
               </el-menu-item>
+              <el-menu-item index="/" @click="navigateTo('/')">
+                注销
+              </el-menu-item>
               <!-- 更多导航栏项 -->
             </el-scrollbar>
             </el-menu>
@@ -49,7 +52,7 @@
           </div>
         </el-aside> 
         <el-main >
-          <el-scrollbar style="height: 90vh;" ref="scrollbarRef" always @scroll="scroll">
+          <el-scrollbar style="height: 88vh;" ref="scrollbarRef" always @scroll="scroll">
 
           <div >
          <FloatingWindow/>
@@ -88,7 +91,7 @@ export default {
 
   }
   </script>
- <style>
+ <style scoped>
  .el-header {
 background-color: #363d40;
 display: flex;
@@ -127,5 +130,7 @@ margin-right: 10px;
   display: flex;
   align-items: center;
 }
-
+.el-menu-item{
+  color:white;
+}
   </style>

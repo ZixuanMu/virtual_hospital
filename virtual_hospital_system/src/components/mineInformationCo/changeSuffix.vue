@@ -17,6 +17,7 @@
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { reqUpload } from '@/api/mineInformationApi';
+import router from '@/router';
 
 const suffix = ref("");
 const changesuffix = (UploadFile) => {
@@ -35,8 +36,10 @@ const submit = async () => {
                 type:'success',
                 duration:1500
             })
-  
-            location.reload()
+            setTimeout(() => {
+              router.push('/mineInformation')
+            }, 1000);
+           
         }})
     .catch(err => {
       ElMessage({

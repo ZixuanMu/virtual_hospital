@@ -48,7 +48,7 @@ export default {
 
 .half-image {
   width: 50%;
-  height: auto;
+  height: 80vh;
 }
 
 .buttons {

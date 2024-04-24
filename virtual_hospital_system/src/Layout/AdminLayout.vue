@@ -18,8 +18,12 @@
            <div>
         
           <el-menu  active-text-color="#409Eff"
-        background-color="#545c64"
-        text-color="#fff" unique-opened :default-active="activeIndex" mode="vertical" @select="handleMenuSelect">
+            background-color="#545c64"
+            text-color="#fff" 
+            unique-opened 
+            :default-active="activeIndex" 
+            mode="vertical" 
+            @select="handleMenuSelect" scoped>
             <el-scrollbar>
             <el-menu-item index="/caseManage" @click="navigateTo('/caseManage')">
               病例管理
@@ -42,6 +46,9 @@
             <el-menu-item index="/equipmentManage" @click="navigateTo('/equipmentManage')">
               器具管理
             </el-menu-item>
+            <el-menu-item index="/" @click="navigateTo('/')">
+              注销
+            </el-menu-item>
             <!-- 更多导航栏项 -->
           </el-scrollbar>
           </el-menu>
@@ -49,7 +56,7 @@
         </div>
             </el-aside> 
             <el-main>
-              <el-scrollbar style="height: 90vh;" ref="scrollbarRef" always @scroll="scroll">
+              <el-scrollbar style="height: 88vh;" ref="scrollbarRef" always @scroll="scroll">
     
               <div>
               <router-view></router-view>
@@ -62,7 +69,7 @@
     
       </template>
       
-      <script>
+      <script scoped>
       import { useRouter } from 'vue-router'
       export default {
         setup(){
@@ -111,8 +118,5 @@
 
 .iconfont {
   margin-right: 10px;
-}
-.el-menu-item{
-  color:blue;
 }
     </style>

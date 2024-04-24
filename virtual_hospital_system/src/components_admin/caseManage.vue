@@ -12,6 +12,20 @@
             </template>
         </el-input>
 
+        <!-- 种类搜索 -->
+        <el-select
+        v-model="searchType"
+        placeholder="根据病例种类查询"
+        style="margin-bottom: 20px;"
+        clearable @change="searchByType" @clear="initList">
+        <el-option
+            v-for="item in typeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+        </el-select>
+
         <!-- 病例显示列表 -->
         <el-card style="margin-bottom: 20px;" v-for="(thisCase,index) in caseList" :key="thisCase.cid">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -63,7 +77,18 @@
             <el-input v-model="caseEditerList.cname" placeholder="请输入病例名"></el-input>
             </el-form-item>
             <el-form-item label="病例种类">
-            <el-input v-model="caseEditerList.type" placeholder="请输入病例种类"></el-input>
+                <el-select
+                v-model="caseEditerList.type"
+                placeholder="请选择病例种类"
+                style="width: 240px"
+                >
+                <el-option
+                    v-for="item in typeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                />
+                </el-select>
             </el-form-item>
             <el-form-item label="接诊记录">
             <el-input v-model="caseEditerList.word1" placeholder="请输入文字记录"></el-input>
@@ -136,7 +161,19 @@
             <el-input v-model="caseAdderList.cname" placeholder="请输入病例名"></el-input>
             </el-form-item>
             <el-form-item label="病例种类">
-            <el-input v-model="caseAdderList.type" placeholder="请输入病例种类"></el-input>
+            <!-- <el-input v-model="caseAdderList.type" placeholder="请输入病例种类"></el-input> -->
+            <el-select
+            v-model="caseAdderList.type"
+            placeholder="请选择病例种类"
+            style="width: 240px"
+            >
+            <el-option
+                v-for="item in typeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+            </el-select>
             </el-form-item>
             <el-form-item label="接诊记录">
             <el-input v-model="caseAdderList.word1" placeholder="请输入文字记录"></el-input>
@@ -220,14 +257,41 @@ import { reactive,ref,onMounted,getCurrentInstance  } from 'vue';
 import { VideoPlayer } from '@videojs-player/vue'
 import { Plus } from '@element-plus/icons-vue'
 import 'video.js/dist/video-js.css'
-import { get_all_cases,change_cname,change_photo1,change_photo2,change_type,change_video4,change_word1,change_word2,change_word3,change_word4,delete_case,insert_case,getLikeCases } from '@/api/api';
+import { getCaseByType,get_all_cases,change_cname,change_photo1,change_photo2,change_type,change_video4,change_word1,change_word2,change_word3,change_word4,delete_case,insert_case,getLikeCases } from '@/api/api';
 import { ElMessage,ElMessageBox } from 'element-plus';
 
+const searchType = ref ("")
 const searchInformation = ref("")
 const { proxy } = getCurrentInstance()
 const currentCid = ref(0)
 const caseList = ref([])//定义响应式数组变量，存放全部病例
 const isExpanded = reactive({})
+const typeOptions = [
+{
+    value: '传染病',
+    label: '传染病',
+  },
+  {
+    value: '寄生虫病',
+    label: '寄生虫病',
+  },
+  {
+    value: '内科',
+    label: '内科',
+  },
+  {
+    value: '外产科疾病',
+    label: '外产科疾病',
+  },
+  {
+    value: '常用手术',
+    label: '常用手术',
+  },
+  {
+    value: '免疫',
+    label: '免疫',
+  },
+]
 const caseEditerList = ref({
     cid:'',
     cname:'',
@@ -284,6 +348,29 @@ const searchInList = () => {
             duration:1500
         })
         console.log(err)
+    })
+}
+
+const searchByType = () => {
+    getCaseByType(searchType.value).then(res=>{
+        if(res.state === 200)
+        {
+            caseList.value=res.data
+        }
+    }).catch(err=>{
+        ElMessage({
+            message:"服务器或网络出错",
+            type:"error",
+            duration:1500
+        })
+        console.log(err)
+    })
+}
+
+const initList = () => {
+    get_all_cases().then(res=>{
+        console.log(res)
+        caseList.value=res.data
     })
 }
 

@@ -172,14 +172,28 @@ const showEditer = (thisUser) => {
 const editUser = (data) => {
     console.log("uid:"+data.uid)
     console.log("password:"+data.password)
+    if(data.password === ''){
+        proxy.$message.error("密码不能为空")
+        userEditerVisable.value=false;
+        // location.reload()
+    }else{
     change_user_password(data.uid,data.password).then(res=>{
         if(res.state === 200)
         {
             console.log("更改成功")
+            ElMessage({
+                message:'更改成功！',
+                type:'success',
+                duration:1500
+            })
         }
     }).catch(error=>{
-        console.log("错误err:"+error)
-    });  
+        ElMessage({
+            message:"服务器或网络出错",
+            type:"error",
+            duration:1500
+        })
+        });  }
     userEditerVisable.value=false;
 };
 

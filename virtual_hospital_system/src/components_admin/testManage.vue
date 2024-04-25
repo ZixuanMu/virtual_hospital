@@ -2,6 +2,14 @@
   <div>
     <!-- 添加试卷按钮 -->
     <el-button type="primary" class="add-exam-button" @click="showAddExamDialog">新增试卷</el-button>
+ <!-- 搜索栏 -->
+    <el-input placeholder="输入搜索内容" v-model="searchInformation" clearable style="margin-bottom: 20px;">
+                <template #append>
+                    <el-button @click="searchInList">
+                        <el-icon><search /></el-icon>
+                    </el-button>
+                </template>
+  </el-input>
 
     
     <!-- 试卷列表 -->
@@ -28,10 +36,10 @@
     <el-dialog v-model="addExamDialogVisible" title="新增试卷">
       <el-form :model="newExam" ref="newExamForm">
         <el-form-item label="考试名称" prop="name">
-          <el-input v-model="newExam.name"></el-input>
+          <el-input v-model="newExam.name" value="考试1"></el-input>
         </el-form-item>
         <el-form-item label="考试时间" prop="time"  >
-          <el-input v-model="newExam.time" placeholder="分钟"></el-input>
+          <el-input v-model="newExam.time" placeholder="分钟" value="10">10</el-input>
         </el-form-item>
         <el-form-item label="题目ID列表" prop="questionIds">
           <el-button type="primary" class="add-question-button" @click="showQuestionPickerDialog">选择题目</el-button>
@@ -82,7 +90,7 @@
 <script>
 
 
-import { addExamm,getExams,changeEname,changetime } from '@/api/examApi.js'; // 假设这是你的添加试卷的 API 请求函数
+import { addExamm,getExams,changeEname,changetime,searchinList} from '@/api/examApi.js'; // 假设这是你的添加试卷的 API 请求函数
 import { topicget } from '@/api/api.js'; // 假设这是你的题库数据获取函数
 import { ElMessage } from 'element-plus';
 
@@ -102,7 +110,8 @@ export default {
       edittimeVisible: false, // 修改试卷题目对话框可见性
       editedtime:'',// 被编辑的试卷信息
       selection:[],
-      changeTimeexid:''
+      changeTimeexid:'10',
+      searchInformation:''
     };
   },
   methods: {
@@ -249,6 +258,20 @@ export default {
     });
     console.log(data.data.topicnumber)
   })},
+  searchInList(){
+      if(this.searchInList === '') return
+    console.log("sss",this.searchInformation);
+
+    searchinList({content:this.searchInformation})
+.then(response =>{
+    this.exams = response.data;
+    console.log(response)
+
+
+
+  })
+ 
+  },
     async  getExams5() {
       try {
         // 发起题库数据请求

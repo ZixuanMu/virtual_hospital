@@ -51,3 +51,27 @@ export const changeEname = (exid,content) => {
       url: '/exams/changeExamTime?exid='+exid+'&time='+time,
     })
   }
+  export const searchinList= data =>{
+    return get ({
+      url: 'exams/getExamsByContent',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data
+    })
+
+    
+
+  }
+  export const searchinListT= data =>{
+    return get ({
+      url: '/topics/getTopicBycontent',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data
+    })
+
+    
+
+  }

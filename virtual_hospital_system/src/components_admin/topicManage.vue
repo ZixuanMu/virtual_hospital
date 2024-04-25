@@ -2,9 +2,25 @@
     <div class="question-bank">
 
       
-      <!-- 查询题目 --><div>
+      <!-- 查询题目 -->
+       <!-- 搜索栏 -->
+    <el-input placeholder="输入搜索内容" v-model="searchInformation" clearable style="margin-bottom: 20px;">
+                <template #append>
+                    <el-button @click="searchInList">
+                        <el-icon><search /></el-icon>
+                    </el-button>
+                </template>
+  </el-input>
+
+      
+      
+      
+      
+      <div>
       <el-input v-model="searchID" placeholder="删除id" class="search-input"></el-input>
       <el-button type="primary" class="add-button" @click="deleteQuestion()">删除题目</el-button>
+            <!-- 添加题目按钮 -->
+            <el-button type="primary" class="add-button" @click="showAddDialog">添加题目</el-button>
     </div>
   <el-table :data="questions" style="width: 100%" height="100vh">
     <el-table-column fixed prop="tid" label="ID" width="120" />
@@ -82,8 +98,7 @@
         </div>
       </el-dialog>
   
-      <!-- 添加题目按钮 -->
-      <el-button type="primary" class="add-button" @click="showAddDialog">添加题目</el-button>
+
     </div>
   </template>
   
@@ -92,6 +107,7 @@
 
 // 导入必要的函数和组件
 import { topicget ,addTopic} from '@/api/api.js'; // 假设这是你的 API 请求函数
+import { searchinListT } from '@/api/examApi';
 import { ElMessage } from 'element-plus';
 import{ref} from "vue";
 // let questionsiii = [
@@ -119,7 +135,7 @@ import{ref} from "vue";
     return {
         searchID:1,
         questions:[], // question 数据
-
+        searchInformation:'',
         dialogVisible: false, // 添加题目对话框可见性
         editDialogVisible: false, // 编辑题目对话框可见性
         newQuestion: { 
@@ -129,6 +145,7 @@ import{ref} from "vue";
           optionC: '', 
           optionD: '' ,
           answer:'',
+         
         }, // 新增题目
         editedQuestion: { id: '', question: '', options: '' }, // 编辑的题目
         rules: { // 表单验证规则
@@ -154,6 +171,17 @@ import{ref} from "vue";
       };
     },
     methods: {
+      searchInList(){
+      if(this.searchInList === '') return
+    console.log("sss",this.searchInformation);
+
+    searchinListT({content:this.searchInformation})
+.then(response =>{
+    this.questions = response.data;
+    console.log(response)
+  })
+ 
+  },
      
       showAddDialog() {
         // 显示添加题目对话框
